@@ -1,0 +1,124 @@
+@import url("./normalize.css");
+//reset default styles
+
+:root {
+  box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+blockquote,
+body,
+cite,
+fieldset,
+figure,
+img,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+li,
+ol,
+p,
+pre,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+//color variables
+$color-light-s: #fafafa;
+$color-light-xl: #ffffff;
+$color-primary: #f1cdb3;
+$color-dark-s: #cdcdcd;
+
+//wrapper
+.wrapper {
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+}
+//header
+.header {
+  top: 0;
+  width: 100%;
+  margin-top: 60px;
+  &__logo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    padding-bottom: 10px;
+    font-family: Georgia;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: 0.06em;
+    color: $color-primary;
+  }
+
+  &__subtitle {
+    margin-left: 4px;
+    font-family: Arial;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 1.15;
+    letter-spacing: 0.1em;
+    color: $color-light-xl;
+  }
+}
+
+//navigation
+.main-nav {
+  display: flex;
+  align-items: center;
+
+  &__list {
+    display: flex;
+  }
+
+  &__item {
+    &:not(:last-child) {
+      margin-right: 35px;
+    }
+    &--active {
+      color: $color-light-s;
+      border-bottom: 3px solid $color-primary;
+      & > a {
+        color: $color-light-s;
+      }
+    }
+  }
+
+  &__link {
+    font-family: Arial;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 1.6;
+    letter-spacing: 0.005em;
+    color: $color-dark-s;
+    &:hover {
+      color: $color-light-s;
+    }
+  }
+}

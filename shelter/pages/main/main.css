@@ -1,0 +1,135 @@
+@import url("./normalize.css");
+:root {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+  -webkit-box-sizing: inherit;
+          box-sizing: inherit;
+}
+
+blockquote,
+body,
+cite,
+fieldset,
+figure,
+img,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+li,
+ol,
+p,
+pre,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.wrapper {
+  margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  max-width: 1200px;
+}
+
+.header {
+  top: 0;
+  width: 100%;
+  margin-top: 60px;
+}
+
+.header__logo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.header__title {
+  padding-bottom: 10px;
+  font-family: Georgia;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: 0.06em;
+  color: #f1cdb3;
+}
+
+.header__subtitle {
+  margin-left: 4px;
+  font-family: Arial;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 1.15;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+}
+
+.main-nav {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.main-nav__list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.main-nav__item:not(:last-child) {
+  margin-right: 35px;
+}
+
+.main-nav__item--active {
+  color: #fafafa;
+  border-bottom: 3px solid #f1cdb3;
+}
+
+.main-nav__item--active > a {
+  color: #fafafa;
+}
+
+.main-nav__link {
+  font-family: Arial;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 1.6;
+  letter-spacing: 0.005em;
+  color: #cdcdcd;
+}
+
+.main-nav__link:hover {
+  color: #fafafa;
+}
+/*# sourceMappingURL=main.css.map */
