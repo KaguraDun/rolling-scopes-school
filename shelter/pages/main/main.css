@@ -53,11 +53,34 @@ a {
   max-width: 1200px;
 }
 
+.button {
+  height: 52px;
+  font-family: Georgia;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  background: #f1cdb3;
+  color: #292929;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+}
+
+.button--size-s {
+  max-width: 207px;
+}
+
+.button:hover {
+  background: #fddcc4;
+}
+
 .header {
   top: 0;
   position: absolute;
-  width: 100%;
   margin-top: 60px;
+  width: 100%;
 }
 
 .header__logo {
@@ -138,6 +161,7 @@ a {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  margin-bottom: 80px;
   width: 100%;
   background: url("/assets/images/intro-background-noise-lines.png"), radial-gradient(100% 215.42% at 0% 0%, #5b483a 0%, #262425 100%), #211f20;
 }
@@ -181,26 +205,39 @@ a {
   height: 728px;
 }
 
-.button {
-  height: 52px;
+.about__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.about__image-wrapper {
+  margin: 0 120px 0 175px;
+}
+
+.about__heading {
+  margin: 14px 0 25px 0;
+  max-width: 370px;
   font-family: Georgia;
   font-style: normal;
   font-weight: normal;
-  font-size: 17px;
+  font-size: 35px;
   line-height: 1.3;
   letter-spacing: 0.06em;
-  background: #f1cdb3;
-  color: #292929;
-  border-radius: 100px;
-  border: none;
-  cursor: pointer;
+  color: #545454;
 }
 
-.button--size-s {
-  max-width: 207px;
+.about__text {
+  max-width: 430px;
+  font-family: Arial;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #4c4c4c;
 }
 
-.button:hover {
-  background: #fddcc4;
+.about__text:first-of-type {
+  margin-bottom: 25px;
 }
 /*# sourceMappingURL=main.css.map */
