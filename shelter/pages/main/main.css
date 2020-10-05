@@ -55,6 +55,7 @@ a {
 
 .header {
   top: 0;
+  position: absolute;
   width: 100%;
   margin-top: 60px;
 }
@@ -131,5 +132,75 @@ a {
 
 .main-nav__link:hover {
   color: #fafafa;
+}
+
+.intro {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  background: url("/assets/images/intro-background-noise-lines.png"), radial-gradient(100% 215.42% at 0% 0%, #5b483a 0%, #262425 100%), #211f20;
+}
+
+.intro__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-top: 343px;
+  max-width: 460px;
+}
+
+.intro__heading {
+  max-width: 310px;
+  margin-bottom: 42px;
+  font-family: Georgia;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 44px;
+  line-height: 57px;
+  color: #ffffff;
+}
+
+.intro__text {
+  margin-bottom: 41px;
+  font-family: Arial;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #cdcdcd;
+}
+
+.intro__img-wrapper {
+  margin: 180px 0 0 42px;
+  width: 698px;
+  height: 728px;
+}
+
+.button {
+  height: 52px;
+  font-family: Georgia;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  background: #f1cdb3;
+  color: #292929;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+}
+
+.button--size-s {
+  max-width: 207px;
+}
+
+.button:hover {
+  background: #fddcc4;
 }
 /*# sourceMappingURL=main.css.map */
