@@ -1,4 +1,4 @@
-@import url("./normalize.css");
+@import url("/assets/css/normalize.css");
 //reset default styles
 
 :root {
@@ -49,9 +49,10 @@ a {
   justify-content: space-between;
   max-width: 1200px;
 }
-@import "./scss/_buttons.scss";
 
-@import "./scss/_header.scss";
-@import "./scss/_intro.scss";
-@import "./scss/_about.scss";
-
+@import "../../assets/scss/_variables.scss";
+@import "../../assets/scss/_buttons.scss";
+@import "../../assets/scss/_header.scss";
+@import "../../assets/scss/_intro.scss";
+@import "../../assets/scss/_about.scss";
+@import "../../assets/scss/_pets.scss";

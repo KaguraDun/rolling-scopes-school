@@ -1,0 +1,59 @@
+@import "./_variables.scss";
+
+.button {
+  width: 100%;
+  height: 52px;
+  font-family: Georgia;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  background: $color-primary;
+  color: $color-dark-3xl;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+
+  &--size-s {
+    max-width: 207px;
+  }
+
+  &--size-l {
+    max-width: 261px;
+  }
+
+  &:hover {
+    background: $color-primary-light;
+  }
+
+  &__learn-more {
+    margin-bottom: 30px;
+    max-width: 187px;
+    background: $color-light-s;
+    border: 2px solid $color-primary;
+
+    &:hover {
+      background: $color-primary-light;
+      border: 2px solid $color-primary-light;
+    }
+  }
+
+  &__arrow {
+    width: 52px;
+    height: 52px;
+    background: url(/assets/icons/Arrow.svg) no-repeat 50% 50%;
+    border: 2px solid $color-primary;
+    border-radius: 100px;
+    cursor: pointer;
+
+    &--right {
+      background: url(/assets/icons/Arrow.svg) no-repeat 50% 50%;
+      transform: rotate(180deg);
+    }
+    &:hover {
+      background: $color-primary-light url(/assets/icons/Arrow.svg) no-repeat 50% 50%;;
+      border: 2px solid $color-primary-light;
+    }
+  }
+}

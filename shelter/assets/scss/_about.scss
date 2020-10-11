@@ -1,7 +1,7 @@
-@import "./_variables.scss";
-
 .about {
   &__content {
+    max-height: 408px;
+    margin-bottom: 100px;
     display: flex;
   }
 
@@ -29,7 +29,7 @@
     font-size: 15px;
     line-height: 1.6;
     color: $color-dark-xl;
-    
+
     &:first-of-type {
       margin-bottom: 25px;
     }

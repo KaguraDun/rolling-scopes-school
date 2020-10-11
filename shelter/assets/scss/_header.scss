@@ -47,6 +47,7 @@
     &:not(:last-child) {
       margin-right: 35px;
     }
+    
     &--active {
       color: $color-light-s;
       border-bottom: 3px solid $color-primary;
