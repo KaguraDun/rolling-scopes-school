@@ -3,6 +3,7 @@ class Calculator {
     this.previousOperandTextElement = previousOperandTextElement;
     this.currentOperandTextElement = currentOperandTextElement;
     this.readyToReset = false;
+    this.changeSign = false;
     this.clear();
   }
 
@@ -11,6 +12,7 @@ class Calculator {
     this.previousOperand = "";
     this.operation = undefined;
     this.readyToReset = false;
+    this.changeSign = false;
   }
 
   delete() {
@@ -23,7 +25,9 @@ class Calculator {
   }
 
   chooseOperation(operation) {
-    if (this.currentOperand === "") {
+    if (this.currentOperand === "-") return;
+    if (this.currentOperand === "" && operation === "-") {
+      this.currentOperand = "-";
       return;
     }
 
@@ -42,8 +46,7 @@ class Calculator {
 
   computeSqrt() {
     if (this.currentOperand < 0) {
-      this.operation =
-        "Введены неверные данные";
+      this.operation = "Введены неверные данные";
       return;
     }
 
