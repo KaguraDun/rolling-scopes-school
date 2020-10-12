@@ -3,7 +3,6 @@ class Calculator {
     this.previousOperandTextElement = previousOperandTextElement;
     this.currentOperandTextElement = currentOperandTextElement;
     this.readyToReset = false;
-    this.changeSign = false;
     this.clear();
   }
 
@@ -12,7 +11,6 @@ class Calculator {
     this.previousOperand = "";
     this.operation = undefined;
     this.readyToReset = false;
-    this.changeSign = false;
   }
 
   delete() {
@@ -86,6 +84,10 @@ class Calculator {
         break;
       default:
         return;
+    }
+    computation = computation.toFixed(5).replace(/0*$/, "");
+    if (computation[computation.length - 1] === ".") {
+      computation = computation.slice(0, -1);
     }
     this.readyToReset = true;
     this.currentOperand = computation;
