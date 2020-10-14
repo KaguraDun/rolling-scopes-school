@@ -23,11 +23,12 @@ class Calculator {
   }
 
   chooseOperation(operation) {
-    if (this.currentOperand === "-") return;
     if (this.currentOperand === "" && operation === "-") {
       this.currentOperand = "-";
       return;
     }
+
+    if (this.currentOperand === "" || this.currentOperand === "-") return;
 
     if (this.currentOperand != "" && operation === "√") {
       this.computeSqrt();
@@ -37,6 +38,7 @@ class Calculator {
     if (this.previousOperand != "") {
       this.compute();
     }
+
     this.operation = operation;
     this.previousOperand = this.currentOperand;
     this.currentOperand = "";
