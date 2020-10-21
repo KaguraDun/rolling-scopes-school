@@ -509,6 +509,10 @@ a {
   border-radius: 9px;
 }
 
+.donation__credit-card:hover {
+  background: #fddcc4;
+}
+
 .donation__credit-card-icon {
   display: block;
   margin-right: 15px;

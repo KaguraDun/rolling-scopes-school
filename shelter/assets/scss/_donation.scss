@@ -47,6 +47,10 @@
     background: $color-primary;
     border-radius: 9px;
 
+    &:hover {
+      background: $color-primary-light;
+    }
+
     &-icon {
       display: block;
       margin-right: 15px;
