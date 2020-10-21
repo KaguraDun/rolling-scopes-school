@@ -1,4 +1,3 @@
-@import url("/assets/css/normalize.css");
 :root {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -450,7 +449,7 @@ a {
 }
 
 .donation__content {
-  margin: 83px 0 100px;
+  margin: 83px 0 102px;
   width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -536,5 +535,96 @@ a {
   font-size: 12px;
   line-height: 1.5;
   color: #B2B2B2;
+}
+
+.footer {
+  background: url("/assets/images/intro-background-noise-lines.png"), radial-gradient(110.67% 538.64% at 5.73% 50%, #513d2f 0%, #1a1a1c 100%), #211f20;
+}
+
+.footer__content {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-line-pack: justify;
+      align-content: space-between;
+}
+
+.footer__contacts, .footer__location {
+  margin-right: 160px;
+  margin-top: 57px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.footer__location {
+  width: 302px;
+}
+
+.footer__contacts-heading, .footer__location-heading {
+  font-family: Georgia;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 35px;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+}
+
+.footer__contacts-heading {
+  max-width: 280px;
+  margin-bottom: 44px;
+}
+
+.footer__location-heading {
+  max-width: 270px;
+  margin-bottom: 34px;
+}
+
+.footer__email, .footer__phone, .footer__adress {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.footer__email-icon, .footer__phone-icon, .footer__adress-icon {
+  display: block;
+  margin-right: 20px;
+}
+
+.footer__email-link, .footer__phone-link, .footer__adress-link {
+  font-family: Georgia;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 1.15;
+  letter-spacing: 0.06em;
+  color: #f1cdb3;
+  text-decoration: none;
+}
+
+.footer__email {
+  margin-bottom: 42px;
+}
+
+.footer__phone {
+  margin-bottom: 60px;
+}
+
+.footer__adress {
+  margin-bottom: 32px;
+}
+
+.footer__img {
+  display: block;
+  margin-top: 40px;
 }
 /*# sourceMappingURL=main.css.map */

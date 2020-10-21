@@ -1,0 +1,83 @@
+.footer {
+  background: url("/assets/images/intro-background-noise-lines.png"),
+    radial-gradient(110.67% 538.64% at 5.73% 50%, #513d2f 0%, #1a1a1c 100%),
+    #211f20;
+
+  &__content {
+    width: 100%;
+    display: flex;
+    align-content: space-between;
+  }
+
+  &__contacts,
+  &__location {
+    margin-right: 160px;
+    margin-top: 57px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__location {
+    width: 302px;
+  }
+
+  &__contacts-heading,
+  &__location-heading {
+    font-family: Georgia;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 35px;
+    line-height: 1.3;
+    letter-spacing: 0.06em;
+    color: $color-light-xl;
+  }
+
+  &__contacts-heading {
+    max-width: 280px;
+    margin-bottom: 44px;
+  }
+
+  &__location-heading {
+    max-width: 270px;
+    margin-bottom: 34px;
+  }
+
+  &__email,
+  &__phone,
+  &__adress {
+    display: flex;
+    align-items: center;
+
+    &-icon {
+      display: block;
+      margin-right: 20px;
+    }
+
+    &-link {
+      font-family: Georgia;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 20px;
+      line-height: 1.15;
+      letter-spacing: 0.06em;
+      color: $color-primary;
+      text-decoration: none;
+    }
+  }
+  &__email {
+    margin-bottom: 42px;
+  }
+
+  &__phone {
+    margin-bottom: 60px;
+  }
+
+  &__adress {
+    margin-bottom: 32px;
+  }
+
+  &__img {
+    display: block;
+    margin-top: 40px;
+  }
+}
