@@ -27,7 +27,7 @@
     background: $color-primary-light;
   }
 
-  &__learn-more {
+  &--learn-more {
     margin-bottom: 30px;
     max-width: 187px;
     background: $color-light-s;
@@ -39,22 +39,51 @@
     }
   }
 
-  &__arrow {
+  &-round {
     width: 52px;
     height: 52px;
-    background: url(/assets/icons/Arrow.svg) no-repeat 50% 50%;
     border: 2px solid $color-primary;
     border-radius: 100px;
     cursor: pointer;
+    background: $color-light-l;
 
-    &--right {
+    font-family: Georgia;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 1.15;
+    letter-spacing: 0.06em;
+
+    &:hover {
+      background-color: $color-primary-light;
+      border: 2px solid $color-primary-light;
+    }
+
+    &--arrow-left {
+      background: url(/assets/icons/Arrow.svg) no-repeat 50% 50%;
+    }
+
+    &--arrow-right {
       background: url(/assets/icons/Arrow.svg) no-repeat 50% 50%;
       transform: rotate(180deg);
     }
 
-    &:hover {
-      background: $color-primary-light url(/assets/icons/Arrow.svg) no-repeat 50% 50%;;
-      border: 2px solid $color-primary-light;
+    &--page-number {
+      background-color: $color-primary;
+      &:hover {
+        background-color: $color-primary;
+        border-color: $color-primary;
+      }
+    }
+
+    &--inactive {
+      border-color: $color-dark-s;
+      fill: $color-dark-s;
+
+      &:hover {
+        background-color: transparent;
+        border-color: $color-dark-s;
+      }
     }
   }
 }

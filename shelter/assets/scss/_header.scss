@@ -6,6 +6,14 @@
   margin-top: 60px;
   width: 100%;
 
+  &--pets {
+
+    margin: 0;
+    padding: 30px 0;
+    position: sticky;
+    background: $color-light-xl;
+  }
+
   &__logo {
     display: flex;
     flex-direction: column;
@@ -20,6 +28,10 @@
     line-height: 1.1;
     letter-spacing: 0.06em;
     color: $color-primary;
+
+    &--pets {
+      color: $color-dark-l;
+    }
   }
 
   &__subtitle {
@@ -31,6 +43,10 @@
     line-height: 1.15;
     letter-spacing: 0.1em;
     color: $color-light-xl;
+
+    &--pets {
+      color: $color-dark-3xl;
+    }
   }
 }
 
@@ -47,13 +63,21 @@
     &:not(:last-child) {
       margin-right: 35px;
     }
-    
+
     &--active {
       color: $color-light-s;
       border-bottom: 3px solid $color-primary;
 
       & > a {
         color: $color-light-s;
+      }
+    }
+
+    &--active-pets {
+      border-bottom: 3px solid $color-primary;
+
+      & > a {
+        color: $color-dark-3xl;
       }
     }
   }
@@ -69,6 +93,14 @@
 
     &:hover {
       color: $color-light-s;
+    }
+
+    &--pets {
+      color: $color-dark-l;
+
+      &:hover {
+        color: $color-dark-3xl;
+      }
     }
   }
 }
