@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,7 +7,7 @@
 }
 
 .page {
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Bebas Neue", cursive;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,29 +16,61 @@
   height: 100vh;
   background-size: cover;
   color: #ffffff;
-  transition: background-image 1s ease-in-out;
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  transition: background-image 0.8s ease-in-out;
+}
+.date {
+  font-size: 6rem;
 }
 
 .time {
   font-size: 8rem;
+  color: #ffffff;
+  text-shadow: 7px 7px 0px rgba(0, 0, 0, 0.2), 4px 4px 0px #d5d5d5;
 }
 
-.btn-change-bg{
+.greeting,
+.focus,
+.name {
+  font-size: 3rem;
+}
+
+.greeting{
+  margin-right: 20px;
+}
+h1 {
+  display: flex;
+  justify-content: space-between;
+}
+.name {
+
+  /* padding-left: 1px; */
+}
+
+.btn-change-bg {
   cursor: pointer;
   width: 50px;
   height: 50px;
-  position: absolute;
-  bottom: 10%;
-  right: 50%;
+  margin: 50px auto 0;
   border-radius: 50%;
-  
-  background: url(/assets/svg/refresh-arrow_icon.svg) no-repeat 50% 50%;
-  background-color: purple;
-  border: 2px ;
+  background-color: #ffffff;
+  border: 2px solid #d5d5d5;
 }
 
-.btn-change-bg:hover{
+.btn-change-bg:before {
+  font-size: 2rem;
+  content: "↻";
+  color: black;
+}
 
+.btn-change-bg:hover {
+  background: #d5d5d5;
+  border: 2px solid #d5d5d5;
+}
+
+.btn-rotate {
+  transform: rotate(360deg);
+  transition: transform 0.5s ease-out;
 }
 
 h1 {
@@ -45,7 +79,6 @@ h1 {
 
 h2 {
   margin-bottom: 0.5rem;
-  opacity: 0.8;
 }
 
 @media (max-width: 700px) {

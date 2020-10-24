@@ -1,9 +1,10 @@
 class Momentum {
-  constructor(date, time, name, greeting, page) {
+  constructor(date, time, greeting, page, name, focus) {
     this.dateTextElement = document.querySelector(date);
     this.timeTextElement = document.querySelector(time);
-    this.nameTextElement = document.querySelector(name);
     this.greetingTextElement = document.querySelector(greeting);
+    this.nameTextElement = document.querySelector(name);
+    this.focusTextElement = document.querySelector(focus);
     this.page = document.querySelector(page);
     this.pathArr = this.createBgArr();
     this.currentBgId = 0;
@@ -24,9 +25,11 @@ class Momentum {
     let second = today.getSeconds();
 
     this.dateTextElement.innerHTML = `Today is ${week}, ${day} ${month}`;
-    this.timeTextElement.innerHTML = `${hour} : ${this.addZero(
+    this.timeTextElement.innerHTML = `${this.addZero(hour)} : ${this.addZero(
       minute
     )} : ${this.addZero(second)}`;
+
+    if (minute == 0 && second == 0) this.changeBg(hour);
 
     setTimeout(this.showTime, 1000);
   };
@@ -72,17 +75,17 @@ class Momentum {
 
   createBgArr() {
     let pathArr = [];
+
     pathArr = pathArr.concat(this.getRandomBgArr("night"));
     pathArr = pathArr.concat(this.getRandomBgArr("morning"));
     pathArr = pathArr.concat(this.getRandomBgArr("day"));
     pathArr = pathArr.concat(this.getRandomBgArr("evening"));
+
     return pathArr;
   }
 
-  changeBg = () => {
-    let today = new Date();
-    let hour = today.getHours();
-    let second = today.getSeconds();
+  changeBg(currHour) {
+    let hour = currHour || new Date().getHours();
 
     if (hour >= 0 && hour < 6) {
       this.greetingTextElement.innerHTML = "Good night";
@@ -96,33 +99,125 @@ class Momentum {
     if (hour >= 18 && hour < 24) {
       this.greetingTextElement.innerHTML = "Good evening";
     }
-    this.page.style.backgroundImage = `url("${this.pathArr[hour]}")`;
-    setTimeout(this.changeBg, 1000 * 3600);
-  };
 
-  changeBgByClick = () => {
+    this.currentBgId = hour;
+
     let self = this;
     let img = document.createElement("img");
     img.src = this.pathArr[this.currentBgId];
 
     //Ожидаем пока картинка полностью загрузится
     img.onload = function () {
-      if (self.currentBgId > 23) self.currentBgId = 0;
       self.page.style.backgroundImage = `url("${img.src}")`;
-      self.currentBgId++;
     };
+  }
+
+  changeBgByClick() {
+    let self = this;
+    self.currentBgId++;
+    if (self.currentBgId > 23) self.currentBgId = 0;
+
+    let img = document.createElement("img");
+    img.src = this.pathArr[this.currentBgId];
+
+    //Ожидаем пока картинка полностью загрузится
+    img.onload = function () {
+      self.page.style.backgroundImage = `url("${img.src}")`;
+    };
+  }
+
+  getName() {
+    if (localStorage.getItem("name") == null) {
+      this.nameTextElement.textContent = "[Enter Name]";
+    } else {
+      this.nameTextElement.textContent = localStorage.getItem("name");
+    }
+  }
+
+  getFocus() {
+    if (localStorage.getItem("focus") == null) {
+      this.focusTextElement.textContent = "[Enter Focus]";
+    } else {
+      this.focusTextElement.textContent = localStorage.getItem("focus");
+    }
+  }
+
+  setName = (e) => {
+    if (e.type == "keypress") {
+      if (e.key == "Enter") {
+        if (this.nameTextElement.textContent.trim() != "") {
+          localStorage.setItem("name", this.nameTextElement.textContent);
+          this.nameTextElement.blur();
+        } else {
+          this.getName()
+          this.nameTextElement.blur();
+        }
+      }
+    } else {
+      if (this.nameTextElement.textContent.trim() != "") {
+        localStorage.setItem("name", this.nameTextElement.textContent);
+      } else {
+        this.getName()
+      }
+    }
+  };
+
+  setFocus = (e) => {
+    if (e.type == "keypress") {
+      if (e.key == "Enter") {
+        if (this.focusTextElement.textContent.trim() != "") {
+          localStorage.setItem("focus", this.focusTextElement.textContent);
+          this.focusTextElement.blur();
+        } else {
+          this.getFocus()
+          this.focusTextElement.blur();
+        }
+      }
+    } else {
+      if (this.focusTextElement.textContent.trim() != "") {
+        localStorage.setItem("focus", this.focusTextElement.textContent);
+      } else {
+        this.getFocus()
+      }
+    }
   };
 }
-
+const nameTextElement = document.querySelector(".name");
+const focusTextElement = document.querySelector(".focus");
 const btnChangeBg = document.querySelector(".btn-change-bg");
-const momentum = new Momentum(".date", ".time", ".name", ".greeting", ".page");
+const momentum = new Momentum(
+  ".date",
+  ".time",
+  ".greeting",
+  ".page",
+  ".name",
+  ".focus"
+);
+
 momentum.showTime();
 momentum.changeBg();
+momentum.getName();
+momentum.getFocus();
 
 btnChangeBg.addEventListener("click", () => {
   momentum.changeBgByClick();
   btnChangeBg.disabled = true;
+  btnChangeBg.classList.add("btn-rotate");
+
   setTimeout(function () {
+    btnChangeBg.classList.remove("btn-rotate");
     btnChangeBg.disabled = false;
   }, 1000);
 });
+
+nameTextElement.addEventListener("keypress", momentum.setName);
+nameTextElement.addEventListener("click", () => {
+  nameTextElement.textContent = "";
+});
+nameTextElement.addEventListener("blur", momentum.setName);
+
+focusTextElement.addEventListener("keypress", momentum.setFocus);
+focusTextElement.addEventListener("click", () => {
+  focusTextElement.textContent = "";
+});
+focusTextElement.addEventListener("blur", momentum.setFocus);
