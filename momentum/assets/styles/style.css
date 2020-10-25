@@ -1,0 +1,175 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.page {
+  font-family: "Bebas Neue", "Arial";
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  min-height: 100vh;
+  background-size: cover;
+  color: #ffffff;
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  transition: background-image 0.8s ease-in-out;
+}
+
+.date {
+  font-size: 5rem;
+}
+
+.time {
+  font-size: 8rem;
+  color: #ffffff;
+  text-shadow: 7px 7px 0px rgba(0, 0, 0, 0.2), 4px 4px 0px #d5d5d5;
+}
+
+.greeting,
+.focus,
+.name {
+  font-size: 3rem;
+}
+
+.quote {
+  margin-top: 5px;
+  font-size: 1.5rem;
+}
+
+.figcaption {
+  font-style: italic;
+}
+
+.greeting {
+  margin-right: 1.25rem;
+}
+
+.weather-wrapper {
+  max-width: 20vw;
+  flex: auto;
+  display: flex;
+  align-self: flex-end;
+  justify-self: start;
+}
+
+.main-wrapper {
+  max-width: 65vw;
+  flex: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.quote-wrapper {
+  max-width: 43.75rem;
+}
+
+.time-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.weather {
+  align-self: start;
+  padding: 1.5625rem;
+  font-size: 2rem;
+}
+.weather-icon {
+  font-size: 3em;
+  color: powderblue;
+}
+.weather-table {
+  width: 15.625rem;
+}
+
+td,
+th {
+  padding: 5px;
+  width: 5%;
+}
+
+h1 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-change-quote {
+  margin-bottom: 30px;
+  cursor: pointer;
+  width: 1.5625rem;
+  height: 1.5625rem;
+  margin: 1.5625rem auto 0;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 2px solid #d5d5d5;
+}
+
+.btn-change-quote:before {
+  font-size: 1rem;
+  content: "↻";
+  color: black;
+}
+
+.btn-change-quote:hover,
+.btn-change-bg:hover {
+  background: #d5d5d5;
+  border: 2px solid #d5d5d5;
+}
+
+.btn-change-bg {
+  cursor: pointer;
+  width: 3.125rem;
+  height: 3.125rem;
+  margin: 3.125rem auto 0;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 2px solid #d5d5d5;
+}
+
+.btn-change-bg:before {
+  font-size: 2rem;
+  content: "↻";
+  color: black;
+}
+
+.btn-rotate {
+  transform: rotate(360deg);
+  transition: transform 0.5s ease-out;
+}
+
+h1 {
+  margin-bottom: 3rem;
+}
+
+h2 {
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  :root {
+    font-size: 12px;
+  }
+  .page {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .weather-wrapper {
+    max-width: 100%;
+    align-self: center;
+    flex: none;
+  }
+  .main-wrapper {
+    flex: none;
+  }
+}
+
+@media (max-width: 450px) {
+  :root {
+    font-size: 7px;
+  }
+}
