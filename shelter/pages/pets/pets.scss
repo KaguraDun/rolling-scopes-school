@@ -54,6 +54,10 @@ a {
     width: 100%;
     max-width: 708px;
   }
+
+  @media (max-width: $media-mobile) {
+    max-width: 300px;
+  }
 }
 
 @import "../../assets/scss/_buttons.scss";
