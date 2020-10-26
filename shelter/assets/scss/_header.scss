@@ -1,0 +1,158 @@
+@import "./_variables.scss";
+
+.header {
+  top: 0;
+  position: absolute;
+  margin-top: 60px;
+  width: 100%;
+
+  @media (max-width: $media-tablet) {
+    margin-top: 30px;
+  }
+
+  @media (max-width: $media-mobile) {
+    margin-top: 30px;
+  }
+
+  &--pets {
+    margin: 0;
+    padding: 30px 0;
+    position: sticky;
+    background: $color-light-xl;
+  }
+
+  &__logo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    padding-bottom: 10px;
+    font-family: Georgia;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: 0.06em;
+    color: $color-primary;
+
+    &--pets {
+      color: $color-dark-l;
+    }
+  }
+
+  &__subtitle {
+    margin-left: 4px;
+    font-family: Arial;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 1.15;
+    letter-spacing: 0.1em;
+    color: $color-light-xl;
+
+    &--pets {
+      color: $color-dark-3xl;
+    }
+  }
+}
+
+//navigation
+.main-nav {
+  display: flex;
+
+  &__burger {
+    @media (max-width: $media-mobile) {
+      position: relative;
+      width: 30px;
+      top: 17px;
+      right: 43px;
+    }
+
+    &-toggle {
+      opacity: 0;
+    }
+
+    &-toggle,
+    &-btn {
+      display: none;
+
+      @media (max-width: $media-mobile) {
+        display: block;
+      }
+    }
+
+    &-btn-icon {
+      &,
+      &::before,
+      &::after {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 2px;
+        background-color: $color-primary;
+      }
+      &::before {
+        content: "";
+        top: -10px;
+      }
+      &::after {
+        content: "";
+        top: 10px;
+      }
+    }
+  }
+
+  &__list {
+    display: flex;
+
+    @media (max-width: $media-mobile) {
+      display: none;
+    }
+  }
+
+  &__item {
+    &:not(:last-child) {
+      margin-right: 35px;
+    }
+
+    &--active {
+      color: $color-light-s;
+      border-bottom: 3px solid $color-primary;
+
+      & > a {
+        color: $color-light-s;
+      }
+    }
+
+    &--active-pets {
+      border-bottom: 3px solid $color-primary;
+
+      & > a {
+        color: $color-dark-3xl;
+      }
+    }
+  }
+
+  &__link {
+    font-family: Arial;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 1.6;
+    letter-spacing: 0.005em;
+    color: $color-dark-s;
+
+    &:hover {
+      color: $color-light-s;
+    }
+
+    &--pets {
+      color: $color-dark-l;
+
+      &:hover {
+        color: $color-dark-3xl;
+      }
+    }
+  }
+}

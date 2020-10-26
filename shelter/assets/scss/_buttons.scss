@@ -1,0 +1,98 @@
+@import "./_variables.scss";
+
+.button {
+  width: 100%;
+  height: 52px;
+  font-family: Georgia;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+
+  letter-spacing: 0.06em;
+  background: $color-primary;
+  color: $color-dark-3xl;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+
+  &--link {
+    padding-top: 15px;
+    text-align: center;
+  }
+  
+  &--size-s {
+    max-width: 207px;
+  }
+
+  &--size-l {
+    max-width: 261px;
+  }
+
+  &:hover {
+    background: $color-primary-light;
+  }
+
+  &--learn-more {
+    margin-bottom: 30px;
+    max-width: 187px;
+    background: $color-light-s;
+    border: 2px solid $color-primary;
+
+    &:hover {
+      background: $color-primary-light;
+      border: 2px solid $color-primary-light;
+    }
+  }
+
+  &-round {
+    width: 52px;
+    height: 52px;
+    border: 2px solid $color-primary;
+    border-radius: 100px;
+    cursor: pointer;
+    background: $color-light-l;
+    font-family: Georgia;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 1.15;
+    letter-spacing: 0.06em;
+
+    &:hover {
+      background-color: $color-primary-light;
+      border: 2px solid $color-primary-light;
+    }
+
+    &--arrow-left {
+      background: url(/assets/icons/Arrow.svg) no-repeat 50% 50%;
+
+      @media (max-width: $media-mobile) {
+        position: relative;
+        top: 40px;
+      }
+    }
+
+    &--arrow-right {
+      background: url(/assets/icons/Arrow.svg) no-repeat 50% 50%;
+      transform: rotate(180deg);
+    }
+
+    &--page-number {
+      background-color: $color-primary;
+      &:hover {
+        background-color: $color-primary;
+        border-color: $color-primary;
+      }
+    }
+
+    &--inactive {
+      border-color: $color-dark-s;
+      fill: $color-dark-s;
+
+      &:hover {
+        background-color: transparent;
+        border-color: $color-dark-s;
+      }
+    }
+  }
+}

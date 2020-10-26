@@ -1,0 +1,62 @@
+@import url("./assets/css/normalize.css");
+@import "../../assets/scss/_variables.scss";
+//reset default styles
+
+:root {
+  box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
+blockquote,
+body,
+cite,
+fieldset,
+figure,
+img,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+li,
+ol,
+p,
+pre,
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+//wrapper
+.wrapper {
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  max-width: 1200px;
+
+  @media (max-width: $media-tablet) {
+    width: 100%;
+    max-width: 708px;
+  }
+}
+
+@import "../../assets/scss/_buttons.scss";
+@import "../../assets/scss/_header.scss";
+@import "../../assets/scss/_pets.scss";
+@import "../../assets/scss/_footer.scss";
