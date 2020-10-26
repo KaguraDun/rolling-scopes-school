@@ -8,11 +8,18 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
+
+    @media (max-width: $media-tablet) {
+      flex-direction: column-reverse;
+    }
   }
 
   &__img {
     margin-right: 30px;
     display: block;
+    @media (max-width: $media-tablet) {
+      margin: 0;
+    }
   }
 
   &__heading {
@@ -75,5 +82,9 @@
     font-size: 12px;
     line-height: 1.5;
     color: $color-dark-m;
+
+    @media (max-width: $media-tablet) {
+      margin-bottom: 30px;
+    }
   }
 }

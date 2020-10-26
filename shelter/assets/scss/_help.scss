@@ -45,8 +45,30 @@
     & > :not(:nth-child(5)):not(:last-child) {
       margin-right: 120px;
     }
+
     & > :nth-child(-n + 5) {
       margin-bottom: 55px;
+    }
+
+    @media (max-width: $media-tablet) {
+      & > :not(:nth-child(5)):not(:last-child) {
+        margin-right: 0;
+      }
+
+      & > :not(:nth-child(3)):not(:nth-child(6)):not(:last-child) {
+        margin-right: 60px;
+      }
+
+      & > :nth-child(-n + 6) {
+        margin-bottom: 55px;
+      }
+    }
+    
+  }
+
+  &__item {
+    @media (max-width: $media-tablet) {
+      width: 170px;
     }
   }
 }

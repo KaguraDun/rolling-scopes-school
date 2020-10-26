@@ -7,6 +7,11 @@
     width: 100%;
     display: flex;
     align-content: space-between;
+
+    @media (max-width: $media-tablet) {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   }
 
   &__contacts,
@@ -15,10 +20,21 @@
     margin-top: 57px;
     display: flex;
     flex-direction: column;
+    @media (max-width: $media-tablet) {
+      margin-top: 25px;
+    }
   }
 
+  &__contacts {
+    @media (max-width: $media-tablet) {
+      margin-right: 60px;
+    }
+  }
   &__location {
     width: 302px;
+    @media (max-width: $media-tablet) {
+      margin-right: 0;
+    }
   }
 
   &__contacts-heading,
@@ -79,5 +95,9 @@
   &__img {
     display: block;
     margin-top: 40px;
+
+    @media (max-width: $media-tablet) {
+      margin-top: 0;
+    }
   }
 }

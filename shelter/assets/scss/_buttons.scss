@@ -46,7 +46,6 @@
     border-radius: 100px;
     cursor: pointer;
     background: $color-light-l;
-
     font-family: Georgia;
     font-style: normal;
     font-weight: normal;
@@ -61,6 +60,11 @@
 
     &--arrow-left {
       background: url(/assets/icons/Arrow.svg) no-repeat 50% 50%;
+
+      @media (max-width: $media-mobile) {
+        position: relative;
+        top: 40px;
+      }
     }
 
     &--arrow-right {

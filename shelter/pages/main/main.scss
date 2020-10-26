@@ -1,4 +1,5 @@
 @import url("/assets/css/normalize.css");
+@import "../../assets/scss/_variables.scss";
 //reset default styles
 
 :root {
@@ -48,9 +49,17 @@ a {
   display: flex;
   justify-content: space-between;
   max-width: 1200px;
+  width: 100%;
+
+  @media (max-width: $media-tablet) {
+    max-width: 708px;
+  }
+
+  @media (max-width: $media-mobile) {
+    max-width: 300px;
+  }
 }
 
-@import "../../assets/scss/_variables.scss";
 @import "../../assets/scss/_buttons.scss";
 @import "../../assets/scss/_header.scss";
 @import "../../assets/scss/_intro.scss";
