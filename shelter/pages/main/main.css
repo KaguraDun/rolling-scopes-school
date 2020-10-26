@@ -131,7 +131,7 @@ a {
 }
 
 .button-round--arrow-left {
-  background: url(/assets/icons/Arrow.svg) no-repeat 50% 50%;
+  background: url(../../assets/icons/Arrow.svg) no-repeat 50% 50%;
 }
 
 @media (max-width: 767px) {
@@ -142,7 +142,7 @@ a {
 }
 
 .button-round--arrow-right {
-  background: url(/assets/icons/Arrow.svg) no-repeat 50% 50%;
+  background: url(../../assets/icons/Arrow.svg) no-repeat 50% 50%;
   -webkit-transform: rotate(180deg);
           transform: rotate(180deg);
 }
@@ -284,6 +284,7 @@ a {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  height: 27px;
 }
 
 @media (max-width: 767px) {
