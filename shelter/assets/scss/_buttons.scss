@@ -67,14 +67,21 @@
       background: url(../../assets/icons/Arrow.svg) no-repeat 50% 50%;
 
       @media (max-width: $media-mobile) {
-        position: relative;
-        top: 40px;
+        position: absolute;
+        top: 455px;
+        left: 58px;
       }
     }
 
     &--arrow-right {
       background: url(../../assets/icons/Arrow.svg) no-repeat 50% 50%;
       transform: rotate(180deg);
+
+      @media (max-width: $media-mobile) {
+        position: absolute;
+        top: 455px;
+        right: 58px;
+      }
     }
 
     &--page-number {
