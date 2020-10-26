@@ -105,6 +105,7 @@
 
   &__list {
     display: flex;
+    height: 27px;
 
     @media (max-width: $media-mobile) {
       display: none;
