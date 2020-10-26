@@ -1,4 +1,4 @@
-@import url("/assets/css/normalize.css");
+@import url("./assets/css/normalize.css");
 :root {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -73,6 +73,11 @@ a {
   border-radius: 100px;
   border: none;
   cursor: pointer;
+}
+
+.button--link {
+  padding-top: 15px;
+  text-align: center;
 }
 
 .button--size-s {
