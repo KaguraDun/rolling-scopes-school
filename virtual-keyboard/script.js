@@ -4,6 +4,7 @@ const Keyboard = {
     keysContainer: null,
     keys: [],
     input: null,
+    currentInput: null,
   },
 
   eventHandlers: {
@@ -15,7 +16,8 @@ const Keyboard = {
   properties: {
     value: "",
     capsLock: false,
-    selectionPosition: null,
+    _selectionStart: null,
+    _selectionEnd: null,
   },
 
   init() {
@@ -48,40 +50,64 @@ const Keyboard = {
       });
 
       element.addEventListener("change", () => {
+        this.properties._selectionStart = element.selectionStart;
+        this.properties._selectionEnd = element.selectionEnd;
+        this.elements.currentInput = element;
+
         this.properties.value = element.value;
       });
 
       element.addEventListener("keyup", () => {
+        this.properties._selectionStart = element.selectionStart;
+        this.properties._selectionEnd = element.selectionEnd;
+        this.elements.currentInput = element;
 
         this.properties.value = element.value;
       });
 
-      element.addEventListener("click", () => {
+      element.addEventListener("mouseup", () => {
+        this.properties._selectionStart = element.selectionStart;
+        this.properties._selectionEnd = element.selectionEnd;
+        this.elements.currentInput = element;
+        this.properties.value = element.value;
+      });
 
+      element.addEventListener("click", () => {
+        this.properties._selectionStart = element.selectionStart;
+        this.properties._selectionEnd = element.selectionEnd;
+        this.elements.currentInput = element;
         this.properties.value = element.value;
       });
     });
   },
 
-  _insertAtPosition(input, text) {
-    if (input.selectionStart == input.selectionEnd) {
-      let position = input.selectionStart;
-      console.log(input.value)
-      let tempText =
-        input.value.substring(0, position) +
-        text +
-        input.value.substring(position, input.value.length);
-      input.value = tempText;
+  //Для того чтобы реальная клавиатура работала с виртуальной
+  _advancedInput(insertValue) {
+    this.elements.currentInput.setRangeText(
+      insertValue,
+      this.properties._selectionStart,
+      this.properties._selectionEnd,
+      "end"
+    );
+
+    if (this.properties._selectionStart == this.properties._selectionEnd) {
+      this.properties._selectionStart++;
+      this.properties._selectionEnd++;
+    } else {
+      this.properties._selectionStart++;
+      this.properties._selectionEnd = this.properties._selectionStart;
     }
+    return this.elements.currentInput.value;
   },
 
   _createKeys() {
     const fragment = document.createDocumentFragment();
     //prettier-ignore
     const keyLayout = [
+      "arrow_back","arrow_forward",
       "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "backspace",
       "q", "w", "e", "r", "t", "y", "u", "i", "o", "p",
-      "caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "enter",
+      "caps","a", "s", "d", "f", "g", "h", "j", "k", "l", "enter",
       "done", "z", "x", "c", "v", "b", "n", "m", ",", ".", "?",
       "space"
     ];
@@ -101,6 +127,36 @@ const Keyboard = {
       keyElement.classList.add("keyboard__key");
 
       switch (key) {
+        case "arrow_back":
+          keyElement.innerHTML = createIconHTML("arrow_back");
+          keyElement.addEventListener("click", () => {
+            if (
+              this.properties._selectionStart > 0 &&
+              this.properties._selectionEnd > 0
+            ) {
+              this.elements.currentInput.selectionStart = --this.properties
+                ._selectionStart;
+              this.elements.currentInput.selectionEnd = --this.properties
+                ._selectionEnd;
+            }
+          });
+          break;
+
+        case "arrow_forward":
+          keyElement.innerHTML = createIconHTML("arrow_forward");
+          keyElement.addEventListener("click", () => {
+            if (
+              this.properties._selectionStart < this.properties.value.length &&
+              this.properties._selectionEnd < this.properties.value.length
+            ) {
+              this.elements.currentInput.selectionStart = ++this.properties
+                ._selectionStart;
+              this.elements.currentInput.selectionEnd = ++this.properties
+                ._selectionEnd;
+            }
+          });
+          break;
+
         case "backspace":
           keyElement.classList.add("keyboard__key--wide");
           keyElement.innerHTML = createIconHTML("backspace");
@@ -135,7 +191,9 @@ const Keyboard = {
           keyElement.innerHTML = createIconHTML("keyboard_return");
 
           keyElement.addEventListener("click", () => {
-            this.properties.value += "\n";
+            this.properties.value = this.properties.value = this._advancedInput(
+              "\n"
+            );
             this._triggerEvent("oninput");
           });
           break;
@@ -145,7 +203,9 @@ const Keyboard = {
           keyElement.innerHTML = createIconHTML("space_bar");
 
           keyElement.addEventListener("click", () => {
-            this.properties.value += " ";
+            this.properties.value = this.properties.value = this._advancedInput(
+              " "
+            );
             this._triggerEvent("oninput");
           });
           break;
@@ -167,15 +227,12 @@ const Keyboard = {
           keyElement.textContent = key.toLowerCase();
 
           keyElement.addEventListener("click", () => {
-
             let currentKey = this.properties.capsLock
               ? key.toUpperCase()
               : key.toLowerCase();
 
-            this.elements.input[0].setRangeText(currentKey, this.elements.selectionStart, this.elements.selectionEnd);
-            this.properties.value += currentKey;
+            this.properties.value = this._advancedInput(currentKey);
             this._triggerEvent("oninput");
-
           });
           break;
       }
