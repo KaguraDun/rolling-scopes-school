@@ -16,6 +16,9 @@ const Keyboard = {
   properties: {
     value: "",
     capsLock: false,
+    shift: false,
+    //язык по умолчанию english
+    changeLanguage: false,
     _selectionStart: null,
     _selectionEnd: null,
   },
@@ -23,22 +26,28 @@ const Keyboard = {
   init() {
     this.elements.main = document.createElement("div");
     this.elements.keysContainer = document.createElement("div");
-
     this.elements.main.classList.add("keyboard", "keyboard-hidden");
     this.elements.keysContainer.classList.add("keyboard__keys");
     this.elements.keysContainer.appendChild(this._createKeys());
-
-    //Убираем блюр при нажатии на клавиатуру
-    this.elements.keysContainer.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-    });
-
     this.elements.keys = this.elements.keysContainer.querySelectorAll(
       ".keyboard__key"
     );
 
-    this.elements.main.appendChild(this.elements.keysContainer);
-    document.body.appendChild(this.elements.main);
+    if (document.querySelector(".keyboard")) {
+      //Если клавиатура уже существует, то заменяем на клавиатуру с другим языком
+      document
+        .querySelector(".keyboard__keys")
+        .replaceWith(this.elements.keysContainer);
+
+      this.elements.main = document.querySelector(".keyboard");
+    } else {
+      this.elements.main.appendChild(this.elements.keysContainer);
+      document.body.appendChild(this.elements.main);
+    }
+
+    this.elements.keysContainer.addEventListener("mousedown", (e) => {
+      e.preventDefault();
+    });
 
     this.elements.input = document.querySelectorAll(".use-keyboard-input");
 
@@ -49,35 +58,15 @@ const Keyboard = {
         });
       });
 
-      element.addEventListener("change", () => {
-        this.properties._selectionStart = element.selectionStart;
-        this.properties._selectionEnd = element.selectionEnd;
-        this.elements.currentInput = element;
+      ["change", "keyup", "mouseup", "click"].forEach((evt) =>
+        element.addEventListener(evt, () => {
+          this.properties._selectionStart = element.selectionStart;
+          this.properties._selectionEnd = element.selectionEnd;
+          this.elements.currentInput = element;
 
-        this.properties.value = element.value;
-      });
-
-      element.addEventListener("keyup", () => {
-        this.properties._selectionStart = element.selectionStart;
-        this.properties._selectionEnd = element.selectionEnd;
-        this.elements.currentInput = element;
-
-        this.properties.value = element.value;
-      });
-
-      element.addEventListener("mouseup", () => {
-        this.properties._selectionStart = element.selectionStart;
-        this.properties._selectionEnd = element.selectionEnd;
-        this.elements.currentInput = element;
-        this.properties.value = element.value;
-      });
-
-      element.addEventListener("click", () => {
-        this.properties._selectionStart = element.selectionStart;
-        this.properties._selectionEnd = element.selectionEnd;
-        this.elements.currentInput = element;
-        this.properties.value = element.value;
-      });
+          this.properties.value = element.value;
+        })
+      );
     });
   },
 
@@ -94,39 +83,117 @@ const Keyboard = {
       this.properties._selectionStart++;
       this.properties._selectionEnd++;
     } else {
-      this.properties._selectionStart++;
-      this.properties._selectionEnd = this.properties._selectionStart;
+      this.properties._selectionEnd = ++this.properties._selectionStart;
     }
     return this.elements.currentInput.value;
   },
 
   _createKeys() {
+    console.log();
     const fragment = document.createDocumentFragment();
     //prettier-ignore
-    const keyLayout = [
+    const keyLayoutEn = [
       "arrow_back","arrow_forward",
-      "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "backspace",
-      "q", "w", "e", "r", "t", "y", "u", "i", "o", "p",
-      "caps","a", "s", "d", "f", "g", "h", "j", "k", "l", "enter",
-      "done", "z", "x", "c", "v", "b", "n", "m", ",", ".", "?",
-      "space"
+      "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "backspace",
+      "caps","q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]",
+      "shift", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "enter",
+       "z", "x", "c", "v", "b", "n", "m", ",", ".", "/",
+      "language","space","done"
+    ];
+    //prettier-ignore
+    const keyLayoutShiftEn = [
+      "arrow_back","arrow_forward",
+      "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "backspace",
+      "caps","Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{", "}",
+      "shift", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"", "enter",
+        "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?",
+      "language","space","done"
+        ];
+    //prettier-ignore
+    const keyLayoutRu =  [
+      "arrow_back","arrow_forward",
+      "ё", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "backspace",
+      "caps","й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ",
+      "shift", "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "enter",
+       "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ".",
+      "language","space","done"
+    ];
+    //prettier-ignore
+    const keyLayoutShiftRu =  [
+      "arrow_back","arrow_forward",
+      "Ё", "!", "\"", "№", ";", "%", ":", "?", "*", "(", ")", "_", "+", "backspace",
+      "caps","Й", "Ц", "У", "К", "Е", "Н", "Г", "Ш", "Щ", "З", "Х", "Ъ",
+      "shift", "Ф", "Ы", "В", "А", "П", "Р", "О", "Л", "Д", "Ж", "Э", "enter",
+       "Я", "Ч", "С", "М", "И", "Т", "Ь", "Б", "Ю", ",",
+      "language","space","done"
     ];
 
-    const createIconHTML = (icon_name) => {
-      return `<i class="material-icons">${icon_name}</i>`;
+    const createIconHTML = (icon_name, text = "") => {
+      return `<i class="material-icons">${icon_name}</i><span class="keyboard__icon-text">${text}</span>`;
     };
+
+    let keyLayout;
+    //prettier-ignore
+    if(this.properties.changeLanguage == true && this.properties.shift == false)  keyLayout = keyLayoutRu;
+    //prettier-ignore
+    if(this.properties.changeLanguage == true && this.properties.shift == true)  keyLayout = keyLayoutShiftRu;
+    //prettier-ignore
+    if(this.properties.changeLanguage == false && this.properties.shift == false)  keyLayout = keyLayoutEn;
+    //prettier-ignore
+    if(this.properties.changeLanguage == false && this.properties.shift == true)  keyLayout = keyLayoutShiftEn;
 
     keyLayout.forEach((key) => {
       const keyElement = document.createElement("button");
+      let insertLineBreak;
       // Проверить include
-      const insertLineBreak =
-        ["backspace", "p", "enter", "?"].indexOf(key) !== -1;
-
-      // keyElement.setAttribute("type","button")
+      if (this.properties.changeLanguage) {
+        insertLineBreak =
+          ["backspace", "ъ", "Ъ", "enter", ".", ","].indexOf(key) !== -1;
+      } else {
+        insertLineBreak =
+          ["backspace", "]", "}", "enter", "/", "?"].indexOf(key) !== -1;
+      }
 
       keyElement.classList.add("keyboard__key");
 
       switch (key) {
+        case "language":
+          keyElement.classList.add("keyboard__key--wide");
+
+          if (this.properties.changeLanguage) {
+            keyElement.innerHTML = createIconHTML("language", "RU");
+          } else {
+            keyElement.innerHTML = createIconHTML("language", "EN");
+          }
+
+          keyElement.addEventListener("click", () => {
+            this.properties.changeLanguage = !this.properties.changeLanguage;
+            this.init();
+          });
+
+          break;
+
+        case "shift":
+          keyElement.classList.add(
+            "keyboard__key--double-wide",
+            "keyboard__key--activatable"
+          );
+
+          keyElement.classList.toggle(
+            "keyboard__key--active",
+            this.properties.shift
+          );
+
+          this._toggleCapsLock;
+
+          keyElement.innerHTML = createIconHTML("upgrade", "shift");
+
+          keyElement.addEventListener("click", () => {
+            this.properties.shift = !this.properties.shift;
+            this.init();
+          });
+          break;
+
         case "arrow_back":
           keyElement.innerHTML = createIconHTML("arrow_back");
           keyElement.addEventListener("click", () => {
@@ -175,10 +242,19 @@ const Keyboard = {
             "keyboard__key--wide",
             "keyboard__key--activatable"
           );
+
+          if (this.properties.capsLock) {
+            keyElement.classList.add("keyboard__key--active");
+          } else {
+            keyElement.classList.remove("keyboard__key--active");
+          }
+
           keyElement.innerHTML = createIconHTML("keyboard_capslock");
 
           keyElement.addEventListener("click", () => {
+            this.properties.capsLock = !this.properties.capsLock;
             this._toggleCapsLock();
+
             keyElement.classList.toggle(
               "keyboard__key--active",
               this.properties.capsLock
@@ -224,12 +300,18 @@ const Keyboard = {
           break;
 
         default:
-          keyElement.textContent = key.toLowerCase();
+          keyElement.textContent = key;
 
           keyElement.addEventListener("click", () => {
-            let currentKey = this.properties.capsLock
-              ? key.toUpperCase()
-              : key.toLowerCase();
+            let currentKey = "";
+            //prettier-ignore
+            if (this.properties.shift == true && this.properties.capsLock == false) currentKey = key;
+            //prettier-ignore
+            if (this.properties.shift == false && this.properties.capsLock == false) currentKey = key;
+            //prettier-ignore
+            if (this.properties.shift == true && this.properties.capsLock == true) currentKey = key.toLowerCase();
+            //prettier-ignore
+            if (this.properties.shift == false && this.properties.capsLock == true) currentKey = key.toUpperCase();
 
             this.properties.value = this._advancedInput(currentKey);
             this._triggerEvent("oninput");
@@ -254,14 +336,40 @@ const Keyboard = {
   },
 
   _toggleCapsLock() {
-    this.properties.capsLock = !this.properties.capsLock;
 
     for (const key of this.elements.keys) {
       if (key.childElementCount === 0) {
-        key.textContent = this.properties.capsLock
-          ? key.textContent.toUpperCase()
-          : key.textContent.toLowerCase();
+        if (this.properties.shift == true && this.properties.capsLock == true)
+          key.textContent = key.textContent.toLowerCase();
+        if (this.properties.shift == true && this.properties.capsLock == false)
+          key.textContent = key.textContent.toUpperCase();
+        if (this.properties.shift == false && this.properties.capsLock == true)
+          key.textContent = key.textContent.toUpperCase();
+        if (this.properties.shift == false && this.properties.capsLock == false)
+          key.textContent = key.textContent.toLowerCase();
       }
+    }
+  },
+
+  _toggleShift() {
+    //prettier-ignore
+    const keyLayoutShiftRu =  [
+      "arrow_back","arrow_forward",
+      "Ё", "!", "\"", "№", ";", "%", ":", "?", "*", "(", ")", "_", "+", "backspace",
+      "caps","Й", "Ц", "У", "К", "Е", "Н", "Г", "Ш", "Щ", "З", "Х", "Ъ",
+      "shift", "Ф", "Ы", "В", "А", "П", "Р", "О", "Л", "Д", "Ж", "Э", "enter",
+       "Я", "Ч", "С", "М", "И", "Т", "Ь", "Б", "Ю", ",",
+      "language","space","done"
+    ];
+
+    this.properties.shift = !this.properties.shift;
+    let i = 0;
+    for (const key of this.elements.keys) {
+      console.log(key);
+      if (key.childElementCount === 0) {
+        key.textContent = keyLayoutShiftRu[i];
+      }
+      i++;
     }
   },
 
