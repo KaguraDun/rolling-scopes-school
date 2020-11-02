@@ -6,6 +6,7 @@ const Keyboard = {
     input: null,
     currentInput: null,
     textRecognition: null,
+    lastPressedKey: null,
   },
 
   eventHandlers: {
@@ -21,8 +22,9 @@ const Keyboard = {
     //язык по умолчанию english
     changeLanguage: false,
     speechRecognition: false,
-    _selectionStart: null,
-    _selectionEnd: null,
+    enableSound: false,
+    _selectionStart: 0,
+    _selectionEnd: 0,
   },
 
   init() {
@@ -36,7 +38,6 @@ const Keyboard = {
     if (document.querySelector(".keyboard")) {
       //Если клавиатура уже существует, то заменяем на клавиатуру с другим языком
       document.querySelector(".keyboard__keys").replaceWith(this.elements.keysContainer);
-
       this.elements.main = document.querySelector(".keyboard");
     } else {
       this.elements.main.appendChild(this.elements.keysContainer);
@@ -50,18 +51,56 @@ const Keyboard = {
     this.elements.input = document.querySelectorAll(".use-keyboard-input");
 
     this.elements.input.forEach((element) => {
+      this.elements.currentInput = element;
+
       element.addEventListener("focus", () => {
+        this.properties._selectionStart = element.selectionStart;
+        this.properties._selectionEnd = element.selectionEnd;
+
         this.open(element.value, (currentValue) => {
           element.value = currentValue;
         });
       });
 
-      ["change", "keyup", "mouseup", "click"].forEach((evt) =>
+      //Подсветка нажатия клавиш
+      element.addEventListener("keydown", (e) => {
+        this.properties.value = element.value;
+        let virtualKey = document.getElementById(e.key.toLowerCase());
+
+        if (this.elements.lastPressedKey) {
+          this.elements.lastPressedKey.classList.remove("keyboard__key--click");
+        }
+
+        switch (e.key) {
+          case "Shift":
+          case "CapsLock":
+            break;
+
+          case " ":
+            virtualKey = document.getElementById("space");
+            virtualKey.classList.add("keyboard__key--click");
+            this.elements.lastPressedKey = virtualKey;
+            break;
+
+          case "Backspace":
+          case "Enter":
+          default:
+            if (!virtualKey) return;
+            virtualKey.classList.add("keyboard__key--click");
+            this.elements.lastPressedKey = virtualKey;
+            break;
+        }
+
+        this.properties._selectionStart = element.selectionStart;
+        this.properties._selectionEnd = element.selectionEnd;
+
+      });
+
+      [("change", "keyup", "mouseup", "click")].forEach((evt) =>
         element.addEventListener(evt, () => {
           this.properties._selectionStart = element.selectionStart;
           this.properties._selectionEnd = element.selectionEnd;
           this.elements.currentInput = element;
-
           this.properties.value = element.value;
         })
       );
@@ -85,47 +124,43 @@ const Keyboard = {
     } else {
       this.properties._selectionEnd = ++this.properties._selectionStart;
     }
+
     return this.elements.currentInput.value;
   },
 
   _createKeys() {
-    console.log();
     const fragment = document.createDocumentFragment();
     //prettier-ignore
-    const keyLayoutEn = [
-      "arrow_back","arrow_forward",
+    const keyLayoutEn = [  
       "`", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "backspace",
-      "caps","q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]",
-      "shift", "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "enter",
-       "z", "x", "c", "v", "b", "n", "m", ",", ".", "/",
-      "speech-recognition","language","space","done"
+      "arrow_back","arrow_forward","q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]","\\",
+      "caps","a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", "enter",
+      "shift", "z", "x", "c", "v", "b", "n", "m", ",", ".","/", "language",
+      "click-sound","speech-recognition","space","done"
     ];
     //prettier-ignore
     const keyLayoutShiftEn = [
-      "arrow_back","arrow_forward",
       "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", "backspace",
-      "caps","Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{", "}",
-      "shift", "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"", "enter",
-        "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?",
-        "speech-recognition","language","space","done"
+      "arrow_back","arrow_forward","Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{", "}","|",
+      "caps","A", "S", "D", "F", "G", "H", "J", "K", "L", ":", "\"", "enter",
+      "shift","Z", "X", "C", "V", "B", "N", "M", "<", ">", "?","language",
+      "click-sound","speech-recognition","space","done"
         ];
     //prettier-ignore
     const keyLayoutRu =  [
-      "arrow_back","arrow_forward",
       "ё", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", "backspace",
-      "caps","й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ",
-      "shift", "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "enter",
-       "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ".",
-       "speech-recognition","language","space","done"
+      "arrow_back","arrow_forward","й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ","\\",
+      "caps","ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", "enter",
+      "shift","я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ".","language",
+      "click-sound","speech-recognition","space","done"
     ];
     //prettier-ignore
     const keyLayoutShiftRu =  [
-      "arrow_back","arrow_forward",
       "Ё", "!", "\"", "№", ";", "%", ":", "?", "*", "(", ")", "_", "+", "backspace",
-      "caps","Й", "Ц", "У", "К", "Е", "Н", "Г", "Ш", "Щ", "З", "Х", "Ъ",
-      "shift", "Ф", "Ы", "В", "А", "П", "Р", "О", "Л", "Д", "Ж", "Э", "enter",
-       "Я", "Ч", "С", "М", "И", "Т", "Ь", "Б", "Ю", ",",
-       "speech-recognition","language","space","done"
+      "arrow_back","arrow_forward","Й", "Ц", "У", "К", "Е", "Н", "Г", "Ш", "Щ", "З", "Х", "Ъ","/",
+      "caps","Ф", "Ы", "В", "А", "П", "Р", "О", "Л", "Д", "Ж", "Э", "enter",
+      "shift", "Я", "Ч", "С", "М", "И", "Т", "Ь", "Б", "Ю", ",","language",
+      "click-sound","speech-recognition","space","done"
     ];
 
     const createIconHTML = (icon_name, text = "") => {
@@ -142,16 +177,43 @@ const Keyboard = {
     keyLayout.forEach((key) => {
       const keyElement = document.createElement("button");
       let insertLineBreak;
-      // Проверить include
+
       if (this.properties.changeLanguage) {
-        insertLineBreak = ["backspace", "ъ", "Ъ", "enter", ".", ","].indexOf(key) !== -1;
+        insertLineBreak = ["backspace", "\\", "/", "enter", "language"].indexOf(key) !== -1;
       } else {
-        insertLineBreak = ["backspace", "]", "}", "enter", "/", "?"].indexOf(key) !== -1;
+        insertLineBreak = ["backspace", "\\", "|", "enter", "language"].indexOf(key) !== -1;
       }
 
       keyElement.classList.add("keyboard__key");
 
       switch (key) {
+        case "click-sound":
+          keyElement.classList.add("keyboard__key--wide", "keyboard__key--activatable");
+          keyElement.innerHTML = createIconHTML("volume_up");
+
+          if (this.properties.enableSound) {
+            keyElement.classList.add("keyboard__key--active");
+          } else {
+            keyElement.classList.remove("keyboard__key--active");
+          }
+
+          keyElement.addEventListener("click", () => {
+            this.properties.enableSound = !this.properties.enableSound;
+
+            let clickSound = new Audio();
+
+            if (this.properties.enableSound) {
+              clickSound.src = "/assets/sounds/enable-sound.wav";
+            } else {
+              clickSound.src = "/assets/sounds/disable-sound.wav";
+            }
+
+            clickSound.play();
+
+            keyElement.classList.toggle("keyboard__key--active", this.properties.enableSound);
+          });
+
+          break;
         case "speech-recognition":
           keyElement.classList.add("keyboard__key--wide", "keyboard__key--activatable");
           keyElement.classList.toggle("keyboard__key--active", this.properties.speechRecognition);
@@ -159,11 +221,25 @@ const Keyboard = {
 
           keyElement.addEventListener("click", () => {
             this.properties.speechRecognition = !this.properties.speechRecognition;
+
+            if (this.properties.enableSound) {
+              let clickSound = new Audio();
+
+              if (this.properties.speechRecognition) {
+                clickSound.src = "/assets/sounds/speak.wav";
+              } else {
+                clickSound.src = "/assets/sounds/stop-speaking.wav";
+              }
+
+              clickSound.play();
+            }
+
             this._speechRecognize();
             keyElement.classList.toggle("keyboard__key--active", this.properties.speechRecognition);
           });
 
           break;
+
         case "language":
           keyElement.classList.add("keyboard__key--wide");
 
@@ -174,6 +250,12 @@ const Keyboard = {
           }
 
           keyElement.addEventListener("click", () => {
+            if (this.properties.enableSound) {
+              let clickSound = new Audio();
+              clickSound.src = "/assets/sounds/change-language.wav";
+              clickSound.play();
+            }
+
             this.properties.changeLanguage = !this.properties.changeLanguage;
             this.init();
           });
@@ -182,6 +264,8 @@ const Keyboard = {
 
         case "shift":
           keyElement.classList.add("keyboard__key--double-wide", "keyboard__key--activatable");
+          keyElement.innerHTML = createIconHTML("upgrade", "Shift");
+          keyElement.id = "shift";
 
           if (this.properties.shift) {
             keyElement.classList.add("keyboard__key--active");
@@ -191,17 +275,36 @@ const Keyboard = {
 
           this._toggleCapsLock;
 
-          keyElement.innerHTML = createIconHTML("upgrade", "shift");
-
           keyElement.addEventListener("click", () => {
+            if (this.properties.enableSound) {
+              let clickSound = new Audio();
+              clickSound.src = "/assets/sounds/shift.wav";
+              clickSound.play();
+            }
+
             this.properties.shift = !this.properties.shift;
+
+            if (this.properties.shift) {
+              keyElement.classList.add("keyboard__key--active");
+            } else {
+              keyElement.classList.remove("keyboard__key--active");
+            }
+
             this.init();
           });
           break;
 
         case "arrow_back":
           keyElement.innerHTML = createIconHTML("arrow_back");
+          keyElement.id = "arrowleft";
+
           keyElement.addEventListener("click", () => {
+            if (this.properties.enableSound) {
+              let clickSound = new Audio();
+              clickSound.src = "/assets/sounds/left.wav";
+              clickSound.play();
+            }
+
             if (this.properties._selectionStart > 0 && this.properties._selectionEnd > 0) {
               this.elements.currentInput.selectionStart = --this.properties._selectionStart;
               this.elements.currentInput.selectionEnd = --this.properties._selectionEnd;
@@ -211,7 +314,15 @@ const Keyboard = {
 
         case "arrow_forward":
           keyElement.innerHTML = createIconHTML("arrow_forward");
+          keyElement.id = "arrowright";
+
           keyElement.addEventListener("click", () => {
+            if (this.properties.enableSound) {
+              let clickSound = new Audio();
+              clickSound.src = "/assets/sounds/right.wav";
+              clickSound.play();
+            }
+
             if (
               this.properties._selectionStart < this.properties.value.length &&
               this.properties._selectionEnd < this.properties.value.length
@@ -225,15 +336,40 @@ const Keyboard = {
         case "backspace":
           keyElement.classList.add("keyboard__key--wide");
           keyElement.innerHTML = createIconHTML("backspace");
+          keyElement.id = "backspace";
+
           keyElement.addEventListener("click", () => {
-            this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
-            this._triggerEvent("oninput");
+            this._disableLastPressedKey();
+
+            if (this.properties.enableSound) {
+              let clickSound = new Audio();
+              clickSound.src = "/assets/sounds/backspace.wav";
+              clickSound.play();
+            }
+
+            let newValue =
+              this.properties.value.slice(0, this.properties._selectionStart - 1) +
+              this.properties.value.slice(this.properties._selectionStart);
+
+            this.properties.value = newValue;
+
+            this.elements.currentInput.value = this.properties.value;
+
+            this.properties._selectionStart--;
+            this.properties._selectionEnd--;
+
+            this.elements.currentInput.selectionStart = this.properties._selectionStart;
+            this.elements.currentInput.selectionEnd = this.properties._selectionEnd;
+
           });
 
           break;
 
         case "caps":
           keyElement.classList.add("keyboard__key--wide", "keyboard__key--activatable");
+          keyElement.innerHTML = createIconHTML("keyboard_capslock");
+          keyElement.id = "capslock";
+
           //Для активности при нажатой клавиши shift
           if (this.properties.capsLock) {
             keyElement.classList.add("keyboard__key--active");
@@ -242,9 +378,14 @@ const Keyboard = {
           }
 
           this._toggleCapsLock();
-          keyElement.innerHTML = createIconHTML("keyboard_capslock");
 
           keyElement.addEventListener("click", () => {
+            if (this.properties.enableSound) {
+              let clickSound = new Audio();
+              clickSound.src = "/assets/sounds/capslock.wav";
+              clickSound.play();
+            }
+
             this.properties.capsLock = !this.properties.capsLock;
             this._toggleCapsLock();
             keyElement.classList.toggle("keyboard__key--active", this.properties.capsLock);
@@ -254,8 +395,17 @@ const Keyboard = {
         case "enter":
           keyElement.classList.add("keyboard__key--wide");
           keyElement.innerHTML = createIconHTML("keyboard_return");
+          keyElement.id = "enter";
 
           keyElement.addEventListener("click", () => {
+            this._disableLastPressedKey();
+
+            if (this.properties.enableSound) {
+              let clickSound = new Audio();
+              clickSound.src = "/assets/sounds/enter.wav";
+              clickSound.play();
+            }
+
             this.properties.value = this.properties.value = this._advancedInput("\n");
             this._triggerEvent("oninput");
           });
@@ -264,8 +414,15 @@ const Keyboard = {
         case "space":
           keyElement.classList.add("keyboard__key--extra-wide");
           keyElement.innerHTML = createIconHTML("space_bar");
+          keyElement.id = "space";
 
           keyElement.addEventListener("click", () => {
+            if (this.properties.enableSound) {
+              let clickSound = new Audio();
+              clickSound.src = "/assets/sounds/whitespace.wav";
+              clickSound.play();
+            }
+
             this.properties.value = this.properties.value = this._advancedInput(" ");
             this._triggerEvent("oninput");
           });
@@ -276,6 +433,13 @@ const Keyboard = {
           keyElement.innerHTML = createIconHTML("check_circle");
 
           keyElement.addEventListener("click", () => {
+            if (this.properties.enableSound) {
+              let clickSound = new Audio();
+              clickSound.src = "/assets/sounds/close.wav";
+              clickSound.play();
+            }
+
+            keyElement.classList.add("keyboard__key:active");
             this.close();
             this._triggerEvent("onclose");
           });
@@ -290,7 +454,21 @@ const Keyboard = {
             keyElement.textContent = key;
           }
 
+          keyElement.id = key.toLowerCase();
+
           keyElement.addEventListener("click", () => {
+            this._disableLastPressedKey();
+
+            if (this.properties.enableSound) {
+              let clickSound = new Audio();
+              if (this.properties.changeLanguage) {
+                clickSound.src = "/assets/sounds/click-ru.wav";
+              } else {
+                clickSound.src = "/assets/sounds/click-en.wav";
+              }
+              clickSound.play();
+            }
+
             let currentKey = "";
 
             if (this.properties.shift == true && this.properties.capsLock == false) currentKey = key;
@@ -314,9 +492,15 @@ const Keyboard = {
     return fragment;
   },
 
+  _disableLastPressedKey() {
+    if (this.elements.lastPressedKey && this.elements.lastPressedKey.classList.contains("keyboard__key--click")) {
+      this.elements.lastPressedKey.classList.remove("keyboard__key--click");
+    }
+  },
+
   _recognizeResult(e) {
     const transcript = e.results[0][0].transcript;
-    console.log(transcript);
+
     if (e.results[0].isFinal) {
       let input = document.querySelector(".use-keyboard-input");
       input.value += transcript + " ";
