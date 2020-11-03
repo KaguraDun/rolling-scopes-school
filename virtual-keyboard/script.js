@@ -203,9 +203,9 @@ const Keyboard = {
             let clickSound = new Audio();
 
             if (this.properties.enableSound) {
-              clickSound.src = "/../assets/sounds/enable-sound.wav";
+              clickSound.src = "/../../assets/sounds/enable-sound.wav";
             } else {
-              clickSound.src = "/../assets/sounds/disable-sound.wav";
+              clickSound.src = "/../../assets/sounds/disable-sound.wav";
             }
 
             clickSound.play();
@@ -226,9 +226,9 @@ const Keyboard = {
               let clickSound = new Audio();
 
               if (this.properties.speechRecognition) {
-                clickSound.src = "/../assets/sounds/speak.wav";
+                clickSound.src = "/../../assets/sounds/speak.wav";
               } else {
-                clickSound.src = "/../assets/sounds/stop-speaking.wav";
+                clickSound.src = "/../../assets/sounds/stop-speaking.wav";
               }
 
               clickSound.play();
@@ -252,7 +252,7 @@ const Keyboard = {
           keyElement.addEventListener("click", () => {
             if (this.properties.enableSound) {
               let clickSound = new Audio();
-              clickSound.src = "/../assets/sounds/change-language.wav";
+              clickSound.src = "/../../assets/sounds/change-language.wav";
               clickSound.play();
             }
 
@@ -278,7 +278,7 @@ const Keyboard = {
           keyElement.addEventListener("click", () => {
             if (this.properties.enableSound) {
               let clickSound = new Audio();
-              clickSound.src = "/../assets/sounds/shift.wav";
+              clickSound.src = "/../../assets/sounds/shift.wav";
               clickSound.play();
             }
 
@@ -301,7 +301,7 @@ const Keyboard = {
           keyElement.addEventListener("click", () => {
             if (this.properties.enableSound) {
               let clickSound = new Audio();
-              clickSound.src = "/../assets/sounds/left.wav";
+              clickSound.src = "/../../assets/sounds/left.wav";
               clickSound.play();
             }
 
@@ -319,7 +319,7 @@ const Keyboard = {
           keyElement.addEventListener("click", () => {
             if (this.properties.enableSound) {
               let clickSound = new Audio();
-              clickSound.src = "/../assets/sounds/right.wav";
+              clickSound.src = "/../../assets/sounds/right.wav";
               clickSound.play();
             }
 
@@ -343,7 +343,7 @@ const Keyboard = {
 
             if (this.properties.enableSound) {
               let clickSound = new Audio();
-              clickSound.src = "/../assets/sounds/backspace.wav";
+              clickSound.src = "/../../assets/sounds/backspace.wav";
               clickSound.play();
             }
 
@@ -382,7 +382,7 @@ const Keyboard = {
           keyElement.addEventListener("click", () => {
             if (this.properties.enableSound) {
               let clickSound = new Audio();
-              clickSound.src = "/../assets/sounds/capslock.wav";
+              clickSound.src = "/../../assets/sounds/capslock.wav";
               clickSound.play();
             }
 
@@ -402,7 +402,7 @@ const Keyboard = {
 
             if (this.properties.enableSound) {
               let clickSound = new Audio();
-              clickSound.src = "/../assets/sounds/enter.wav";
+              clickSound.src = "/../../assets/sounds/enter.wav";
               clickSound.play();
             }
 
@@ -419,7 +419,7 @@ const Keyboard = {
           keyElement.addEventListener("click", () => {
             if (this.properties.enableSound) {
               let clickSound = new Audio();
-              clickSound.src = "/../assets/sounds/whitespace.wav";
+              clickSound.src = "/../../assets/sounds/whitespace.wav";
               clickSound.play();
             }
 
@@ -435,7 +435,7 @@ const Keyboard = {
           keyElement.addEventListener("click", () => {
             if (this.properties.enableSound) {
               let clickSound = new Audio();
-              clickSound.src = "/../assets/sounds/close.wav";
+              clickSound.src = "/../../assets/sounds/close.wav";
               clickSound.play();
             }
 
@@ -462,9 +462,9 @@ const Keyboard = {
             if (this.properties.enableSound) {
               let clickSound = new Audio();
               if (this.properties.changeLanguage) {
-                clickSound.src = "/../assets/sounds/click-ru.wav";
+                clickSound.src = "/../../assets/sounds/click-ru.wav";
               } else {
-                clickSound.src = "/../assets/sounds/click-en.wav";
+                clickSound.src = "/../../assets/sounds/click-en.wav";
               }
               clickSound.play();
             }
