@@ -8,7 +8,11 @@ const game = {
   },
 
   elements: {
+    gameContainer: null,
     gameField: null,
+    completeBanner: null,
+    completeMessageTextEl: null,
+    timer: null,
     timerTextEl: null,
     numberOfMovesTextEl: null,
   },
@@ -26,12 +30,16 @@ function createElement(tagName, className, parentName, innerText) {
 }
 
 function runGameTimer() {
-  setInterval(() => {
+  game.elements.timer = setInterval(() => {
     game.properties.timer += 1;
     let minutes = Math.floor(game.properties.timer / 60);
     let seconds = game.properties.timer - minutes * 60;
     game.elements.timerTextEl.textContent = `${minutes} : ${seconds}`;
   }, 1000);
+}
+
+function stopGameTimer() {
+  clearInterval(game.elements.timer);
 }
 
 function arrayShuffle(array) {
@@ -95,11 +103,16 @@ function checkIfGameSolved() {
   }
 
   //Учитываем пустой элемент в самом начале
-  if (rightPositionCounter == game.elements.gameField.childNodes.length - 2) {
-    const message = `Game solved in ${game.properties.numberOfMoves} moves`;
-    const gameCompliteMessage = createElement('div', 'game__complete', document.body, message);
-  }
-  //Добавить всплывающее уведомление
+  if (rightPositionCounter === game.elements.gameField.childNodes.length - 2) {
+    return true;
+  } else return false;
+}
+
+function endGame() {
+  const message = `Game solved in ${game.properties.numberOfMoves} moves`;
+  game.elements.completeBanner.style.display = 'flex';
+  game.elements.completeMessageTextEl.textContent = message;
+  stopGameTimer();
 }
 
 function moveItem(e) {
@@ -121,7 +134,9 @@ function moveItem(e) {
       swapItems(e.target, adjacentElements[key]);
       game.properties.numberOfMoves += 1;
       game.elements.numberOfMovesTextEl.textContent = game.properties.numberOfMoves;
-      checkIfGameSolved();
+      if (checkIfGameSolved()) {
+        endGame();
+      }
     }
   }
 }
@@ -155,17 +170,61 @@ function generateGameField(fieldArray) {
 }
 
 //  init
+function newGame() {
+  game.properties.timer = 0;
+  game.properties.numberOfMoves = 0;
+
+  game.elements.timerTextEl.textContent = `00 : 00`;
+  game.elements.numberOfMovesTextEl.textContent = 0;
+  game.elements.gameField.innerHTML = '';
+  game.elements.completeBanner.style.display = 'none';
+
+  const gamefieldArray = generateGameFieldArray();
+  generateGameField(gamefieldArray);
+  runGameTimer();
+}
+
+function createCompleteBanner() {
+  game.elements.completeBanner = createElement(
+    'div',
+    'game__complete-wrapper',
+    game.elements.gameContainer,
+  );
+
+  const completeBanner = createElement(
+    'div',
+    'game__complete-banner',
+    game.elements.completeBanner,
+  );
+
+  game.elements.completeMessageTextEl = createElement(
+    'span',
+    "'game__complete-message",
+    completeBanner,
+  );
+
+  const newGameBtn = createElement('button', 'button', completeBanner, 'New game');
+  newGameBtn.addEventListener('click', newGame);
+
+  game.elements.completeBanner.style.display = 'none';
+}
 
 const gameWrapper = createElement('div', 'wrapper', document.body);
-const gameContainer = createElement('div', 'game', gameWrapper);
-const gameHeader = createElement('div', 'game__header', gameContainer);
+game.elements.gameContainer = createElement('div', 'game', gameWrapper);
+const gameHeader = createElement('div', 'game__header', game.elements.gameContainer);
 
 game.elements.timerTextEl = createElement('span', 'game__time', gameHeader, `00 : 00`);
 game.elements.numberOfMovesTextEl = createElement('span', 'game__number-of-moves', gameHeader, `0`);
 
 const gameSettings = createElement('button', 'game__settings', gameHeader, 'Settings');
+game.elements.gameField = createElement('div', 'game__field', game.elements.gameContainer);
+
+createCompleteBanner();
+
 const gamefieldArray = generateGameFieldArray();
-game.elements.gameField = createElement('div', 'game__field', gameContainer);
 
 generateGameField(gamefieldArray);
 runGameTimer();
+
+// testing
+gameSettings.addEventListener('click', endGame);
