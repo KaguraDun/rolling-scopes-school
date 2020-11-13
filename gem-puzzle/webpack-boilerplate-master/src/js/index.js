@@ -83,16 +83,43 @@ function generateGameFieldArray() {
   return gameFieldArray;
 }
 
-function swapItems(element, emptyCell) {
-  const elementPosition = element.dataset.position;
-  const elementPrevSibling = element.previousSibling;
-  const emptyCellPrevSibling = emptyCell.previousSibling;
+function swapItems(item, emptyItem, position) {
+  const ITEM_SIZE = '3.25em';
+  const itemPosition = item.dataset.position;
+  const itemPrevSibling = item.previousSibling;
+  const emptyItemPrevSibling = emptyItem.previousSibling;
 
-  elementPrevSibling.after(emptyCell);
-  emptyCellPrevSibling.after(element);
+  itemPrevSibling.after(emptyItem);
+  emptyItemPrevSibling.after(item);
 
-  element.dataset.position = emptyCell.dataset.position;
-  emptyCell.dataset.position = elementPosition;
+  item.dataset.position = emptyItem.dataset.position;
+  emptyItem.dataset.position = itemPosition;
+
+  // animation
+  switch (position) {
+    case 'up':
+      emptyItem.style.transform = `translateY(-${ITEM_SIZE})`;
+      item.style.transform = `translateY(${ITEM_SIZE})`;
+      break;
+    case 'bottom':
+      emptyItem.style.transform = `translateY(${ITEM_SIZE})`;
+      item.style.transform = `translateY(-${ITEM_SIZE})`;
+      break;
+    case 'left':
+      emptyItem.style.transform = `translateX(-${ITEM_SIZE})`;
+      item.style.transform = `translateX(${ITEM_SIZE})`;
+      break;
+    case 'right':
+      emptyItem.style.transform = `translateX(${ITEM_SIZE})`;
+      item.style.transform = `translateX(-${ITEM_SIZE})`;
+      break;
+    default:
+  }
+
+  requestAnimationFrame(() => {
+    emptyItem.style.transform = 'none';
+    item.style.transform = 'none';
+  });
 }
 
 function checkIfGameSolved() {
@@ -116,9 +143,12 @@ function endGame() {
   const seconds = timer - minutes * 60;
   const gameTime = `${minutes} : ${seconds}`;
   const timestamp = new Date();
-  const message = `Ура! Вы решили головоломку ${fieldSize}*${fieldSize}\n за ${gameTime} и ${numberOfMoves} ходов`;
+  const message =
+    `Ура! Вы решили головоломку ${fieldSize}*${fieldSize}` +
+    '<br>' +
+    ` за ${gameTime} и ${numberOfMoves} ходов`;
   game.elements.completeBanner.style.display = 'flex';
-  game.elements.completeMessageTextEl.textContent = message;
+  game.elements.completeMessageTextEl.innerHTML = message;
   stopGameTimer();
 
   const addObject = function (timestamp, time, moves, size) {
@@ -171,7 +201,7 @@ function moveItem(e) {
 
   for (const key in adjacentElements) {
     if (adjacentElements[key] && adjacentElements[key].id === '0') {
-      swapItems(e.target, adjacentElements[key]);
+      swapItems(e.target, adjacentElements[key], key);
       game.properties.numberOfMoves += 1;
       game.elements.numberOfMovesTextEl.textContent = game.properties.numberOfMoves;
 
