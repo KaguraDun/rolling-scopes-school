@@ -14,6 +14,7 @@ module.exports = {
     path: paths.build,
     filename: '[name].bundle.js',
     publicPath: '/',
+    assetModuleFilename: 'assets/resource/[name][ext]',
   },
 
   // Customize the webpack build process
@@ -21,12 +22,12 @@ module.exports = {
     // Removes/cleans build folders and unused assets when rebuilding
     new CleanWebpackPlugin(),
 
-    // Copies files from target to destination folder
+    //Copies files from target to destination folder
     new CopyWebpackPlugin({
       patterns: [
         {
           from: paths.public,
-          to: 'assets',
+          to: 'assets/',
           globOptions: {
             ignore: ['*.DS_Store'],
           },
@@ -38,7 +39,7 @@ module.exports = {
     // Generates deprecation warning: https://github.com/jantimon/html-webpack-plugin/issues/1501
     new HtmlWebpackPlugin({
       //title: "webpack Boilerplate",
-      //favicon: paths.src + "/images/favicon.png",
+      favicon: paths.src + '/images/favicon.png',
       template: paths.src + '/template.html', // template file
       filename: 'index.html', // output file
     }),
@@ -57,6 +58,7 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
+        use: ['babel-loader'],
         use: ['babel-loader', 'eslint-loader'],
       },
 
@@ -75,10 +77,30 @@ module.exports = {
       },
 
       // Images: Copy image files to build folder
-      { test: /\.(?:ico|gif|png|jpg|jpeg)$/i, type: 'asset/resource' },
+      {
+        test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/images/[hash][ext]',
+        },
+      },
 
       // Fonts and SVGs: Inline files
-      { test: /\.(woff(2)?|eot|ttf|otf|svg|)$/, type: 'asset/inline' },
+      {
+        test: /\.(woff(2)?|eot|ttf|otf)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/fonts/[hash][ext]',
+        },
+      },
+
+      {
+        test: /\.(svg)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/icons/[hash][ext]',
+        },
+      },
     ],
   },
 };

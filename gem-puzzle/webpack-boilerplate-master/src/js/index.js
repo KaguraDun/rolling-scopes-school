@@ -32,8 +32,8 @@ function createElement(tagName, className, parentName, innerText) {
 function runGameTimer() {
   game.elements.timer = setInterval(() => {
     game.properties.timer += 1;
-    let minutes = Math.floor(game.properties.timer / 60);
-    let seconds = game.properties.timer - minutes * 60;
+    const minutes = Math.floor(game.properties.timer / 60);
+    const seconds = game.properties.timer - minutes * 60;
     game.elements.timerTextEl.textContent = `${minutes} : ${seconds}`;
   }, 1000);
 }
@@ -44,8 +44,8 @@ function stopGameTimer() {
 
 function arrayShuffle(array) {
   for (let i = array.length - 1; i >= 0; i -= 1) {
-    let randomNumber = Math.floor(Math.random() * i + 1);
-    let tempValue = array[i];
+    const randomNumber = Math.floor(Math.random() * i + 1);
+    const tempValue = array[i];
 
     array[i] = array[randomNumber];
     array[randomNumber] = tempValue;
@@ -63,12 +63,12 @@ function solvabilityCheck(fieldArray) {
     }
   }
 
-  return positionSum % 2 ? true : false;
+  return !!(positionSum % 2);
 }
 
 function generateGameFieldArray() {
-  let fieldSize = game.properties.fieldSize * game.properties.fieldSize;
-  let gameFieldArray = [];
+  const fieldSize = game.properties.fieldSize * game.properties.fieldSize;
+  const gameFieldArray = [];
   let findSolution = false;
 
   for (let i = 1; i < fieldSize; i += 1) {
@@ -84,9 +84,9 @@ function generateGameFieldArray() {
 }
 
 function swapItems(element, emptyCell) {
-  let elementPosition = element.dataset.position;
-  let elementPrevSibling = element.previousSibling;
-  let emptyCellPrevSibling = emptyCell.previousSibling;
+  const elementPosition = element.dataset.position;
+  const elementPrevSibling = element.previousSibling;
+  const emptyCellPrevSibling = emptyCell.previousSibling;
 
   elementPrevSibling.after(emptyCell);
   emptyCellPrevSibling.after(element);
@@ -99,20 +99,60 @@ function checkIfGameSolved() {
   let rightPositionCounter = 0;
 
   for (let i = 1; i < game.elements.gameField.childNodes.length - 1; i += 1) {
-    if (game.elements.gameField.childNodes[i].id == i) rightPositionCounter += 1;
+    if (game.elements.gameField.childNodes[i].id === i) rightPositionCounter += 1;
   }
 
-  //Учитываем пустой элемент в самом начале
+  //  Учитываем пустой элемент в самом начале
   if (rightPositionCounter === game.elements.gameField.childNodes.length - 2) {
     return true;
-  } else return false;
+  }
+
+  return false;
 }
 
 function endGame() {
-  const message = `Game solved in ${game.properties.numberOfMoves} moves`;
+  const { timer, numberOfMoves, fieldSize } = game.properties;
+  const minutes = Math.floor(timer / 60);
+  const seconds = timer - minutes * 60;
+  const gameTime = `${minutes} : ${seconds}`;
+  const timestamp = new Date();
+  const message = `Ура! Вы решили головоломку ${fieldSize}*${fieldSize}\n за ${gameTime} и ${numberOfMoves} ходов`;
   game.elements.completeBanner.style.display = 'flex';
   game.elements.completeMessageTextEl.textContent = message;
   stopGameTimer();
+
+  const addObject = function (timestamp, time, moves, size) {
+    return {
+      timestamp: timestamp,
+      gameTime: time,
+      numberOfMoves: moves,
+      fieldSize: size,
+    };
+  };
+  //  Записываем результат в local storage
+  if (!localStorage.getItem('bestResults')) {
+    localStorage.setItem(
+      'bestResults',
+      JSON.stringify([addObject(timestamp, gameTime, numberOfMoves, fieldSize)]),
+    );
+  } else {
+    const results = JSON.parse(localStorage.getItem('bestResults'));
+
+    results.sort((prev, next) => prev.numberOfMoves - next.numberOfMoves);
+    results.sort((prev, next) => next.fieldSize - prev.fieldSize);
+
+    if (results.length < 10) {
+      results.unshift(addObject(timestamp, gameTime, numberOfMoves, fieldSize));
+    } else {
+      results.pop();
+      results.unshift(addObject(timestamp, gameTime, numberOfMoves, fieldSize));
+    }
+
+    results.sort((prev, next) => prev.numberOfMoves - next.numberOfMoves);
+    results.sort((prev, next) => next.fieldSize - prev.fieldSize);
+
+    localStorage.setItem('bestResults', JSON.stringify(results));
+  }
 }
 
 function moveItem(e) {
@@ -134,6 +174,7 @@ function moveItem(e) {
       swapItems(e.target, adjacentElements[key]);
       game.properties.numberOfMoves += 1;
       game.elements.numberOfMovesTextEl.textContent = game.properties.numberOfMoves;
+
       if (checkIfGameSolved()) {
         endGame();
       }
@@ -142,9 +183,9 @@ function moveItem(e) {
 }
 
 function generateGameField(fieldArray) {
-  let fieldSize = game.properties.fieldSize * game.properties.fieldSize;
+  const fieldSize = game.properties.fieldSize * game.properties.fieldSize;
 
-  //Добавим пустой div для того чтобы при выполнении функции swap у первой ячейки был предыдущий элемент
+  //  Добавим пустой div для того чтобы при выполнении функции swap у первой ячейки был предыдущий элемент
   createElement('div', 'game__field-item--null', game.elements.gameField);
 
   for (let i = 0; i <= fieldSize - 1; i += 1) {
@@ -162,6 +203,7 @@ function generateGameField(fieldArray) {
       );
 
       gameFieldItem.id = fieldArray[i];
+      // gameFieldItem.style.background = 'url(images/cat.jpg)';
     }
 
     gameFieldItem.dataset.position = i;
@@ -174,7 +216,7 @@ function newGame() {
   game.properties.timer = 0;
   game.properties.numberOfMoves = 0;
 
-  game.elements.timerTextEl.textContent = `00 : 00`;
+  game.elements.timerTextEl.textContent = '00 : 00';
   game.elements.numberOfMovesTextEl.textContent = 0;
   game.elements.gameField.innerHTML = '';
   game.elements.completeBanner.style.display = 'none';
@@ -182,6 +224,51 @@ function newGame() {
   const gamefieldArray = generateGameFieldArray();
   generateGameField(gamefieldArray);
   runGameTimer();
+}
+
+function createBestResults(parentName) {
+  const bestResultsButton = createElement('button', 'button', parentName, 'Лучшие результаты');
+  const bestResultsWrapper = createElement('div', 'best-results__wrapper', parentName);
+  const bestResultsContent = createElement('table', 'best-results__content', bestResultsWrapper);
+  const bestResultsTable = createElement('table', 'best-results__table', bestResultsContent);
+  let bestResultsTableRow = createElement('tr', 'best-results__table-row', bestResultsTable);
+
+  ['№', 'Дата', 'Время игры', 'Число ходов', 'Размер игры'].forEach((el) =>
+    createElement('th', 'best-results__table-header', bestResultsTableRow, el),
+  );
+
+  const results = JSON.parse(localStorage.getItem('bestResults'));
+  for (let i = 0; i < 10; i += 1) {
+    if (results && results[i]) {
+      bestResultsTableRow = createElement('tr', 'best-results__table-row', bestResultsTable);
+      const date = new Date(results[i].timestamp);
+      const dateFormat = `${date.getDate()}.${
+        date.getMonth() + 1
+      }.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+
+      createElement('td', 'best-results__table-cell', bestResultsTableRow, i + 1);
+      createElement('td', 'best-results__table-cell', bestResultsTableRow, dateFormat);
+      createElement('td', 'best-results__table-cell', bestResultsTableRow, results[i].gameTime);
+      createElement(
+        'td',
+        'best-results__table-cell',
+        bestResultsTableRow,
+        String(results[i].numberOfMoves),
+      );
+      createElement(
+        'td',
+        'best-results__table-cell',
+        bestResultsTableRow,
+        `${results[i].fieldSize} х ${results[i].fieldSize}`,
+      );
+    }
+  }
+
+  bestResultsWrapper.classList.add('--display-none');
+
+  bestResultsButton.addEventListener('click', () => {
+    bestResultsWrapper.classList.toggle('--display-none');
+  });
 }
 
 function createCompleteBanner() {
@@ -211,12 +298,20 @@ function createCompleteBanner() {
 
 const gameWrapper = createElement('div', 'wrapper', document.body);
 game.elements.gameContainer = createElement('div', 'game', gameWrapper);
+const gameButtonsWrapper = createElement(
+  'div',
+  'game__buttons-wrapper',
+  game.elements.gameContainer,
+);
+
+createBestResults(gameButtonsWrapper);
+
 const gameHeader = createElement('div', 'game__header', game.elements.gameContainer);
 
-game.elements.timerTextEl = createElement('span', 'game__time', gameHeader, `00 : 00`);
-game.elements.numberOfMovesTextEl = createElement('span', 'game__number-of-moves', gameHeader, `0`);
+game.elements.timerTextEl = createElement('span', 'game__time', gameHeader, '00 : 00');
+game.elements.numberOfMovesTextEl = createElement('span', 'game__number-of-moves', gameHeader, '0');
 
-const gameSettings = createElement('button', 'game__settings', gameHeader, 'Settings');
+const gameSettings = createElement('button', 'game__settings', gameHeader, 'Решить в один клик');
 game.elements.gameField = createElement('div', 'game__field', game.elements.gameContainer);
 
 createCompleteBanner();

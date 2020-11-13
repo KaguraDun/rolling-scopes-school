@@ -1,3 +1,8 @@
+@font-face {
+  font-family: 'Roboto';
+  src: url(/src/fonts/Roboto-Regular.ttf);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,8 +10,11 @@
 }
 
 body {
+  font-family: 'Roboto', sans-serif;
   background-color: #8bc6ec;
   background-image: linear-gradient(135deg, #8bc6ec 0%, #9599e2 100%) no-repeat cover;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .wrapper {
@@ -16,15 +24,28 @@ body {
   margin: 0 auto;
 }
 
+.button {
+  z-index: 100;
+}
+
 .game {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  width: 400px;
-  margin-top: 100px;
+  width: 600px;
+  height: 600px;
+  margin-top: 10px;
   background: rgba(#ffffff, 0.8);
+
+  &__buttons-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid #9599e2;
+  }
 
   &__header {
     display: flex;
@@ -38,17 +59,19 @@ body {
   &__field {
     display: flex;
     flex-wrap: wrap;
-    width: 300px;
+    justify-content: center;
+    width: 90%;
 
     &-item {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 100px;
-      height: 100px;
+      width: 3.25em;
+      height: 3.25em;
       font-size: 50px;
       border: 1px solid black;
       cursor: pointer;
+      transition: all 0.2s ease-in;
     }
 
     &-item:hover {
@@ -75,6 +98,54 @@ body {
     width: 100%;
     height: 100%;
     font-size: 25px;
+    text-align: center;
     background-color: rgba(#21ff04, 0.8);
   }
+}
+
+.best-results {
+  &__wrapper {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 1em;
+    background-color: rgba(#21ff04, 0.7);
+    backdrop-filter: blur(5px);
+  }
+
+  &__table {
+    width: 90%;
+    margin-top: 10%;
+    text-align: center;
+    background: white;
+    border-top: 7px solid #9baff1;
+    border-bottom: 7px solid #9baff1;
+    border-collapse: collapse;
+
+    &-header,
+    &-cell {
+      padding: 8px;
+      color: #039;
+      border-right: 1px solid #9baff1;
+      border-left: 1px solid #9baff1;
+    }
+  }
+}
+
+.--display-none {
+  display: none;
 }
