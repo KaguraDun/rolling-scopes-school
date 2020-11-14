@@ -2,7 +2,7 @@ import '../styles/index.scss';
 
 const game = {
   properties: {
-    fieldSize: 3,
+    fieldSize: 4,
     timer: 0,
     numberOfMoves: 0,
   },
@@ -85,15 +85,24 @@ function generateGameFieldArray() {
 
 function swapItems(item, emptyItem, position) {
   const ITEM_SIZE = '3.25em';
-  const itemPosition = item.dataset.position;
+  const itemRow = item.dataset.row;
+  const itemCol = item.dataset.col;
+  const emptyItemRow = emptyItem.dataset.row;
+  const emptyItemCol = emptyItem.dataset.col;
   const itemPrevSibling = item.previousSibling;
   const emptyItemPrevSibling = emptyItem.previousSibling;
+  const itemPosition = item.dataset.position;
 
   itemPrevSibling.after(emptyItem);
   emptyItemPrevSibling.after(item);
 
   item.dataset.position = emptyItem.dataset.position;
   emptyItem.dataset.position = itemPosition;
+
+  item.dataset.row = emptyItemRow;
+  item.dataset.col = emptyItemCol;
+  emptyItem.dataset.row = itemRow;
+  emptyItem.dataset.col = itemCol;
 
   // animation
   switch (position) {
@@ -143,17 +152,16 @@ function endGame() {
   const seconds = timer - minutes * 60;
   const gameTime = `${minutes} : ${seconds}`;
   const timestamp = new Date();
-  const message =
-    `Ура! Вы решили головоломку ${fieldSize}*${fieldSize}` +
-    '<br>' +
-    ` за ${gameTime} и ${numberOfMoves} ходов`;
+  const message = `Ура! Вы решили головоломку ${fieldSize}*${fieldSize}`
+    + '<br>'
+    + ` за ${gameTime} и ${numberOfMoves} ходов`;
   game.elements.completeBanner.style.display = 'flex';
   game.elements.completeMessageTextEl.innerHTML = message;
   stopGameTimer();
 
-  const addObject = function (timestamp, time, moves, size) {
+  const addObject = function (date, time, moves, size) {
     return {
-      timestamp: timestamp,
+      timestamp: date,
       gameTime: time,
       numberOfMoves: moves,
       fieldSize: size,
@@ -186,17 +194,14 @@ function endGame() {
 }
 
 function moveItem(e) {
-  const elementPosition = Number(e.target.dataset.position);
+  const elementRow = Number(e.target.dataset.row);
+  const elementCol = Number(e.target.dataset.col);
 
   const adjacentElements = {
-    up: document.querySelector(
-      `.game__field-item[data-position="${elementPosition - game.properties.fieldSize}"]`,
-    ),
-    bottom: document.querySelector(
-      `.game__field-item[data-position="${elementPosition + game.properties.fieldSize}"]`,
-    ),
-    left: document.querySelector(`.game__field-item[data-position="${elementPosition - 1}"]`),
-    right: document.querySelector(`.game__field-item[data-position="${elementPosition + 1}"]`),
+    up: document.querySelector(`[data-row="${elementRow - 1}"][data-col="${elementCol}"]`),
+    bottom: document.querySelector(`[data-row="${elementRow + 1}"][data-col="${elementCol}"]`),
+    left: document.querySelector(`[data-row="${elementRow}"][data-col="${elementCol - 1}"]`),
+    right: document.querySelector(`[data-row="${elementRow}"][data-col="${elementCol + 1}"]`),
   };
 
   for (const key in adjacentElements) {
@@ -214,6 +219,17 @@ function moveItem(e) {
 
 function generateGameField(fieldArray) {
   const fieldSize = game.properties.fieldSize * game.properties.fieldSize;
+
+  const itemTextSizes = {
+    3: '60px',
+    4: '45px',
+    5: '35px',
+    6: '30px',
+    7: '25px',
+    8: '23px',
+  };
+
+  game.elements.gameField.style.fontSize = itemTextSizes[game.properties.fieldSize];
 
   //  Добавим пустой div для того чтобы при выполнении функции swap у первой ячейки был предыдущий элемент
   createElement('div', 'game__field-item--null', game.elements.gameField);
@@ -233,8 +249,11 @@ function generateGameField(fieldArray) {
       );
 
       gameFieldItem.id = fieldArray[i];
-      // gameFieldItem.style.background = 'url(images/cat.jpg)';
     }
+
+    gameFieldItem.dataset.row = Math.ceil((i + 1) / game.properties.fieldSize);
+    const colNumber = (i + 1) % game.properties.fieldSize;
+    gameFieldItem.dataset.col = colNumber === 0 ? game.properties.fieldSize : colNumber;
 
     gameFieldItem.dataset.position = i;
     gameFieldItem.addEventListener('click', moveItem);
@@ -251,6 +270,8 @@ function newGame() {
   game.elements.gameField.innerHTML = '';
   game.elements.completeBanner.style.display = 'none';
 
+  game.properties.fieldSize = document.querySelector('.select').value;
+
   const gamefieldArray = generateGameFieldArray();
   generateGameField(gamefieldArray);
   runGameTimer();
@@ -263,9 +284,9 @@ function createBestResults(parentName) {
   const bestResultsTable = createElement('table', 'best-results__table', bestResultsContent);
   let bestResultsTableRow = createElement('tr', 'best-results__table-row', bestResultsTable);
 
-  ['№', 'Дата', 'Время игры', 'Число ходов', 'Размер игры'].forEach((el) =>
-    createElement('th', 'best-results__table-header', bestResultsTableRow, el),
-  );
+  ['№', 'Дата', 'Время игры', 'Число ходов', 'Размер игры'].forEach((el) => {
+    createElement('th', 'best-results__table-header', bestResultsTableRow, el);
+  });
 
   const results = JSON.parse(localStorage.getItem('bestResults'));
   for (let i = 0; i < 10; i += 1) {
@@ -301,6 +322,11 @@ function createBestResults(parentName) {
   });
 }
 
+function createNewGameButton(parentName) {
+  const newGameBtn = createElement('button', 'button', parentName, 'Новая игра');
+  newGameBtn.addEventListener('click', newGame);
+}
+
 function createCompleteBanner() {
   game.elements.completeBanner = createElement(
     'div',
@@ -320,10 +346,14 @@ function createCompleteBanner() {
     completeBanner,
   );
 
-  const newGameBtn = createElement('button', 'button', completeBanner, 'New game');
-  newGameBtn.addEventListener('click', newGame);
+  createNewGameButton(completeBanner);
 
   game.elements.completeBanner.style.display = 'none';
+}
+
+function createAutoCompleteButton(parentName) {
+  const gameAutoComplete = createElement('button', 'button', parentName, 'Решить в один клик');
+  gameAutoComplete.addEventListener('click', endGame);
 }
 
 const gameWrapper = createElement('div', 'wrapper', document.body);
@@ -334,14 +364,27 @@ const gameButtonsWrapper = createElement(
   game.elements.gameContainer,
 );
 
+function chooseGameSize(parentName) {
+  const select = createElement('select', 'select', parentName);
+
+  [3, 4, 5, 6, 7, 8].forEach((el) => {
+    const option = createElement('option', 'select__option', select, `${el}x${el}`);
+    option.value = el;
+  });
+
+  select[1].setAttribute('selected', true);
+}
+
 createBestResults(gameButtonsWrapper);
+createNewGameButton(gameButtonsWrapper);
+chooseGameSize(gameButtonsWrapper);
+createAutoCompleteButton(gameButtonsWrapper);
 
 const gameHeader = createElement('div', 'game__header', game.elements.gameContainer);
 
 game.elements.timerTextEl = createElement('span', 'game__time', gameHeader, '00 : 00');
 game.elements.numberOfMovesTextEl = createElement('span', 'game__number-of-moves', gameHeader, '0');
 
-const gameSettings = createElement('button', 'game__settings', gameHeader, 'Решить в один клик');
 game.elements.gameField = createElement('div', 'game__field', game.elements.gameContainer);
 
 createCompleteBanner();
@@ -350,6 +393,3 @@ const gamefieldArray = generateGameFieldArray();
 
 generateGameField(gamefieldArray);
 runGameTimer();
-
-// testing
-gameSettings.addEventListener('click', endGame);
