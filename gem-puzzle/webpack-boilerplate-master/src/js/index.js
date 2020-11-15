@@ -5,6 +5,7 @@ const game = {
     fieldSize: 4,
     timer: 0,
     numberOfMoves: 0,
+    enableSound: false,
   },
 
   elements: {
@@ -107,28 +108,25 @@ function swapItems(item, emptyItem, position) {
   // animation
   switch (position) {
     case 'up':
-      emptyItem.style.transform = `translateY(-${ITEM_SIZE})`;
       item.style.transform = `translateY(${ITEM_SIZE})`;
       break;
     case 'bottom':
-      emptyItem.style.transform = `translateY(${ITEM_SIZE})`;
       item.style.transform = `translateY(-${ITEM_SIZE})`;
       break;
     case 'left':
-      emptyItem.style.transform = `translateX(-${ITEM_SIZE})`;
       item.style.transform = `translateX(${ITEM_SIZE})`;
       break;
     case 'right':
-      emptyItem.style.transform = `translateX(${ITEM_SIZE})`;
       item.style.transform = `translateX(-${ITEM_SIZE})`;
       break;
     default:
   }
 
   requestAnimationFrame(() => {
-    emptyItem.style.transform = 'none';
     item.style.transform = 'none';
   });
+
+  // add sound
 }
 
 function checkIfGameSolved() {
@@ -209,6 +207,12 @@ function moveItem(e) {
       swapItems(e.target, adjacentElements[key], key);
       game.properties.numberOfMoves += 1;
       game.elements.numberOfMovesTextEl.textContent = game.properties.numberOfMoves;
+
+      if (game.properties.enableSound) {
+        const clickSound = new Audio();
+        clickSound.src = 'assets/audio/click-sound.mp3';
+        clickSound.play();
+      }
 
       if (checkIfGameSolved()) {
         endGame();
@@ -375,10 +379,25 @@ function chooseGameSize(parentName) {
   select[1].setAttribute('selected', true);
 }
 
+function createEnableSoundButton(parentName) {
+  const enableSound = createElement('button', 'button', parentName, 'Звук выкл');
+
+  enableSound.addEventListener('click', () => {
+    console.log(this);
+    game.properties.enableSound = !game.properties.enableSound;
+    if (game.properties.enableSound) {
+      enableSound.textContent = 'Звук вкл';
+    } else {
+      enableSound.textContent = 'Звук выкл';
+    }
+  });
+}
+
 createBestResults(gameButtonsWrapper);
 createNewGameButton(gameButtonsWrapper);
 chooseGameSize(gameButtonsWrapper);
 createAutoCompleteButton(gameButtonsWrapper);
+createEnableSoundButton(gameButtonsWrapper);
 
 const gameHeader = createElement('div', 'game__header', game.elements.gameContainer);
 

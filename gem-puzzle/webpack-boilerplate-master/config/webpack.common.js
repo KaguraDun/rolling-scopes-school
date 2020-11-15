@@ -1,13 +1,12 @@
-const paths = require('./paths');
-
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ESLintPlugin = require('eslint-webpack-plugin');
+const paths = require('./paths');
 
 module.exports = {
   // Where webpack looks to start building the bundle
-  entry: [paths.src + '/js/index.js'],
+  entry: [`${paths.src}/js/index.js`],
 
   // Where webpack outputs the assets and bundles
   output: {
@@ -22,7 +21,7 @@ module.exports = {
     // Removes/cleans build folders and unused assets when rebuilding
     new CleanWebpackPlugin(),
 
-    //Copies files from target to destination folder
+    // Copies files from target to destination folder
     new CopyWebpackPlugin({
       patterns: [
         {
@@ -38,13 +37,13 @@ module.exports = {
     // Generates an HTML file from a template
     // Generates deprecation warning: https://github.com/jantimon/html-webpack-plugin/issues/1501
     new HtmlWebpackPlugin({
-      //title: "webpack Boilerplate",
-      favicon: paths.src + '/images/favicon.png',
-      template: paths.src + '/template.html', // template file
+      // title: "webpack Boilerplate",
+      favicon: `${paths.src}/images/favicon.png`,
+      template: `${paths.src}/template.html`, // template file
       filename: 'index.html', // output file
     }),
 
-    //Find and fix problems in your JavaScript code
+    // Find and fix problems in your JavaScript code
     new ESLintPlugin({
       files: ['.', 'src', 'config'],
       formatter: 'table',
@@ -58,7 +57,6 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ['babel-loader'],
         use: ['babel-loader', 'eslint-loader'],
       },
 
@@ -99,6 +97,13 @@ module.exports = {
         type: 'asset/resource',
         generator: {
           filename: 'assets/icons/[hash][ext]',
+        },
+      },
+      {
+        test: /\.(ogg|mp3|wav|mpe?g)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/audio/[hash][ext]',
         },
       },
     ],
