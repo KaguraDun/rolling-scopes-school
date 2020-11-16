@@ -223,6 +223,24 @@ function moveItem(e) {
   }
 }
 
+function setItemBackground(gameFieldItem, image, itemValue, fieldSize) {
+  const ITEM_SIZE = 3.25;
+
+  const itemPositionX = itemValue % fieldSize;
+  const itemPositionLeft = itemPositionX
+    ? (itemPositionX - 1) * -ITEM_SIZE
+    : (fieldSize - 1) * -ITEM_SIZE;
+
+  const itemPositionY = Math.ceil(itemValue / fieldSize);
+  const itemPositionTop = itemPositionY
+    ? (itemPositionY - 1) * -ITEM_SIZE
+    : (fieldSize - 1) * -ITEM_SIZE;
+
+  gameFieldItem.style.background = `url(${image})`;
+  gameFieldItem.style.backgroundPosition = `left ${itemPositionLeft}em top ${itemPositionTop}em`;
+  gameFieldItem.style.backgroundSize = `${fieldSize * ITEM_SIZE}em ${fieldSize * ITEM_SIZE}em`;
+}
+
 function handleDragOver(event) {
   event.preventDefault();
 
@@ -247,16 +265,19 @@ function handleDragOver(event) {
 
 function generateGameField(fieldArray) {
   const fieldSize = game.properties.fieldSize * game.properties.fieldSize;
-
   const itemTextSizes = {
     3: '60px',
     4: '45px',
-    5: '35px',
+    5: '36px',
     6: '30px',
-    7: '25px',
-    8: '23px',
+    7: '25.7px',
+    8: '22.5px',
   };
 
+  const IMAGE_COUNT = 150;
+  const randomImageNumber = Math.floor(Math.random() * IMAGE_COUNT + 1);
+  const backgroundImage = `assets/images/box/${randomImageNumber}.jpg`;
+  console.log(randomImageNumber);
   game.elements.gameField.style.fontSize = itemTextSizes[game.properties.fieldSize];
 
   //  Добавим пустой div для того чтобы при выполнении функции swap у первой ячейки был предыдущий элемент
@@ -277,6 +298,8 @@ function generateGameField(fieldArray) {
       );
 
       gameFieldItem.id = fieldArray[i];
+
+      setItemBackground(gameFieldItem, backgroundImage, fieldArray[i], game.properties.fieldSize);
     }
 
     gameFieldItem.dataset.row = Math.ceil((i + 1) / game.properties.fieldSize);
@@ -284,6 +307,7 @@ function generateGameField(fieldArray) {
     gameFieldItem.dataset.col = colNumber === 0 ? game.properties.fieldSize : colNumber;
 
     gameFieldItem.dataset.position = i;
+
     gameFieldItem.draggable = true;
 
     gameFieldItem.addEventListener('click', moveItem);
