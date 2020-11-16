@@ -16,6 +16,7 @@ const game = {
     timer: null,
     timerTextEl: null,
     numberOfMovesTextEl: null,
+    currentDroppable: null,
   },
 };
 
@@ -126,7 +127,14 @@ function swapItems(item, emptyItem, position) {
     item.style.transform = 'none';
   });
 
-  // add sound
+  game.properties.numberOfMoves += 1;
+  game.elements.numberOfMovesTextEl.textContent = game.properties.numberOfMoves;
+
+  if (game.properties.enableSound) {
+    const swapSound = new Audio();
+    swapSound.src = 'assets/audio/swap-sound.mp3';
+    swapSound.play();
+  }
 }
 
 function checkIfGameSolved() {
@@ -191,34 +199,50 @@ function endGame() {
   }
 }
 
-function moveItem(e) {
-  const elementRow = Number(e.target.dataset.row);
-  const elementCol = Number(e.target.dataset.col);
+function getAdjastmentElements(element) {
+  const elementRow = Number(element.dataset.row);
+  const elementCol = Number(element.dataset.col);
 
-  const adjacentElements = {
+  return {
     up: document.querySelector(`[data-row="${elementRow - 1}"][data-col="${elementCol}"]`),
     bottom: document.querySelector(`[data-row="${elementRow + 1}"][data-col="${elementCol}"]`),
     left: document.querySelector(`[data-row="${elementRow}"][data-col="${elementCol - 1}"]`),
     right: document.querySelector(`[data-row="${elementRow}"][data-col="${elementCol + 1}"]`),
   };
+}
+
+function moveItem(e) {
+  const adjacentElements = getAdjastmentElements(e.target);
 
   for (const key in adjacentElements) {
     if (adjacentElements[key] && adjacentElements[key].id === '0') {
       swapItems(e.target, adjacentElements[key], key);
-      game.properties.numberOfMoves += 1;
-      game.elements.numberOfMovesTextEl.textContent = game.properties.numberOfMoves;
 
-      if (game.properties.enableSound) {
-        const clickSound = new Audio();
-        clickSound.src = 'assets/audio/click-sound.mp3';
-        clickSound.play();
-      }
-
-      if (checkIfGameSolved()) {
-        endGame();
-      }
+      if (checkIfGameSolved()) endGame();
     }
   }
+}
+
+function handleDragOver(event) {
+  event.preventDefault();
+
+  const activeElement = document.querySelector('.--selected');
+  const currentElement = event.target;
+  const emptyCell = document.getElementById('0');
+  const emptyCellAdjacentElements = getAdjastmentElements(emptyCell);
+  let isMoveable = false;
+
+  for (const key in emptyCellAdjacentElements) {
+    if (activeElement === emptyCellAdjacentElements[key]) {
+      isMoveable = activeElement !== currentElement && currentElement.id === '0';
+    }
+  }
+
+  if (!isMoveable) {
+    return;
+  }
+
+  swapItems(activeElement, emptyCell);
 }
 
 function generateGameField(fieldArray) {
@@ -260,7 +284,19 @@ function generateGameField(fieldArray) {
     gameFieldItem.dataset.col = colNumber === 0 ? game.properties.fieldSize : colNumber;
 
     gameFieldItem.dataset.position = i;
+    gameFieldItem.draggable = true;
+
     gameFieldItem.addEventListener('click', moveItem);
+
+    gameFieldItem.addEventListener('dragstart', (event) => {
+      event.target.classList.add('--selected');
+    });
+
+    gameFieldItem.addEventListener('dragend', (event) => {
+      event.target.classList.remove('--selected');
+    });
+
+    gameFieldItem.addEventListener('dragover', handleDragOver);
   }
 }
 
