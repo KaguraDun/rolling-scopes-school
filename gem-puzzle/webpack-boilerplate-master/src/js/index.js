@@ -20,6 +20,10 @@ const game = {
   },
 };
 
+function addZero(num) {
+  return +num < 10 ? `0${num}` : num;
+}
+
 function createElement(tagName, className, parentName, innerText) {
   const element = document.createElement(tagName);
   element.classList.add(className);
@@ -36,7 +40,7 @@ function runGameTimer() {
     game.properties.timer += 1;
     const minutes = Math.floor(game.properties.timer / 60);
     const seconds = game.properties.timer - minutes * 60;
-    game.elements.timerTextEl.textContent = `${minutes} : ${seconds}`;
+    game.elements.timerTextEl.textContent = `${addZero(minutes)}:${addZero(seconds)}`;
   }, 1000);
 }
 
@@ -85,8 +89,7 @@ function generateGameFieldArray() {
   return gameFieldArray;
 }
 
-function swapItems(item, emptyItem, position) {
-  const ITEM_SIZE = '3.25em';
+function swapItems(item, emptyItem) {
   const itemRow = item.dataset.row;
   const itemCol = item.dataset.col;
   const emptyItemRow = emptyItem.dataset.row;
@@ -105,30 +108,6 @@ function swapItems(item, emptyItem, position) {
   item.dataset.col = emptyItemCol;
   emptyItem.dataset.row = itemRow;
   emptyItem.dataset.col = itemCol;
-
-  // animation
-  switch (position) {
-    case 'up':
-      item.style.transform = `translateY(${ITEM_SIZE})`;
-      break;
-    case 'bottom':
-      item.style.transform = `translateY(-${ITEM_SIZE})`;
-      break;
-    case 'left':
-      item.style.transform = `translateX(${ITEM_SIZE})`;
-      break;
-    case 'right':
-      item.style.transform = `translateX(-${ITEM_SIZE})`;
-      break;
-    default:
-  }
-
-  requestAnimationFrame(() => {
-    item.style.transform = 'none';
-  });
-
-  game.properties.numberOfMoves += 1;
-  game.elements.numberOfMovesTextEl.textContent = game.properties.numberOfMoves;
 
   if (game.properties.enableSound) {
     const swapSound = new Audio();
@@ -156,24 +135,22 @@ function endGame() {
   const { timer, numberOfMoves, fieldSize } = game.properties;
   const minutes = Math.floor(timer / 60);
   const seconds = timer - minutes * 60;
-  const gameTime = `${minutes} : ${seconds}`;
+  const gameTime = `${addZero(minutes)}:${addZero(seconds)}`;
   const timestamp = new Date();
   const message = `Ура! Вы решили головоломку ${fieldSize}*${fieldSize}`
     + '<br>'
     + ` за ${gameTime} и ${numberOfMoves} ходов`;
-  game.elements.completeBanner.style.display = 'flex';
+
   game.elements.completeMessageTextEl.innerHTML = message;
   stopGameTimer();
 
-  const addObject = function (date, time, moves, size) {
-    return {
-      timestamp: date,
-      gameTime: time,
-      numberOfMoves: moves,
-      fieldSize: size,
-    };
-  };
-  //  Записываем результат в local storage
+  const addObject = (date, time, moves, size) => ({
+    timestamp: date,
+    gameTime: time,
+    numberOfMoves: moves,
+    fieldSize: size,
+  });
+
   if (!localStorage.getItem('bestResults')) {
     localStorage.setItem(
       'bestResults',
@@ -214,13 +191,15 @@ function getAdjastmentElements(element) {
 function moveItem(e) {
   const adjacentElements = getAdjastmentElements(e.target);
 
-  for (const key in adjacentElements) {
+  Object.keys(adjacentElements).forEach((key) => {
     if (adjacentElements[key] && adjacentElements[key].id === '0') {
-      swapItems(e.target, adjacentElements[key], key);
+      swapItems(e.target, adjacentElements[key]);
+      game.properties.numberOfMoves += 1;
+      game.elements.numberOfMovesTextEl.textContent = game.properties.numberOfMoves;
 
       if (checkIfGameSolved()) endGame();
     }
-  }
+  });
 }
 
 function setItemBackground(gameFieldItem, image, itemValue, fieldSize) {
@@ -250,11 +229,11 @@ function handleDragOver(event) {
   const emptyCellAdjacentElements = getAdjastmentElements(emptyCell);
   let isMoveable = false;
 
-  for (const key in emptyCellAdjacentElements) {
+  Object.keys(emptyCellAdjacentElements).forEach((key) => {
     if (activeElement === emptyCellAdjacentElements[key]) {
       isMoveable = activeElement !== currentElement && currentElement.id === '0';
     }
-  }
+  });
 
   if (!isMoveable) {
     return;
@@ -277,7 +256,7 @@ function generateGameField(fieldArray) {
   const IMAGE_COUNT = 150;
   const randomImageNumber = Math.floor(Math.random() * IMAGE_COUNT + 1);
   const backgroundImage = `assets/images/box/${randomImageNumber}.jpg`;
-  console.log(randomImageNumber);
+
   game.elements.gameField.style.fontSize = itemTextSizes[game.properties.fieldSize];
 
   //  Добавим пустой div для того чтобы при выполнении функции swap у первой ячейки был предыдущий элемент
@@ -313,11 +292,15 @@ function generateGameField(fieldArray) {
     gameFieldItem.addEventListener('click', moveItem);
 
     gameFieldItem.addEventListener('dragstart', (event) => {
-      event.target.classList.add('--selected');
+      requestAnimationFrame(() => {
+        event.target.classList.add('--selected');
+      });
     });
 
     gameFieldItem.addEventListener('dragend', (event) => {
-      event.target.classList.remove('--selected');
+      event.srcElement.classList.remove('--selected');
+      game.properties.numberOfMoves += 1;
+      game.elements.numberOfMovesTextEl.textContent = game.properties.numberOfMoves;
     });
 
     gameFieldItem.addEventListener('dragover', handleDragOver);
@@ -332,27 +315,38 @@ function newGame() {
   game.elements.timerTextEl.textContent = '00 : 00';
   game.elements.numberOfMovesTextEl.textContent = 0;
   game.elements.gameField.innerHTML = '';
-  game.elements.completeBanner.style.display = 'none';
+  game.elements.completeBanner.classList.add('--display-none');
 
   game.properties.fieldSize = document.querySelector('.select').value;
 
   const gamefieldArray = generateGameFieldArray();
   generateGameField(gamefieldArray);
+  stopGameTimer();
   runGameTimer();
 }
 
 function createBestResults(parentName) {
-  const bestResultsButton = createElement('button', 'button', parentName, 'Лучшие результаты');
-  const bestResultsWrapper = createElement('div', 'best-results__wrapper', parentName);
-  const bestResultsContent = createElement('table', 'best-results__content', bestResultsWrapper);
+  let bestResultsWrapper = document.querySelector('.best-results__wrapper');
+  let bestResultsContent = document.querySelector('.best-results__content');
+  let bestResultsTableRow = document.querySelector('.best-results__table');
+
+  if (bestResultsWrapper) {
+    bestResultsTableRow.remove();
+  } else {
+    bestResultsWrapper = createElement('div', 'best-results__wrapper', parentName);
+    bestResultsContent = createElement('div', 'best-results__content', bestResultsWrapper);
+    bestResultsWrapper.classList.add('--display-none');
+  }
+
   const bestResultsTable = createElement('table', 'best-results__table', bestResultsContent);
-  let bestResultsTableRow = createElement('tr', 'best-results__table-row', bestResultsTable);
+  bestResultsTableRow = createElement('tr', 'best-results__table-row', bestResultsTable);
 
   ['№', 'Дата', 'Время игры', 'Число ходов', 'Размер игры'].forEach((el) => {
     createElement('th', 'best-results__table-header', bestResultsTableRow, el);
   });
 
   const results = JSON.parse(localStorage.getItem('bestResults'));
+
   for (let i = 0; i < 10; i += 1) {
     if (results && results[i]) {
       bestResultsTableRow = createElement('tr', 'best-results__table-row', bestResultsTable);
@@ -378,10 +372,14 @@ function createBestResults(parentName) {
       );
     }
   }
+  return bestResultsWrapper;
+}
 
-  bestResultsWrapper.classList.add('--display-none');
+function createBestResultsButton(parentName) {
+  const bestResultsButton = createElement('button', 'button', parentName, 'Лучшие результаты');
 
   bestResultsButton.addEventListener('click', () => {
+    const bestResultsWrapper = createBestResults(parentName);
     bestResultsWrapper.classList.toggle('--display-none');
   });
 }
@@ -389,6 +387,7 @@ function createBestResults(parentName) {
 function createNewGameButton(parentName) {
   const newGameBtn = createElement('button', 'button', parentName, 'Новая игра');
   newGameBtn.addEventListener('click', newGame);
+  return newGameBtn;
 }
 
 function createCompleteBanner() {
@@ -405,23 +404,28 @@ function createCompleteBanner() {
   );
 
   game.elements.completeMessageTextEl = createElement(
-    'span',
-    "'game__complete-message",
+    'div',
+    'game__complete-message',
     completeBanner,
   );
 
-  createNewGameButton(completeBanner);
-
-  game.elements.completeBanner.style.display = 'none';
+  const newGameButton = createNewGameButton(completeBanner);
+  newGameButton.classList.add('button--new-game');
+  game.elements.completeBanner.classList.add('--display-none');
 }
 
 function createAutoCompleteButton(parentName) {
-  const gameAutoComplete = createElement('button', 'button', parentName, 'Решить в один клик');
-  gameAutoComplete.addEventListener('click', endGame);
+  const gameAutoComplete = createElement('button', 'button', parentName, 'Решить в один клик!');
+
+  gameAutoComplete.addEventListener('click', () => {
+    game.elements.completeBanner.classList.toggle('--display-none');
+    endGame();
+  });
 }
 
 const gameWrapper = createElement('div', 'wrapper', document.body);
 game.elements.gameContainer = createElement('div', 'game', gameWrapper);
+
 const gameButtonsWrapper = createElement(
   'div',
   'game__buttons-wrapper',
@@ -431,9 +435,9 @@ const gameButtonsWrapper = createElement(
 function chooseGameSize(parentName) {
   const select = createElement('select', 'select', parentName);
 
-  [3, 4, 5, 6, 7, 8].forEach((el) => {
-    const option = createElement('option', 'select__option', select, `${el}x${el}`);
-    option.value = el;
+  [3, 4, 5, 6, 7, 8].forEach((element) => {
+    const option = createElement('option', 'select__option', select, `${element}x${element}`);
+    option.value = element;
   });
 
   select[1].setAttribute('selected', true);
@@ -443,7 +447,6 @@ function createEnableSoundButton(parentName) {
   const enableSound = createElement('button', 'button', parentName, 'Звук выкл');
 
   enableSound.addEventListener('click', () => {
-    console.log(this);
     game.properties.enableSound = !game.properties.enableSound;
     if (game.properties.enableSound) {
       enableSound.textContent = 'Звук вкл';
@@ -453,7 +456,7 @@ function createEnableSoundButton(parentName) {
   });
 }
 
-createBestResults(gameButtonsWrapper);
+createBestResultsButton(gameButtonsWrapper);
 createNewGameButton(gameButtonsWrapper);
 chooseGameSize(gameButtonsWrapper);
 createAutoCompleteButton(gameButtonsWrapper);
@@ -461,14 +464,13 @@ createEnableSoundButton(gameButtonsWrapper);
 
 const gameHeader = createElement('div', 'game__header', game.elements.gameContainer);
 
-game.elements.timerTextEl = createElement('span', 'game__time', gameHeader, '00 : 00');
+game.elements.timerTextEl = createElement('span', 'game__time', gameHeader, '00:00');
 game.elements.numberOfMovesTextEl = createElement('span', 'game__number-of-moves', gameHeader, '0');
 
 game.elements.gameField = createElement('div', 'game__field', game.elements.gameContainer);
 
-createCompleteBanner();
-
 const gamefieldArray = generateGameFieldArray();
 
 generateGameField(gamefieldArray);
+createCompleteBanner();
 runGameTimer();
