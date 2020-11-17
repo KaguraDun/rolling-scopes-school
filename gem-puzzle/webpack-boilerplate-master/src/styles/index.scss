@@ -106,6 +106,7 @@ body {
       border: 1px solid #edf2f8;
       cursor: pointer;
       -webkit-text-stroke: 1px black;
+      transition: transform 0.2s ease-in-out;
     }
 
     &-item:hover {
@@ -175,5 +176,5 @@ body {
 }
 
 .--selected {
-  transform: translateX(-9999px);
+  visibility: hidden;
 }

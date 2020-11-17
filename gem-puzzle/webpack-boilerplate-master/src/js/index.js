@@ -89,7 +89,8 @@ function generateGameFieldArray() {
   return gameFieldArray;
 }
 
-function swapItems(item, emptyItem) {
+function swapItems(item, emptyItem, position) {
+  const ITEM_SIZE = '3.25em';
   const itemRow = item.dataset.row;
   const itemCol = item.dataset.col;
   const emptyItemRow = emptyItem.dataset.row;
@@ -114,6 +115,28 @@ function swapItems(item, emptyItem) {
     swapSound.src = 'assets/audio/swap-sound.mp3';
     swapSound.play();
   }
+
+  switch (position) {
+    case 'up':
+      item.style.transform = `translateY(${ITEM_SIZE})`;
+      break;
+    case 'bottom':
+      item.style.transform = `translateY(-${ITEM_SIZE})`;
+      break;
+    case 'left':
+      item.style.transform = `translateX(${ITEM_SIZE})`;
+      break;
+    case 'right':
+      item.style.transform = `translateX(-${ITEM_SIZE})`;
+      break;
+    default:
+  }
+  setTimeout(() => {
+    requestAnimationFrame(() => {
+      item.style.transform = 'none';
+      item.style.removeProperty('transform');
+    });
+  }, 10);
 }
 
 function checkIfGameSolved() {
@@ -193,7 +216,7 @@ function moveItem(e) {
 
   Object.keys(adjacentElements).forEach((key) => {
     if (adjacentElements[key] && adjacentElements[key].id === '0') {
-      swapItems(e.target, adjacentElements[key]);
+      swapItems(e.target, adjacentElements[key], key);
       game.properties.numberOfMoves += 1;
       game.elements.numberOfMovesTextEl.textContent = game.properties.numberOfMoves;
 
@@ -466,11 +489,8 @@ const gameHeader = createElement('div', 'game__header', game.elements.gameContai
 
 game.elements.timerTextEl = createElement('span', 'game__time', gameHeader, '00:00');
 game.elements.numberOfMovesTextEl = createElement('span', 'game__number-of-moves', gameHeader, '0');
-
 game.elements.gameField = createElement('div', 'game__field', game.elements.gameContainer);
 
-const gamefieldArray = generateGameFieldArray();
-
-generateGameField(gamefieldArray);
+generateGameField(generateGameFieldArray());
 createCompleteBanner();
 runGameTimer();
