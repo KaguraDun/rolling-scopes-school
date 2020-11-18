@@ -20,12 +20,9 @@ function setBestResult(bestResults) {
     localStorage.setItem('bestResults', JSON.stringify([bestResults]));
   } else {
     const results = JSON.parse(localStorage.getItem('bestResults'));
-    // Проверить можно ли убрать первоначальную сортировку
-    results.sort((prev, next) => prev.numberOfMoves - next.numberOfMoves);
-    results.sort((prev, next) => next.fieldSize - prev.fieldSize);
 
     if (results.length < 10) {
-      results.unshift();
+      results.unshift(bestResults);
     } else {
       results.pop();
       results.unshift(bestResults);
