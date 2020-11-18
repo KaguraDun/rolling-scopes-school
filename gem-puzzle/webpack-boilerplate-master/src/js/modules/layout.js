@@ -238,11 +238,8 @@ export function createAutoCompleteButton(parentName, game) {
   const gameAutoComplete = createElement('button', 'button', parentName, 'Решить в один клик!');
 
   gameAutoComplete.addEventListener('click', () => {
-    let completeBanner = document.querySelector('.game__complete-wrapper');
-    if (!completeBanner) {
-      completeBanner = createCompleteBanner(parentName, game);
-    }
-    completeBanner.classList.toggle('--display-none');
+    game.elements.completeBanner.classList.toggle('--display-none');
+
     endGame(game);
   });
 }

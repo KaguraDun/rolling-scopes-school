@@ -7,6 +7,7 @@ import {
   createGameSizeSelector,
   createEnableSoundButton,
   createAutoCompleteButton,
+  createCompleteBanner,
 } from './modules/layout';
 
 const game = {
@@ -24,6 +25,7 @@ const game = {
     timerTextEl: null,
     numberOfMovesTextEl: null,
     currentDroppable: null,
+    completeBanner: null,
   },
 };
 
@@ -38,6 +40,7 @@ createGameSizeSelector(gameButtonsWrapper);
 createAutoCompleteButton(gameButtonsWrapper, game);
 createEnableSoundButton(gameButtonsWrapper, game);
 
+game.elements.completeBanner = createCompleteBanner(gameButtonsWrapper, game);
 game.elements.timerTextEl = createElement('span', 'game__time', gameHeader, '00:00');
 game.elements.numberOfMovesTextEl = createElement('span', 'game__number-of-moves', gameHeader, '0');
 game.elements.gameField = createElement('div', 'game__field', gameContainer);

@@ -1,5 +1,3 @@
-import { createCompleteBanner } from './layout';
-
 function addZero(num) {
   return +num < 10 ? `0${num}` : num;
 }
@@ -83,6 +81,7 @@ export function endGame(game) {
   if (game.elements.completeMessageTextEl) {
     game.elements.completeMessageTextEl.innerHTML = message;
   }
+
   stopGameTimer(game);
 
   const bestResults = (date, time, moves, size) => ({
@@ -155,16 +154,6 @@ function swapItems(item, emptyItem, position, game) {
   setAnimation(item, position);
 }
 
-function completeGame(game) {
-  let completeBanner = document.querySelector('.game__complete-wrapper');
-  if (!completeBanner) {
-    completeBanner = createCompleteBanner(document.body, game);
-  }
-
-  completeBanner.classList.toggle('--display-none');
-  endGame(game);
-}
-
 export function moveItem(event, game) {
   const adjacentElements = getAdjastmentElements(event.target);
 
@@ -175,7 +164,8 @@ export function moveItem(event, game) {
       game.elements.numberOfMovesTextEl.textContent = game.properties.numberOfMoves;
 
       if (checkIfGameSolved()) {
-        completeGame(game);
+        game.elements.completeBanner.classList.toggle('--display-none');
+        endGame(game);
       }
     }
   });
