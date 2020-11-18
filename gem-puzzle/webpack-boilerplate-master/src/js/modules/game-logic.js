@@ -1,3 +1,5 @@
+import { createCompleteBanner } from './layout';
+
 function addZero(num) {
   return +num < 10 ? `0${num}` : num;
 }
@@ -43,7 +45,9 @@ function checkIfGameSolved() {
   let rightPositionCounter = 0;
 
   for (let i = 1; i < gameFieldchildNodes.length - 1; i += 1) {
-    if (gameFieldchildNodes[i].id === i) rightPositionCounter += 1;
+    if (gameFieldchildNodes[i].id === gameFieldchildNodes[i].dataset.position) {
+      rightPositionCounter += 1;
+    }
   }
 
   //  Учитываем пустой элемент в самом начале
@@ -76,8 +80,10 @@ export function endGame(game) {
     + '<br>'
     + ` за ${gameTime} и ${numberOfMoves} ходов`;
 
-  game.elements.completeMessageTextEl.innerHTML = message;
-  stopGameTimer();
+  if (game.elements.completeMessageTextEl) {
+    game.elements.completeMessageTextEl.innerHTML = message;
+  }
+  stopGameTimer(game);
 
   const bestResults = (date, time, moves, size) => ({
     timestamp: date,
@@ -149,6 +155,16 @@ function swapItems(item, emptyItem, position, game) {
   setAnimation(item, position);
 }
 
+function completeGame(game) {
+  let completeBanner = document.querySelector('.game__complete-wrapper');
+  if (!completeBanner) {
+    completeBanner = createCompleteBanner(document.body, game);
+  }
+
+  completeBanner.classList.toggle('--display-none');
+  endGame(game);
+}
+
 export function moveItem(event, game) {
   const adjacentElements = getAdjastmentElements(event.target);
 
@@ -159,7 +175,7 @@ export function moveItem(event, game) {
       game.elements.numberOfMovesTextEl.textContent = game.properties.numberOfMoves;
 
       if (checkIfGameSolved()) {
-        endGame(game);
+        completeGame(game);
       }
     }
   });
@@ -186,7 +202,7 @@ function solvabilityCheck(fieldArray) {
     }
   }
 
-  return !!(positionSum % 2);
+  return positionSum % 2 === 0;
 }
 
 export function generateGameFieldArray(gamefieldSize) {
@@ -200,7 +216,9 @@ export function generateGameFieldArray(gamefieldSize) {
 
   while (findSolution !== true) {
     arrayShuffle(gameFieldArray);
-    if (solvabilityCheck(gameFieldArray)) findSolution = true;
+    if (solvabilityCheck(gameFieldArray)) {
+      findSolution = true;
+    }
   }
 
   return gameFieldArray;

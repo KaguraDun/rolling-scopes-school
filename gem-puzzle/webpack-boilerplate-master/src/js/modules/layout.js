@@ -123,12 +123,12 @@ function setItemBackground(gameFieldItem, image, itemValue, fieldSize) {
 export function generateGameField(fieldArray, game) {
   const fieldSize = game.properties.fieldSize * game.properties.fieldSize;
   const itemTextSizes = {
-    3: '60px',
-    4: '45px',
-    5: '36px',
-    6: '30px',
-    7: '25.7px',
-    8: '22.5px',
+    3: '3.75em',
+    4: '2.8125em',
+    5: '2.25em',
+    6: '1.875em',
+    7: '1.6062em',
+    8: '1.4063em',
   };
 
   const IMAGE_COUNT = 150;
@@ -163,7 +163,7 @@ export function generateGameField(fieldArray, game) {
     const colNumber = (i + 1) % game.properties.fieldSize;
 
     gameFieldItem.dataset.col = colNumber === 0 ? game.properties.fieldSize : colNumber;
-    gameFieldItem.dataset.position = i;
+    gameFieldItem.dataset.position = i + 1;
     gameFieldItem.draggable = true;
 
     gameFieldItem.addEventListener('click', (event) => {
@@ -197,7 +197,7 @@ export function newGame(game) {
   game.elements.numberOfMovesTextEl.textContent = 0;
   game.elements.gameField.innerHTML = '';
 
-  const completeBanner = document.querySelector('.game__complete-banner');
+  const completeBanner = document.querySelector('.game__complete-wrapper');
   if (completeBanner) {
     completeBanner.classList.add('--display-none');
   }
@@ -217,7 +217,7 @@ export function createNewGameButton(parentName, game) {
   return newGameBtn;
 }
 
-function createCompleteBanner(parent, game) {
+export function createCompleteBanner(parent, game) {
   const completeBannerWrapper = createElement('div', 'game__complete-wrapper', parent);
   const completeBanner = createElement('div', 'game__complete-banner', completeBannerWrapper);
 
@@ -238,7 +238,10 @@ export function createAutoCompleteButton(parentName, game) {
   const gameAutoComplete = createElement('button', 'button', parentName, 'Решить в один клик!');
 
   gameAutoComplete.addEventListener('click', () => {
-    const completeBanner = createCompleteBanner(parentName, game);
+    let completeBanner = document.querySelector('.game__complete-wrapper');
+    if (!completeBanner) {
+      completeBanner = createCompleteBanner(parentName, game);
+    }
     completeBanner.classList.toggle('--display-none');
     endGame(game);
   });
