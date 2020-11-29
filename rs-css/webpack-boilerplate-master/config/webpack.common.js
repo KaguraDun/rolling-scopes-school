@@ -79,7 +79,7 @@ module.exports = {
         test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/images/[hash][ext]',
+          filename: 'assets/images/[name][ext]',
         },
       },
 
@@ -88,7 +88,7 @@ module.exports = {
         test: /\.(woff(2)?|eot|ttf|otf)$/,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/fonts/[hash][ext]',
+          filename: 'assets/fonts/[name][ext]',
         },
       },
 
@@ -96,14 +96,14 @@ module.exports = {
         test: /\.(svg)$/,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/icons/[hash][ext]',
+          filename: 'assets/icons/[name][ext]',
         },
       },
       {
         test: /\.(ogg|mp3|wav|mpe?g)$/i,
         type: 'asset/resource',
         generator: {
-          filename: 'assets/audio/[hash][ext]',
+          filename: 'assets/audio/[name][ext]',
         },
       },
     ],
