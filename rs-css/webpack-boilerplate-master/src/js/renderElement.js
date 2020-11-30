@@ -1,4 +1,4 @@
-export default function createElement(tagName, classList, parentName, innerText) {
+export default function renderElement(tagName, classList, parentName, innerText) {
   const element = document.createElement(tagName);
 
   classList.forEach((className) => {

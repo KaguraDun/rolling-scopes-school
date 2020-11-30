@@ -1,18 +1,28 @@
-import createElement from './createElement';
+import renderElement from './renderElement';
+import { ChangeLevelEvent } from './events/ChangeLevelEvent';
 
 export default class LevelList {
-  constructor(rootElement, levels) {
+  constructor(rootElement, levels, eventEmitter) {
     this.rootElement = rootElement;
     this.levels = levels;
+    this.eventEmitter = eventEmitter;
+    this.onLevelSelect = this.onLevelSelect.bind(this);
   }
 
   initialize() {
-    const list = createElement('ul', ['level-list'], this.rootElement);
+    const list = renderElement('ul', ['level-list'], this.rootElement);
 
-    this.levels.forEach((element) => {
-      const listItem = createElement('li', ['level-list__item'], list);
-      const listItemLink = createElement('a', ['level-list__item-link'], listItem, element.name);
+    this.levels.forEach((element, index) => {
+      const listItem = renderElement('li', ['level-list__item'], list);
+      const listItemLink = renderElement('a', ['level-list__item-link'], listItem, element.name);
       listItemLink.href = '#';
+      listItemLink.id = index;
+      //Сделать делегирование всему списку а не каждому элементу
+      listItemLink.addEventListener('click', this.onLevelSelect);
     });
+  }
+
+  onLevelSelect(event) {
+    this.eventEmitter.emit(new ChangeLevelEvent(event.target.id));
   }
 }

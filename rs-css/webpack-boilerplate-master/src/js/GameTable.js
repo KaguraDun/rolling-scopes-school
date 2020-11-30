@@ -1,23 +1,32 @@
-import createElement from './createElement';
+import { EVENT_NAME } from './events/ChangeLevelEvent';
+import renderElement from './renderElement';
 
 export default class GameTable {
-  constructor(rootElement, currentLevel, levels) {
+  constructor(rootElement, currentLevel, levels, eventEmitter) {
     this.rootElement = rootElement;
     this.currentLevel = currentLevel;
     this.levels = levels;
+    this.gameTableLayout = null;
+    this.render = this.render.bind(this);
+    this.eventEmitter = eventEmitter;
   }
 
   initialize() {
-    const gameTable = createElement('div', ['game-table'], this.rootElement);
-    const gameTableLayout = createElement('div', ['game-table__layout'], gameTable);
+    const gameTable = renderElement('div', ['game-table'], this.rootElement);
+    this.gameTableLayout = renderElement('div', ['game-table__layout'], gameTable);
 
-    this.render(gameTableLayout);
+    this.eventEmitter.addEvent(EVENT_NAME, this.render);
   }
 
-  render(parentElement) {
-    const levelElements = this.levels[this.currentLevel].elements;
+  render({detail}) {
+    const selectedLevel = Number(detail.selectedLevel) ;
+    const levelElements = this.levels[selectedLevel].elements;
+
+    this.gameTableLayout.innerHTML = '';
+
     levelElements.forEach((element) => {
-      createElement(element, [element], parentElement);
+      renderElement(element, [element], this.gameTableLayout);
     });
   }
+
 }

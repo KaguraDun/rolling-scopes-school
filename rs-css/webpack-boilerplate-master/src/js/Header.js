@@ -1,4 +1,4 @@
-import createElement from './createElement';
+import createElement from './renderElement';
 
 export default class Header {
   constructor(rootElement) {

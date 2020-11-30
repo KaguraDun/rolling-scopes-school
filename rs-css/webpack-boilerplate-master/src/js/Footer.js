@@ -1,4 +1,4 @@
-import createElement from './createElement';
+import renderElement from './renderElement';
 
 export default class Header {
   constructor(rootElement) {
@@ -6,13 +6,13 @@ export default class Header {
   }
 
   initialize() {
-    const footer = createElement('footer', ['footer'], this.rootElement);
-    createElement('span', ['footer__author'], footer, 'Made by Kovnev Vasily:');
-    const footerAuthorLink = createElement('a', ['footer__author-link'], footer, 'Git Hub');
+    const footer = renderElement('footer', ['footer'], this.rootElement);
+    renderElement('span', ['footer__author'], footer, 'Made by Kovnev Vasily:');
+    const footerAuthorLink = renderElement('a', ['footer__author-link'], footer, 'Git Hub');
     footerAuthorLink.href = 'https://github.com/KaguraDun';
     footerAuthorLink.target = '_blank';
 
-    createElement('span', ['footer__year'], footer, '2020');
+    renderElement('span', ['footer__year'], footer, '2020');
 
   }
 }

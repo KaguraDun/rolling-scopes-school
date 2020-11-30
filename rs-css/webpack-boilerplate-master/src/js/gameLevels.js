@@ -1,7 +1,7 @@
 export default [
   {
-    name: 'level 1',
-    description: 'Select plate',
+    name: 'Tag',
+    description: 'Select plate by tag',
     elements: ['plate', 'cup'],
     selectedElements: ['plate'],
   },
@@ -10,5 +10,11 @@ export default [
     description: 'Select cup',
     elements: ['plate', 'cup', 'cake'],
     selectedElements: ['cup'],
+  },
+  {
+    name: 'The cake is a lie',
+    description: 'Select cake by id',
+    elements: ['plate', 'cake', 'plate'],
+    selectedElements: ['cake'],
   },
 ];
