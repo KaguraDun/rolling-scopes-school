@@ -1,5 +1,6 @@
 import renderElement from './renderElement';
 import { EVENT_NAME } from './events/ChangeLevelEvent';
+import Prism from './prism-highlight/prism';
 
 // Проверить мб стоит наследовать от CSS Editor
 export default class HTMLViewer {
@@ -10,21 +11,16 @@ export default class HTMLViewer {
     this.getHTMLCode = this.getHTMLCode.bind(this);
   }
 
-  renderTextArea(parentElement, gameEditorSize) {
-    const gameEditorLines = renderElement('div', ['game-editor__lines'], parentElement);
+  renderCodeBlock(parentElement) {
+    const gameHTML = renderElement('div', ['game-editor__viewer'], parentElement);
+    const preElement = renderElement('pre', ['line-numbers'], gameHTML);
 
-    for (let i = 0; i < gameEditorSize; i += 1) {
-      renderElement('div', ['game-editor__line-num'], gameEditorLines, i + 1);
-      renderElement('br', [], gameEditorLines);
-    }
-
-    this.gameHTMLViewer = renderElement('textarea', ['game-editor__viewer'], parentElement);
+    this.gameHTMLViewer = renderElement('code', ['language-markup'], preElement);
 
     this.eventEmitter.addEvent(EVENT_NAME, this.getHTMLCode);
   }
 
   initialize() {
-    const gameEditorSize = 9;
     const gameEditor = renderElement('div', ['game-editor'], this.rootElement);
     const gameEditorInfo = renderElement('div', ['game-editor__info'], gameEditor);
     const gameEditorLayout = renderElement('div', ['game-editor__layout'], gameEditor);
@@ -32,12 +28,35 @@ export default class HTMLViewer {
     renderElement('span', ['game-editor__heading'], gameEditorInfo, 'HTMLViewer');
     renderElement('span', ['game-editor__filename'], gameEditorInfo, 'index.html');
 
-    this.renderTextArea(gameEditorLayout, gameEditorSize);
+    this.renderCodeBlock(gameEditorLayout);
   }
 
   getHTMLCode() {
-    // Придумать как получить table Layout по нормальному
-    const tableLayout = document.querySelector('.game-table')
-    this.gameHTMLViewer.value = tableLayout.innerHTML;
+    // Придумать как получать game table без querry selector
+    const gameTable = document.querySelector('.game-table');
+
+    this.gameHTMLViewer.textContent = this.format(gameTable.innerHTML);
+    Prism.highlightElement(this.gameHTMLViewer);
+  }
+
+  // https://stackoverflow.com/questions/3913355/how-to-format-tidy-beautify-in-javascript
+  format(html) {
+    const tab = '\t';
+    let result = '';
+    let indent = '';
+
+    html.split(/>\s*</).forEach((element) => {
+      if (element.match(/^\/\w/)) {
+        indent = indent.substring(tab.length);
+      }
+
+      result += `${indent}<${element}>\r\n`;
+
+      if (element.match(/^<?\w[^>]*[^\/]$/)) {
+        indent += tab;
+      }
+    });
+
+    return result.substring(1, result.length - 3);
   }
 }

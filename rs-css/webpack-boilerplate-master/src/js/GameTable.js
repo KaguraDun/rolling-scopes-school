@@ -18,8 +18,8 @@ export default class GameTable {
     this.eventEmitter.addEvent(EVENT_NAME, this.render);
   }
 
-  render({detail}) {
-    const selectedLevel = Number(detail.selectedLevel) ;
+  render({ detail }) {
+    const selectedLevel = Number(detail.selectedLevel);
     const levelElements = this.levels[selectedLevel].elements;
 
     this.gameTableLayout.innerHTML = '';

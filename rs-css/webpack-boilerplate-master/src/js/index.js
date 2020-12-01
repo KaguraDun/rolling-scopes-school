@@ -1,3 +1,4 @@
+import '../styles/prism.css';
 import '../styles/index.scss';
 
 import createElement from './renderElement';
@@ -16,7 +17,6 @@ class Game {
     this.currentLevel = 0;
     this.levels = levels;
     this.levelsCount = this.levels.length;
-    this.tableElement = null;
   }
 
   initialize() {

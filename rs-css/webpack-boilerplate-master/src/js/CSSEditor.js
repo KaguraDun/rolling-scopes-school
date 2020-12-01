@@ -1,4 +1,5 @@
 import renderElement from './renderElement';
+import Prism from './prism-highlight/prism';
 
 export default class CSSEditor {
   constructor(rootElement) {
@@ -6,9 +7,15 @@ export default class CSSEditor {
   }
 
   createTextArea(parentElement) {
-    renderElement('div', ['game-editor__lines'], parentElement, '1');
     const gameEditorInput = renderElement('textarea', ['game-editor__input'], parentElement);
     gameEditorInput.placeholder = 'Type in a CSS Selector';
+
+    gameEditorInput.addEventListener('change', this.highlightCode);
+  }
+
+  highlightCode({ target }) {
+    console.log(target);
+    Prism.highlightElement(target);
   }
 
   initialize() {

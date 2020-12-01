@@ -89,6 +89,7 @@ $media-mobile: 320px;
   &__input {
     width: 90%;
     height: 50px;
+    overflow: hidden;
     font-size: 20px;
     resize: none;
   }
@@ -151,4 +152,8 @@ $media-mobile: 320px;
   background: green;
   border: 2px solid blue;
   border-radius: 50%;
+}
+
+code {
+  height: 500px;
 }
