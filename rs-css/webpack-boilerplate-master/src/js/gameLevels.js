@@ -14,9 +14,17 @@ export default [
     name: 'Class',
     description: 'Select plate by tag',
     markup: `
-    <plate>
+    <plate class="--selected">
       <apple class="apple"></apple>
     </plate>
+    <plate></plate>
+    <cup class="--selected"></cup>
+    `,
+  },
+  {
+    name: 'Class-dowble',
+    description: 'Select plate by tag',
+    markup: `
     <plate></plate>
     <cup class="--selected"></cup>
     `,

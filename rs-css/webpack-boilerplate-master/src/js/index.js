@@ -28,7 +28,7 @@ class Game {
 
     const header = new Header(pageLeftColumn);
     const gameTable = new GameTable(pageLeftColumn, this.currentLevel, this.levels, eventEmitter);
-    const cssEditor = new CSSEditor(pageLeftColumn);
+    const cssEditor = new CSSEditor(pageLeftColumn, eventEmitter);
     const htmlViewer = new HTMLViewer(pageLeftColumn, eventEmitter);
     const levelList = new LevelList(pageRightColumn, this.levels, eventEmitter);
     const footer = new Footer(pageLeftColumn);

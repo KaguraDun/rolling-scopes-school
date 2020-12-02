@@ -23,7 +23,5 @@ export default class GameTable {
     const levelElements = this.levels[selectedLevel];
 
     this.gameTableLayout.innerHTML = levelElements.markup;
-
-    
   }
 }
