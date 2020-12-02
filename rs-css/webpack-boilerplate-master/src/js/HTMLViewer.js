@@ -34,8 +34,11 @@ export default class HTMLViewer {
   getHTMLCode() {
     // Придумать как получать game table без querry selector
     const gameTable = document.querySelector('.game-table');
+    const gameTableHTML = gameTable.innerHTML
+      .replace(' class="--selected"', '')
+      .replace(' --selected', '');
 
-    this.gameHTMLViewer.textContent = this.format(gameTable.innerHTML);
+    this.gameHTMLViewer.textContent = this.format(gameTableHTML);
     Prism.highlightElement(this.gameHTMLViewer);
   }
 

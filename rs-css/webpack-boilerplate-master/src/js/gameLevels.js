@@ -2,19 +2,23 @@ export default [
   {
     name: 'Tag',
     description: 'Select plate by tag',
-    elements: ['plate', 'cup'],
-    selectedElements: ['plate'],
+    markup: `
+    <plate class="--selected">
+      <apple class="apple"></apple>
+      <apple class="apple"></apple>
+    </plate>
+    <cup></cup>
+    `,
   },
   {
-    name: 'level 2',
-    description: 'Select cup',
-    elements: ['plate', 'cup', 'cake'],
-    selectedElements: ['cup'],
-  },
-  {
-    name: 'The cake is a lie',
-    description: 'Select cake by id',
-    elements: ['plate', 'cake', 'plate'],
-    selectedElements: ['cake'],
+    name: 'Class',
+    description: 'Select plate by tag',
+    markup: `
+    <plate>
+      <apple class="apple"></apple>
+    </plate>
+    <plate></plate>
+    <cup class="--selected"></cup>
+    `,
   },
 ];

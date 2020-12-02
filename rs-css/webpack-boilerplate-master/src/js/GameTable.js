@@ -20,13 +20,10 @@ export default class GameTable {
 
   render({ detail }) {
     const selectedLevel = Number(detail.selectedLevel);
-    const levelElements = this.levels[selectedLevel].elements;
+    const levelElements = this.levels[selectedLevel];
 
-    this.gameTableLayout.innerHTML = '';
+    this.gameTableLayout.innerHTML = levelElements.markup;
 
-    levelElements.forEach((element) => {
-      renderElement(element, [element], this.gameTableLayout);
-    });
+    
   }
-
 }
