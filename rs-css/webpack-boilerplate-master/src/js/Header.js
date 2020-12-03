@@ -1,4 +1,4 @@
-import createElement from './renderElement';
+import renderElement from './renderElement';
 
 export default class Header {
   constructor(rootElement) {
@@ -6,7 +6,7 @@ export default class Header {
   }
 
   initialize() {
-    const header = createElement('header', ['header'], this.rootElement);
-    createElement('h1', ['header__logo'], header, 'CSS Dinner');
+    const header = renderElement('header', ['header'], this.rootElement);
+    renderElement('h1', ['header__logo'], header, 'CSS Dinner');
   }
 }

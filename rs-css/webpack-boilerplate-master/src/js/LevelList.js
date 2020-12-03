@@ -17,12 +17,14 @@ export default class LevelList {
       const listItemLink = renderElement('a', ['level-list__item-link'], listItem, element.name);
       listItemLink.href = '#';
       listItemLink.id = index;
-      //Сделать делегирование всему списку а не каждому элементу
-      listItemLink.addEventListener('click', this.onLevelSelect);
     });
+
+    list.addEventListener('click', this.onLevelSelect);
   }
 
   onLevelSelect(event) {
+    if (event.target.tagName !== 'A') return;
+
     this.eventEmitter.emit(new ChangeLevelEvent(event.target.id));
   }
 }

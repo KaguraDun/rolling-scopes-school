@@ -41,9 +41,15 @@ export default class CSSEditor {
 
     const CLASS__SELECTED = '--selected';
     // Подумать как искать только на table
+    const gameTableLayout = document.querySelector('.game-table__layout');
     const elementsCountForWin = document.querySelectorAll(`.${CLASS__SELECTED}`).length;
     const selectedElements = document.querySelectorAll(this.textArea.value);
     const selectedElementsArr = [];
+
+    if (selectedElements.length === 0) {
+      this.wrongSelectorHighlight(gameTableLayout);
+      return;
+    }
 
     selectedElements.forEach((element) => {
       if (element.classList.contains(CLASS__SELECTED)) {
