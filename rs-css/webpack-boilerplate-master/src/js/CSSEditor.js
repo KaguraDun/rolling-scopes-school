@@ -1,5 +1,4 @@
 import renderElement from './renderElement';
-import Prism from './prism-highlight/prism';
 
 import { ChangeLevelEvent } from './events/ChangeLevelEvent';
 
@@ -14,12 +13,7 @@ export default class CSSEditor {
   createTextArea(parentElement) {
     this.textArea = renderElement('textarea', ['game-editor__input'], parentElement);
     this.textArea.placeholder = 'Type in a CSS Selector';
-
     this.textArea.addEventListener('change', this.highlightCode);
-  }
-
-  highlightCode({ target }) {
-    Prism.highlightElement(target);
   }
 
   initialize() {

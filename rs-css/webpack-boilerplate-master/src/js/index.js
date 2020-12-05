@@ -1,4 +1,4 @@
-import '../styles/prism.css';
+import '../styles/highlight-js/atom-one-dark-reasonable.css';
 import '../styles/index.scss';
 
 import createElement from './renderElement';
@@ -29,7 +29,7 @@ class Game {
     const header = new Header(pageLeftColumn);
     const gameTable = new GameTable(pageLeftColumn, this.currentLevel, this.levels, eventEmitter);
     const cssEditor = new CSSEditor(pageLeftColumn, eventEmitter);
-    const htmlViewer = new HTMLViewer(pageLeftColumn, eventEmitter);
+    const htmlViewer = new HTMLViewer(pageLeftColumn, this.levels, eventEmitter);
     const levelList = new LevelList(pageRightColumn, this.levels, eventEmitter);
     const footer = new Footer(pageLeftColumn);
 

@@ -7,6 +7,7 @@ export default class Header {
 
   initialize() {
     const header = renderElement('header', ['header'], this.rootElement);
+
     renderElement('h1', ['header__logo'], header, 'CSS Dinner');
   }
 }

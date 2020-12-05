@@ -185,6 +185,26 @@ code {
   animation: clear-table 1s ease-out;
 }
 
+.--highlight-element {
+  background-color: white;
+  border: 10px solid purple;
+}
+
+.--highlight-HTML {
+  background-color: white;
+}
+
+.--hidden {
+  display: none;
+}
+
+.element-HTML-code {
+  position: absolute;
+  top: 50px;
+  background-color: white;
+  border: 2px dashed black;
+}
+
 @keyframes clear-table {
   0% {
     top: 0;

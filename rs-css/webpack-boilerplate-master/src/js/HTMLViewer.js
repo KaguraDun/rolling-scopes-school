@@ -1,23 +1,28 @@
 import renderElement from './renderElement';
-import { EVENT_NAME } from './events/ChangeLevelEvent';
-import Prism from './prism-highlight/prism';
+import { EVENT_NAME as ChangeLevelEvent } from './events/ChangeLevelEvent';
+import { EVENT_NAME as HighlightElementEvent } from './events/HighlightElementEvent';
+import hljs from './highlight-js/highlight.pack';
 
 // Проверить мб стоит наследовать от CSS Editor
 export default class HTMLViewer {
-  constructor(rootElement, eventEmitter) {
+  constructor(rootElement, levels, eventEmitter) {
     this.rootElement = rootElement;
     this.eventEmitter = eventEmitter;
+    this.levels = levels;
+    this.levelElements = null;
     this.gameHTMLViewer = null;
-    this.getHTMLCode = this.getHTMLCode.bind(this);
+    this.renderHTMLCode = this.renderHTMLCode.bind(this);
+    this.highlightElement = this.highlightElement.bind(this);
+    this.gameTableHTML = null;
   }
 
   renderCodeBlock(parentElement) {
     const gameHTML = renderElement('div', ['game-editor__viewer'], parentElement);
     const preElement = renderElement('pre', ['line-numbers'], gameHTML);
 
-    this.gameHTMLViewer = renderElement('code', ['language-markup'], preElement);
+    this.gameHTMLViewer = renderElement('code', ['language-html'], preElement);
 
-    this.eventEmitter.addEvent(EVENT_NAME, this.getHTMLCode);
+    this.eventEmitter.addEvent(ChangeLevelEvent, this.renderHTMLCode);
   }
 
   initialize() {
@@ -29,22 +34,35 @@ export default class HTMLViewer {
     renderElement('span', ['game-editor__filename'], gameEditorInfo, 'index.html');
 
     this.renderCodeBlock(gameEditorLayout);
+
+    this.eventEmitter.addEvent(HighlightElementEvent, this.highlightElement);
   }
 
-  getHTMLCode() {
-    // Придумать как получать game table без querry selector
-    const gameTable = document.querySelector('.game-table');
-    const gameTableHTML = gameTable.innerHTML
+  renderHTMLCode({ detail }) {
+    const selectedLevel = Number(detail.selectedLevel);
+    const gameTable = renderElement('div', ['table'], this.gameHTMLViewer);
+
+    this.levelElements = this.levels[selectedLevel].markup;
+
+    const levelHTML = this.levelElements
+      .join('')
       .replace(' class="--selected"', '')
       .replace(' --selected', '');
 
-    this.gameHTMLViewer.textContent = this.format(gameTableHTML);
-    Prism.highlightElement(this.gameHTMLViewer);
+    gameTable.insertAdjacentHTML('afterbegin', levelHTML);
+
+    this.gameHTMLViewer.textContent = this.format(gameTable.outerHTML);
+
+    hljs.highlightBlock(this.gameHTMLViewer);
+  }
+
+  highlightElement({ detail }) {
+    //console.log(detail.element);
   }
 
   // https://stackoverflow.com/questions/3913355/how-to-format-tidy-beautify-in-javascript
   format(html) {
-    const tab = '\t';
+    const tab = '  ';
     let result = '';
     let indent = '';
 
