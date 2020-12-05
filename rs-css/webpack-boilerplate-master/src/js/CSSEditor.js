@@ -1,19 +1,26 @@
 import renderElement from './renderElement';
-
 import { ChangeLevelEvent } from './events/ChangeLevelEvent';
 
 export default class CSSEditor {
   constructor(rootElement, eventEmitter) {
     this.rootElement = rootElement;
-    this.textArea = null;
+    this.input = null;
     this.eventEmitter = eventEmitter;
     this.trySelector = this.trySelector.bind(this);
+    this.keydownWatch = this.keydownWatch.bind(this);
   }
 
-  createTextArea(parentElement) {
-    this.textArea = renderElement('textarea', ['game-editor__input'], parentElement);
-    this.textArea.placeholder = 'Type in a CSS Selector';
-    this.textArea.addEventListener('change', this.highlightCode);
+  createinput(parentElement) {
+    this.input = renderElement('input', ['game-editor__input'], parentElement);
+    this.input.placeholder = 'Type in a CSS Selector';
+    this.input.addEventListener('keydown', this.keydownWatch);
+  }
+
+  keydownWatch(event) {
+    if (event.key === 'Enter') {
+      this.trySelector();
+      return;
+    }
   }
 
   initialize() {
@@ -25,19 +32,19 @@ export default class CSSEditor {
     renderElement('span', ['game-editor__filename'], gameEditorInfo, 'style.css');
     const button = renderElement('button', ['button', 'button__enter'], gameEditorLayout, 'ENTER');
 
-    this.createTextArea(gameEditorLayout);
+    this.createinput(gameEditorLayout);
 
     button.addEventListener('click', this.trySelector);
   }
 
   trySelector() {
-    if (!this.textArea.value) return;
+    if (!this.input.value) return;
 
     const CLASS__SELECTED = '--selected';
     // Подумать как искать только на table
     const gameTableLayout = document.querySelector('.game-table__layout');
     const elementsCountForWin = document.querySelectorAll(`.${CLASS__SELECTED}`).length;
-    const selectedElements = document.querySelectorAll(this.textArea.value);
+    const selectedElements = document.querySelectorAll(this.input.value);
     const selectedElementsArr = [];
 
     if (selectedElements.length === 0) {

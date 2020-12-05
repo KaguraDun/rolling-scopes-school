@@ -11,6 +11,7 @@ import HTMLViewer from './HTMLViewer';
 import LevelList from './LevelList';
 import Footer from './Footer';
 import EventEmitter from './EventEmitter';
+import { ChangeLevelEvent } from './events/ChangeLevelEvent';
 
 class Game {
   constructor(levels) {
@@ -39,6 +40,8 @@ class Game {
     htmlViewer.initialize();
     levelList.initialize();
     footer.initialize();
+
+    eventEmitter.emit(new ChangeLevelEvent(0));
   }
 }
 
