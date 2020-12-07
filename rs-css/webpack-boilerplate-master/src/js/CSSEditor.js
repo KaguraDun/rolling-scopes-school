@@ -1,8 +1,11 @@
 import renderElement from './renderElement';
-import { ChangeLevelEvent } from './events/ChangeLevelEvent';
+import { EVENT_NAME, ChangeLevelEvent } from './events/ChangeLevelEvent';
+import { CompleteGameEvent } from './events/CompleteGameEvent';
 
 export default class CSSEditor {
-  constructor(rootElement, eventEmitter) {
+  constructor(rootElement, eventEmitter, currentLevel, levels) {
+    this.currentLevel = currentLevel;
+    this.levels = levels;
     this.rootElement = rootElement;
     this.input = null;
     this.eventEmitter = eventEmitter;
@@ -14,12 +17,12 @@ export default class CSSEditor {
     this.input = renderElement('input', ['game-editor__input'], parentElement);
     this.input.placeholder = 'Type in a CSS Selector';
     this.input.addEventListener('keydown', this.keydownWatch);
+    this.getCurrentLevel = this.getCurrentLevel.bind(this);
   }
 
   keydownWatch(event) {
     if (event.key === 'Enter') {
       this.trySelector();
-      return;
     }
   }
 
@@ -35,6 +38,13 @@ export default class CSSEditor {
     this.createinput(gameEditorLayout);
 
     button.addEventListener('click', this.trySelector);
+
+    this.eventEmitter.addEvent(EVENT_NAME, this.getCurrentLevel);
+  }
+
+  getCurrentLevel({ detail }) {
+    this.currentLevel = detail.selectedLevel;
+    console.log('in index', this.currentLevel);
   }
 
   trySelector() {
@@ -43,8 +53,8 @@ export default class CSSEditor {
     const CLASS__SELECTED = '--selected';
     // Подумать как искать только на table
     const gameTableLayout = document.querySelector('.game-table__layout');
-    const elementsCountForWin = document.querySelectorAll(`.${CLASS__SELECTED}`).length;
-    const selectedElements = document.querySelectorAll(this.input.value);
+    const elementsCountForWin = gameTableLayout.querySelectorAll(`.${CLASS__SELECTED}`).length;
+    const selectedElements = gameTableLayout.querySelectorAll(this.input.value);
     const selectedElementsArr = [];
 
     if (selectedElements.length === 0) {
@@ -61,11 +71,27 @@ export default class CSSEditor {
     });
 
     if (selectedElementsArr.length === elementsCountForWin) {
+      this.levels[this.currentLevel].complete = true;
+
+      const nextLevel = this.selectNextLevel();
+
       this.rightSelectorHighlight(selectedElementsArr);
-      // Получить текущий уровень и перейти на уровень +1;
-      // Добавить проверку на конец игры
-      setTimeout(() => this.eventEmitter.emit(new ChangeLevelEvent(2)), 1000);
-      // переходим на следующий уровень
+      console.log(nextLevel)
+      if (nextLevel === undefined) {
+        console.log('1123');
+        setTimeout(() => this.eventEmitter.emit(new CompleteGameEvent(), 1000));
+        return;
+      }
+
+      setTimeout(() => this.eventEmitter.emit(new ChangeLevelEvent(nextLevel)), 1000);
+    }
+  }
+
+  selectNextLevel() {
+    for (let i = 0; i < this.levels.length; i += 1) {
+      if (this.levels[i].complete === false && this.levels[i].completeWithHelp === false) {
+        return i;
+      }
     }
   }
 

@@ -11,9 +11,8 @@ export default class HTMLViewer {
     this.levels = levels;
     this.levelElements = null;
     this.gameHTMLViewer = null;
-    this.renderHTMLCode = this.renderHTMLCode.bind(this);
-    this.highlightElement = this.highlightElement.bind(this);
     this.gameTableHTML = null;
+    this.renderHTMLCode = this.renderHTMLCode.bind(this);
   }
 
   renderCodeBlock(parentElement) {
@@ -54,10 +53,6 @@ export default class HTMLViewer {
     this.gameHTMLViewer.textContent = this.format(gameTable.outerHTML);
 
     hljs.highlightBlock(this.gameHTMLViewer);
-  }
-
-  highlightElement({ detail }) {
-    //console.log(detail.element);
   }
 
   // https://stackoverflow.com/questions/3913355/how-to-format-tidy-beautify-in-javascript

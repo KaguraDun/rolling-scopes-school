@@ -1,6 +1,7 @@
-import { EVENT_NAME as ChangeLevelEvent } from './events/ChangeLevelEvent';
-import { HighlightElementEvent } from './events/HighlightElementEvent';
 import renderElement from './renderElement';
+
+import { EVENT_NAME as ChangeLevel} from './events/ChangeLevelEvent';
+import { HighlightElementEvent } from './events/HighlightElementEvent';
 
 export default class GameTable {
   constructor(rootElement, currentLevel, levels, eventEmitter) {
@@ -20,10 +21,9 @@ export default class GameTable {
     const gameTable = renderElement('div', ['game-table'], this.rootElement);
 
     this.gameTableLayout = renderElement('div', ['game-table__layout'], gameTable);
-
-    this.eventEmitter.addEvent(ChangeLevelEvent, this.render);
-
     this.gameTableLayout.addEventListener('mouseover', this.highlightElement);
+
+    this.eventEmitter.addEvent(ChangeLevel, this.render);
 
     this.showHTMLCodeElement = renderElement('div', ['element-HTML-code'], gameTable);
     this.showHTMLCodeElement.hidden = true;
@@ -31,6 +31,7 @@ export default class GameTable {
 
   render({ detail }) {
     const selectedLevel = Number(detail.selectedLevel);
+
     this.levelElements = this.levels[selectedLevel].markup;
 
     this.gameTableLayout.innerHTML = this.levelElements.join('');
@@ -43,7 +44,6 @@ export default class GameTable {
     const elementHTML = this.formatElementHTML(event.target);
     const elementPosition = event.target.getBoundingClientRect();
     const elementNumberInList = this.levelElements.indexOf(event.target);
-    console.log(this.levelElements, event.target, elementNumberInList);
 
     this.showHTMLCodeElement.hidden = false;
     this.showHTMLCodeElement.textContent = elementHTML;
