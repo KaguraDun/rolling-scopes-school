@@ -1,7 +1,7 @@
 import renderElement from './renderElement';
+import hljs from './highlight-js/highlight.pack';
 
-import { EVENT_NAME as ChangeLevel} from './events/ChangeLevelEvent';
-import { HighlightElementEvent } from './events/HighlightElementEvent';
+import { EVENT_NAME as ChangeLevel } from './events/ChangeLevelEvent';
 
 export default class GameTable {
   constructor(rootElement, currentLevel, levels, eventEmitter) {
@@ -10,6 +10,7 @@ export default class GameTable {
     this.levels = levels;
     this.levelElements = null;
     this.gameTableLayout = null;
+    this.levelDescription = null;
     this.render = this.render.bind(this);
     this.highlightElement = this.highlightElement.bind(this);
     this.removeHighlight = this.removeHighlight.bind(this);
@@ -19,14 +20,14 @@ export default class GameTable {
 
   initialize() {
     const gameTable = renderElement('div', ['game-table'], this.rootElement);
-
+    this.levelDescription = renderElement('h3', ['game-table__description'], gameTable);
     this.gameTableLayout = renderElement('div', ['game-table__layout'], gameTable);
     this.gameTableLayout.addEventListener('mouseover', this.highlightElement);
 
     this.eventEmitter.addEvent(ChangeLevel, this.render);
 
-    this.showHTMLCodeElement = renderElement('div', ['element-HTML-code'], gameTable);
-    this.showHTMLCodeElement.hidden = true;
+    this.showHTMLCodeElement = renderElement('div', ['highlight-html-element'], gameTable);
+    this.showHTMLCodeElement.style.display = 'none';
   }
 
   render({ detail }) {
@@ -35,6 +36,7 @@ export default class GameTable {
     this.levelElements = this.levels[selectedLevel].markup;
 
     this.gameTableLayout.innerHTML = this.levelElements.join('');
+    this.levelDescription.innerHTML = this.levels[selectedLevel].description;
   }
 
   highlightElement(event) {
@@ -43,21 +45,19 @@ export default class GameTable {
     const topOffset = 50;
     const elementHTML = this.formatElementHTML(event.target);
     const elementPosition = event.target.getBoundingClientRect();
-    const elementNumberInList = this.levelElements.indexOf(event.target);
 
-    this.showHTMLCodeElement.hidden = false;
+    this.showHTMLCodeElement.style.display = 'block';
     this.showHTMLCodeElement.textContent = elementHTML;
     this.showHTMLCodeElement.style.top = `${elementPosition.top - topOffset}px`;
     this.showHTMLCodeElement.style.left = `${elementPosition.left}px`;
 
+    hljs.highlightBlock(this.showHTMLCodeElement);
     event.target.classList.add('--highlight-element');
     event.target.addEventListener('mouseout', this.removeHighlight);
-
-    this.eventEmitter.emit(new HighlightElementEvent(elementNumberInList));
   }
 
   removeHighlight(event) {
-    this.showHTMLCodeElement.hidden = true;
+    this.showHTMLCodeElement.style.display = 'none';
     event.target.classList.remove('--highlight-element');
   }
 

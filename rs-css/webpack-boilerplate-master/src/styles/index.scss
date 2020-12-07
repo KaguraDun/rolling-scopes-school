@@ -1,5 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100&display=swap');
+
 $color-table-layout: rgba(207, 134, 9, 1);
 $color-table-cloth: rgba(212, 241, 246, 1);
+
+$color-font: #eeeeee;
+$color-primary--xxl: #393e46;
+$color-primary--xl: #00adb5;
+$color-primary--l: #393e46;
+$color-primary--s: #f1faee;
+$color-primary--xs: #eeeeee;
 
 $media-tablet: 768px;
 $media-mobile: 320px;
@@ -10,53 +19,52 @@ $media-mobile: 320px;
   padding: 0;
 }
 
-blockquote,
-body,
-cite,
-fieldset,
-figure,
-img,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-hr,
-li,
-ol,
-p,
-pre,
-ul {
-  margin: 0;
-  padding: 0;
-}
-
 ul {
   list-style: none;
 }
 
 a {
+  color: $color-font;
   text-decoration: none;
   cursor: pointer;
+  transition: background 0.15s ease-in;
+
+  &:link {
+    color: $color-font;
+  }
+
+  &:visited {
+    color: $color-font;
+  }
+
+  &:hover {
+    background: $color-primary--xl;
+  }
 }
 
 .page {
+  color: $color-font;
   font-size: 25px;
+  font-family: 'JetBrains Mono', monospace;
+  background: rgb(5, 163, 171);
+  background: linear-gradient(90deg, $color-primary--xl 100%);
 
   &__wrapper {
     position: relative;
     display: flex;
     width: 100%;
     max-width: 1600px;
+    min-height: 100vh;
     margin: 0 auto;
+    box-shadow: 0px 6px 4px 3px #000000;
   }
 
   &__left-col {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     width: 80%;
-    background-color: aquamarine;
+    background-color: $color-primary--xxl;
   }
 
   &__right-col {
@@ -65,21 +73,39 @@ a {
     align-items: center;
     justify-content: flex-start;
     width: 20%;
-    background-color: red;
+    background-color: $color-primary--xxl;
   }
 }
 
 .header {
   height: 50px;
+  background: $color-primary--xxl;
+
+  &__logo {
+    padding-left: 15px;
+    color: $color-font;
+    font-size: 40px;
+  }
 }
 
 .game-table {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 300px;
-  background-color: yellow;
+  background-color: $color-primary--xs;
+
+  &__description {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    color: $color-primary--xxl;
+    text-align: center;
+  }
 
   &__layout {
     position: relative;
@@ -109,7 +135,7 @@ a {
   &__info {
     display: flex;
     justify-content: space-between;
-    width: 95%;
+    width: 100%;
     padding: 10px 15px;
   }
 
@@ -132,10 +158,13 @@ a {
   }
 
   &__viewer {
-    width: 90%;
-    height: 500px;
+    width: 100%;
     font-size: 25px;
     resize: none;
+
+    & > pre > code {
+      height: 350px;
+    }
   }
 }
 
@@ -150,7 +179,7 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: purple;
+  background: $color-primary--xl;
 
   &__message {
     width: 70%;
@@ -166,10 +195,14 @@ a {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 50px;
+  height: 80px;
   padding: 15px 0;
   padding: 0 25px;
-  background-color: greenyellow;
+  background-color: $color-primary--xxl;
+
+  &__logo-link {
+    background-color: $color-primary--xs;
+  }
 }
 
 .level-list {
@@ -181,10 +214,26 @@ a {
     justify-content: center;
     padding: 10px 5px;
   }
+
+  &__complete-icon {
+    margin-right: 10px;
+    color: greenyellow;
+  }
+
+  &__item-number {
+    margin-right: 10px;
+  }
 }
 
 .button {
+  font-size: 25px;
+  font-family: 'JetBrains Mono', monospace;
   cursor: pointer;
+  transition: background 0.15s ease-in;
+
+  &:hover {
+    background-color: $color-primary--xl;
+  }
 
   &__enter {
     position: absolute;
@@ -213,20 +262,35 @@ a {
 plate,
 cup,
 cake,
-apple {
+apple,
+cookie {
   position: relative;
   margin: 10px;
+  box-shadow: 0px 8px 0px rgba(0, 0, 0, 0.1);
 }
 
 plate {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100px;
-  height: 100px;
+  width: 125px;
+  height: 125px;
   background: white;
-  border: 2px solid blue;
+  border-bottom: solid 5px #ddd;
+  -webkit-border-radius: 100px;
+  border-radius: 100px;
+}
+
+.fancy:after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  border: 22px double plum;
   border-radius: 50%;
+  transform: translate(-50%, -50%);
+  content: '';
 }
 
 cup {
@@ -242,17 +306,12 @@ cake {
   border-radius: 50%;
 }
 
-apple {
+cookie {
   width: 50px;
   height: 50px;
   margin: 0 auto;
-  background: red;
-  border: 1px solid black;
+  background: #875a34;
   border-radius: 50%;
-}
-
-code {
-  height: 500px;
 }
 
 .--selected {
@@ -268,16 +327,16 @@ code {
 }
 
 .--highlight-element {
-  background-color: white;
-  border: 10px solid purple;
+  border: 5px solid $color-primary--xl;
 }
 
-.--highlight-HTML {
+.highlight-html-element {
+  position: absolute;
   background-color: white;
 }
 
 .--highlight-current-level {
-  background-color: white;
+  background-color: $color-primary--xl;
 }
 
 .--hidden {
@@ -287,6 +346,10 @@ code {
 .element-HTML-code {
   position: absolute;
   top: 50px;
+  height: 40px;
+  padding: 0;
+  overflow: hidden;
+  text-align: center;
   background-color: white;
   border: 2px dashed black;
 }

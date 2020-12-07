@@ -15,7 +15,6 @@ export default class CompleteGameBanner {
   }
 
   render() {
-    console.log('123');
     const message = 'Congrats you have finished the game and become an expert in CSS selectors!';
 
     const banner = renderElement('div', ['complete-game-banner'], this.rootElement);
@@ -27,6 +26,7 @@ export default class CompleteGameBanner {
       banner,
       'New Game',
     );
+    
     newGameButton.addEventListener('click', this.newGame);
   }
 

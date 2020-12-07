@@ -1,9 +1,9 @@
 import renderElement from './renderElement';
-import { EVENT_NAME as ChangeLevelEvent } from './events/ChangeLevelEvent';
-import { EVENT_NAME as HighlightElementEvent } from './events/HighlightElementEvent';
 import hljs from './highlight-js/highlight.pack';
 
-// Проверить мб стоит наследовать от CSS Editor
+import { EVENT_NAME as ChangeLevelEvent } from './events/ChangeLevelEvent';
+import { EVENT_NAME as HighlightElementEvent } from './events/HighlightElementEvent';
+
 export default class HTMLViewer {
   constructor(rootElement, levels, eventEmitter) {
     this.rootElement = rootElement;

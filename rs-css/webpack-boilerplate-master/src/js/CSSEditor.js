@@ -56,7 +56,6 @@ export default class CSSEditor {
   }
 
   keydownWatch(name) {
-    console.log('123', name);
     if (name === 'Enter') {
       this.trySelector();
     }
@@ -88,7 +87,7 @@ export default class CSSEditor {
     if (!inputValue) return;
 
     const CLASS__SELECTED = '--selected';
-    // Подумать как искать только на table
+
     const gameTableLayout = document.querySelector('.game-table__layout');
     const elementsCountForWin = gameTableLayout.querySelectorAll(`.${CLASS__SELECTED}`).length;
     const selectedElementsArr = [];
@@ -122,7 +121,6 @@ export default class CSSEditor {
       this.rightSelectorHighlight(selectedElementsArr);
 
       if (nextLevel === undefined) {
-        console.log('1123');
         setTimeout(() => this.eventEmitter.emit(new CompleteGameEvent(), 1000));
         return;
       }
