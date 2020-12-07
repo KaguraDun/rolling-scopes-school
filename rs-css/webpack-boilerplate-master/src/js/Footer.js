@@ -7,17 +7,19 @@ export default class Header {
 
   initialize() {
     const footer = renderElement('footer', ['footer'], this.rootElement);
-    renderElement('span', ['footer__author'], footer, 'Made by Kovnev Vasily:');
+
+    renderElement('span', ['footer__author'], footer, 'Made by Kovnev Vasily 2020');
+
     const footerAuthorLink = renderElement('a', ['footer__author-link'], footer, 'Git Hub');
     footerAuthorLink.href = 'https://github.com/KaguraDun';
     footerAuthorLink.target = '_blank';
 
-    renderElement('span', ['footer__year'], footer, '2020');
+    const footerLogoLink = renderElement('a', ['footer__logo-link'], footer);
+    footerLogoLink.href = 'https://rs.school/js/';
+    footerLogoLink.target = '_blank';
 
+    const footerLogo = renderElement('img', ['footer__logo-img'], footerLogoLink);
+    footerLogo.src = './assets/icons/rs_school_js.svg';
+    footerLogo.width = '100';
   }
 }
-
-//   <div class="footer__logo">
-//     <a href="https://rs.school/js/" class="footer__logo-link" target="_blank"><img
-//         src="/assets/icons/rs_school_js.svg" alt="" class="footer__logo-image" width="100px"></a>
-//   </div>
