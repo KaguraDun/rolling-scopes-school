@@ -1,3 +1,2 @@
-/src/js/highlight-js/
-/src/js/highlight-js
-/src/js/highlight-js/highlight.pack
+/src/js/highlight-js/*
+/src/js/codemirror-js/*
