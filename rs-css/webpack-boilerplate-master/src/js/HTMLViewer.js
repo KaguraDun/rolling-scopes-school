@@ -29,8 +29,8 @@ export default class HTMLViewer {
     const gameEditorInfo = renderElement('div', ['game-editor__info'], gameEditor);
     const gameEditorLayout = renderElement('div', ['game-editor__layout'], gameEditor);
 
-    renderElement('span', ['game-editor__heading'], gameEditorInfo, 'HTMLViewer');
-    renderElement('span', ['game-editor__filename'], gameEditorInfo, 'index.html');
+    renderElement('span', ['game-editor__heading'], gameEditorInfo, 'HTML Viewer');
+    renderElement('span', ['game-editor__filename'], gameEditorInfo, 'table.html');
 
     this.renderCodeBlock(gameEditorLayout);
 
