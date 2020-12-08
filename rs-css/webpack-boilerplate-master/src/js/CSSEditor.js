@@ -1,9 +1,10 @@
+import CodeMirror from 'codemirror';
 import renderElement from './renderElement';
-import * as CodeMirror from './codemirror-js/lib/codemirror';
-import './codemirror-js/addon/display/placeholder';
-import './codemirror-js/mode/css/css';
-import './codemirror-js/lib/codemirror.css';
-import './codemirror-js/theme/dracula.css';
+
+import 'codemirror/theme/dracula.css';
+import 'codemirror/mode/css/css';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/addon/display/placeholder';
 
 import { EVENT_NAME, ChangeLevelEvent } from './events/ChangeLevelEvent';
 import { CompleteGameEvent } from './events/CompleteGameEvent';

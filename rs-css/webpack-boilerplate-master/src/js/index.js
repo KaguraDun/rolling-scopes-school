@@ -1,4 +1,3 @@
-import '../styles/highlight-js/atom-one-dark-reasonable.css';
 import '../styles/index.scss';
 
 import createElement from './renderElement';
@@ -25,31 +24,38 @@ class Game {
   }
 
   initialize() {
-    const eventEmitter = new EventEmitter();
+    window.addEventListener('DOMContentLoaded', (event) => {
+      const eventEmitter = new EventEmitter();
 
-    const pageWrapper = createElement('div', ['page__wrapper'], document.body);
-    const pageLeftColumn = createElement('div', ['page__left-col'], pageWrapper);
-    const pageRightColumn = createElement('div', ['page__right-col'], pageWrapper);
+      const pageWrapper = createElement('div', ['page__wrapper'], document.body);
+      const pageLeftColumn = createElement('div', ['page__left-col'], pageWrapper);
+      const pageRightColumn = createElement('div', ['page__right-col'], pageWrapper);
 
-    const header = new Header(pageLeftColumn);
-    const gameTable = new GameTable(pageLeftColumn, this.currentLevel, this.levels, eventEmitter);
-    const cssEditor = new CSSEditor(pageLeftColumn, eventEmitter, this.currentLevel, this.levels);
-    const htmlViewer = new HTMLViewer(pageLeftColumn, this.levels, eventEmitter);
-    const levelList = new LevelList(pageRightColumn, this.levels, this.currentLevel, eventEmitter);
-    const footer = new Footer(pageLeftColumn);
-    const completeGameBanner = new CompleteGameBanner(pageWrapper, eventEmitter);
+      const header = new Header(pageLeftColumn);
+      const gameTable = new GameTable(pageLeftColumn, this.currentLevel, this.levels, eventEmitter);
+      const cssEditor = new CSSEditor(pageLeftColumn, eventEmitter, this.currentLevel, this.levels);
+      const htmlViewer = new HTMLViewer(pageLeftColumn, this.levels, eventEmitter);
+      const levelList = new LevelList(
+        pageRightColumn,
+        this.levels,
+        this.currentLevel,
+        eventEmitter,
+      );
+      const footer = new Footer(pageLeftColumn);
+      const completeGameBanner = new CompleteGameBanner(pageWrapper, eventEmitter);
 
-    header.initialize();
-    gameTable.initialize();
-    cssEditor.initialize();
-    htmlViewer.initialize();
-    levelList.initialize();
-    footer.initialize();
-    completeGameBanner.initialize();
+      header.initialize();
+      gameTable.initialize();
+      cssEditor.initialize();
+      htmlViewer.initialize();
+      levelList.initialize();
+      footer.initialize();
+      completeGameBanner.initialize();
 
-    eventEmitter.emit(new ChangeLevelEvent(0));
-    eventEmitter.addEvent(NewGame, this.newGame);
-    eventEmitter.addEvent(ChangeLevel, this.getCurrentLevel);
+      eventEmitter.emit(new ChangeLevelEvent(0));
+      eventEmitter.addEvent(NewGame, this.newGame);
+      eventEmitter.addEvent(ChangeLevel, this.getCurrentLevel);
+    });
   }
 
   newGame() {

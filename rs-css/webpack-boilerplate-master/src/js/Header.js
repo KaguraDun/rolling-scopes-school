@@ -13,7 +13,7 @@ export default class Header {
       'span',
       ['header__message'],
       header,
-      "(If the CSS editor won't load, press Ctrl + F5 until it loads.)",
+      "(If the CSS editor won't load, refresh page until it loads.)",
     );
   }
 }

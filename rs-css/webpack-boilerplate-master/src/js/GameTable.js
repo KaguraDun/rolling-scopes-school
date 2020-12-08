@@ -1,5 +1,6 @@
+import hljs from 'highlight.js';
 import renderElement from './renderElement';
-import hljs from './highlight-js/highlight.pack';
+import 'highlight.js/styles/atom-one-dark-reasonable.css';
 
 import { EVENT_NAME as ChangeLevel } from './events/ChangeLevelEvent';
 
