@@ -13,7 +13,8 @@ export default class Header {
       'span',
       ['header__message'],
       header,
-      "(If the CSS editor won't load, refresh page until it loads.)",
+      "!If the CSS editor won't load, please refresh page until it loads."
+        + '\n Or use Firefox, i am trying to fix this issue',
     );
   }
 }

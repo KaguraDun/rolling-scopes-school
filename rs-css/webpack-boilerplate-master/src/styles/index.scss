@@ -92,6 +92,7 @@ a {
 
   &__message {
     font-size: 20px;
+    white-space: break-spaces;
   }
 }
 
@@ -149,14 +150,6 @@ a {
   &__layout {
     position: relative;
     display: flex;
-  }
-
-  &__input {
-    width: 90%;
-    height: 50px;
-    overflow: hidden;
-    font-size: 20px;
-    resize: none;
   }
 
   &__lines {

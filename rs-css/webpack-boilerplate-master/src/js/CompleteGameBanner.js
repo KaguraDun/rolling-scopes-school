@@ -22,11 +22,11 @@ export default class CompleteGameBanner {
 
     const newGameButton = renderElement(
       'button',
-      ['button', 'button__new-game','--button-big'],
+      ['button', 'button__new-game', '--button-big'],
       banner,
       'New Game',
     );
-    
+
     newGameButton.addEventListener('click', this.newGame);
   }
 

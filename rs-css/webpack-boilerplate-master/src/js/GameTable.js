@@ -4,6 +4,11 @@ import 'highlight.js/styles/atom-one-dark-reasonable.css';
 
 import { EVENT_NAME as ChangeLevel } from './events/ChangeLevelEvent';
 
+function formatElementHTML(element) {
+  const html = element.outerHTML.replace(element.innerHTML, '');
+  return html.replace(' class="--selected"', '').replace(' --selected', '');
+}
+
 export default class GameTable {
   constructor(rootElement, currentLevel, levels, eventEmitter) {
     this.rootElement = rootElement;
@@ -44,7 +49,7 @@ export default class GameTable {
     if (event.target.tagName === 'DIV') return;
 
     const topOffset = 50;
-    const elementHTML = this.formatElementHTML(event.target);
+    const elementHTML = formatElementHTML(event.target);
     const elementPosition = event.target.getBoundingClientRect();
 
     this.showHTMLCodeElement.style.display = 'block';
@@ -60,10 +65,5 @@ export default class GameTable {
   removeHighlight(event) {
     this.showHTMLCodeElement.style.display = 'none';
     event.target.classList.remove('--highlight-element');
-  }
-
-  formatElementHTML(element) {
-    const html = element.outerHTML.replace(element.innerHTML, '');
-    return html.replace(' class="--selected"', '').replace(' --selected', '');
   }
 }

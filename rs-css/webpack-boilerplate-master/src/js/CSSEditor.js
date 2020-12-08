@@ -1,13 +1,28 @@
-import CodeMirror from 'codemirror';
+import CodeMirror from 'codemirror/lib/codemirror';
 import renderElement from './renderElement';
 
-import 'codemirror/theme/dracula.css';
+import 'codemirror/addon/display/placeholder';
 import 'codemirror/mode/css/css';
 import 'codemirror/lib/codemirror.css';
-import 'codemirror/addon/display/placeholder';
+import 'codemirror/theme/dracula.css';
 
 import { EVENT_NAME, ChangeLevelEvent } from './events/ChangeLevelEvent';
 import { CompleteGameEvent } from './events/CompleteGameEvent';
+
+function rightSelectorHighlight(elements) {
+  const CLASS_SUCCES = '--succes';
+
+  elements.forEach((element) => {
+    element.classList.add(CLASS_SUCCES);
+  });
+}
+
+function wrongSelectorHighlight(element) {
+  const CLASS_WRONG = '--wrong';
+
+  element.classList.add(CLASS_WRONG);
+  setTimeout(() => element.classList.remove(CLASS_WRONG), 1000);
+}
 
 export default class CSSEditor {
   constructor(rootElement, eventEmitter, currentLevel, levels) {
@@ -40,6 +55,7 @@ export default class CSSEditor {
       if (name === 'Enter') {
         e.preventDefault();
         this.trySelector();
+        this.input.refresh();
       }
     });
 
@@ -47,16 +63,20 @@ export default class CSSEditor {
     this.input.on('beforeChange', (instance, change) => {
       const newText = change.text.join('').replace(/\n/g, '');
       change.update(change.from, change.to, [newText]);
+      this.input.refresh();
       return true;
     });
 
-    this.input.refresh();
-
     this.eventEmitter.addEvent(EVENT_NAME, this.clearInput);
+
+    setTimeout(() => {
+      this.input.refresh();
+    }, 1);
   }
 
   clearInput() {
     this.input.setValue('');
+    this.input.refresh();
   }
 
   keydownWatch(name) {
@@ -95,7 +115,7 @@ export default class CSSEditor {
     for (let i = 0; i <= correctSelector.length; i += 1) {
       setTimeout(() => {
         this.input.setValue(correctSelector.slice(0, i));
-        this.input.refresh;
+        this.input.refresh();
       }, i * 150);
     }
 
@@ -121,12 +141,12 @@ export default class CSSEditor {
     try {
       selectedElements = gameTableLayout.querySelectorAll(inputValue);
     } catch {
-      this.wrongSelectorHighlight(gameTableLayout);
+      wrongSelectorHighlight(gameTableLayout);
       return;
     }
 
     if (selectedElements.length === 0) {
-      this.wrongSelectorHighlight(gameTableLayout);
+      wrongSelectorHighlight(gameTableLayout);
       return;
     }
 
@@ -134,7 +154,7 @@ export default class CSSEditor {
       if (element.classList.contains(CLASS__SELECTED)) {
         selectedElementsArr.push(element);
       } else {
-        this.wrongSelectorHighlight(element);
+        wrongSelectorHighlight(element);
       }
     });
 
@@ -146,7 +166,7 @@ export default class CSSEditor {
 
       const nextLevel = this.selectNextLevel();
 
-      this.rightSelectorHighlight(selectedElementsArr);
+      rightSelectorHighlight(selectedElementsArr);
 
       if (nextLevel === undefined) {
         setTimeout(() => this.eventEmitter.emit(new CompleteGameEvent(), 1000));
@@ -158,25 +178,15 @@ export default class CSSEditor {
   }
 
   selectNextLevel() {
+    let nextElementIndex = 0;
+
     for (let i = 0; i < this.levels.length; i += 1) {
       if (this.levels[i].complete === false && this.levels[i].completeWithHelp === false) {
-        return i;
+        nextElementIndex = i;
+        break;
       }
     }
-  }
 
-  rightSelectorHighlight(elements) {
-    const CLASS_SUCCES = '--succes';
-
-    elements.forEach((element) => {
-      element.classList.add(CLASS_SUCCES);
-    });
-  }
-
-  wrongSelectorHighlight(element) {
-    const CLASS_WRONG = '--wrong';
-
-    element.classList.add(CLASS_WRONG);
-    setTimeout(() => element.classList.remove(CLASS_WRONG), 1000);
+    return nextElementIndex;
   }
 }

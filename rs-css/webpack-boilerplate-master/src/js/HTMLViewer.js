@@ -1,10 +1,31 @@
+import hljs from 'highlight.js';
 import renderElement from './renderElement';
 
-import hljs from 'highlight.js';
 import 'highlight.js/styles/atom-one-dark-reasonable.css';
 
 import { EVENT_NAME as ChangeLevelEvent } from './events/ChangeLevelEvent';
 import { EVENT_NAME as HighlightElementEvent } from './events/HighlightElementEvent';
+
+// https://stackoverflow.com/questions/3913355/how-to-format-tidy-beautify-in-javascript
+function format(html) {
+  const tab = '  ';
+  let result = '';
+  let indent = '';
+
+  html.split(/>\s*</).forEach((element) => {
+    if (element.match(/^\/\w/)) {
+      indent = indent.substring(tab.length);
+    }
+
+    result += `${indent}<${element}>\r\n`;
+
+    if (element.match(/^<?\w[^>]*[^]$/)) {
+      indent += tab;
+    }
+  });
+
+  return result.substring(1, result.length - 3);
+}
 
 export default class HTMLViewer {
   constructor(rootElement, levels, eventEmitter) {
@@ -52,29 +73,8 @@ export default class HTMLViewer {
 
     gameTable.insertAdjacentHTML('afterbegin', levelHTML);
 
-    this.gameHTMLViewer.textContent = this.format(gameTable.outerHTML);
+    this.gameHTMLViewer.textContent = format(gameTable.outerHTML);
 
     hljs.highlightBlock(this.gameHTMLViewer);
-  }
-
-  // https://stackoverflow.com/questions/3913355/how-to-format-tidy-beautify-in-javascript
-  format(html) {
-    const tab = '  ';
-    let result = '';
-    let indent = '';
-
-    html.split(/>\s*</).forEach((element) => {
-      if (element.match(/^\/\w/)) {
-        indent = indent.substring(tab.length);
-      }
-
-      result += `${indent}<${element}>\r\n`;
-
-      if (element.match(/^<?\w[^>]*[^\/]$/)) {
-        indent += tab;
-      }
-    });
-
-    return result.substring(1, result.length - 3);
   }
 }

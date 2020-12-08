@@ -24,7 +24,7 @@ class Game {
   }
 
   initialize() {
-    window.addEventListener('DOMContentLoaded', (event) => {
+    window.addEventListener('DOMContentLoaded', () => {
       const eventEmitter = new EventEmitter();
 
       const pageWrapper = createElement('div', ['page__wrapper'], document.body);
