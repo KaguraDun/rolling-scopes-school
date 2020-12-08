@@ -257,6 +257,17 @@ a {
     padding: 15px;
     font-size: 30px;
   }
+
+  &__help {
+    top: 15%;
+    width: 40px;
+    height: 40px;
+    font-weight: 800;
+    font-size: 30px;
+    background-color: $color-primary--xs;
+    border: 0;
+    border-radius: 50%;
+  }
 }
 
 .--button-big {

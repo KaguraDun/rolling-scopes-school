@@ -2,6 +2,7 @@ export default [
   {
     complete: false,
     completeWithHelp: false,
+    correctSelector: 'plate',
     name: 'Type',
     description: 'Select plate by type',
     markup: ['<plate class="--selected">'],
@@ -9,6 +10,7 @@ export default [
   {
     complete: false,
     completeWithHelp: false,
+    correctSelector: '#sweet',
     name: 'ID',
     description: 'Select sweet cookie on plate',
     markup: ['<plate>', '<cookie id = "sweet" class="--selected">', '</cookie>', '</plate>'],
@@ -16,6 +18,7 @@ export default [
   {
     complete: false,
     completeWithHelp: false,
+    correctSelector: '.fancy',
     name: 'Class',
     description: 'Select fancy plate by class',
     markup: [
@@ -31,6 +34,7 @@ export default [
     complete: false,
     completeWithHelp: false,
     name: 'Data attribute',
+    correctSelector: 'apple[data-color="red"]',
     description: 'Select red apple by data attribute',
     markup: [
       '<plate>',
@@ -46,6 +50,7 @@ export default [
   {
     complete: false,
     completeWithHelp: false,
+    correctSelector: '*',
     name: 'Universal selector',
     description: 'Select everything by universal selector',
     markup: [
@@ -62,6 +67,7 @@ export default [
   {
     complete: false,
     completeWithHelp: false,
+    correctSelector: 'cookie, apple',
     name: 'Grouping selector',
     description: 'Select cookie and apple by grouping selector',
     markup: [
@@ -76,6 +82,7 @@ export default [
   {
     complete: false,
     completeWithHelp: false,
+    correctSelector: '.fancy > cookie',
     name: 'Child combinator',
     description: 'Select cookie in fancy plate',
     markup: [
@@ -96,6 +103,7 @@ export default [
   {
     complete: false,
     completeWithHelp: false,
+    correctSelector: 'cookie ~ apple',
     name: 'General sibling combinator',
     description: 'Select aple after cookie',
     markup: [
@@ -110,6 +118,7 @@ export default [
   {
     complete: false,
     completeWithHelp: false,
+    correctSelector: 'plate > :first-child',
     name: 'First child pseudo-class',
     description: 'Select first child of plate',
     markup: [
@@ -124,6 +133,7 @@ export default [
   {
     complete: false,
     completeWithHelp: false,
+    correctSelector: 'plate > :last-child',
     name: 'Last child pseudo-class',
     description: 'Select last child of plate',
     markup: [

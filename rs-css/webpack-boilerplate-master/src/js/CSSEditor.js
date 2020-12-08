@@ -16,6 +16,7 @@ export default class CSSEditor {
     this.input = null;
     this.eventEmitter = eventEmitter;
     this.trySelector = this.trySelector.bind(this);
+    this.enterCorrectSelector = this.enterCorrectSelector.bind(this);
     this.clearInput = this.clearInput.bind(this);
     this.keydownWatch = this.keydownWatch.bind(this);
   }
@@ -69,14 +70,35 @@ export default class CSSEditor {
     const gameEditorLayout = renderElement('div', ['game-editor__layout'], gameEditor);
 
     renderElement('span', ['game-editor__heading'], gameEditorInfo, 'CSS Editor');
+    const buttonHelp = renderElement('button', ['button', 'button__help'], gameEditorInfo, '?');
+
     renderElement('span', ['game-editor__filename'], gameEditorInfo, 'style.css');
-    const button = renderElement('button', ['button', 'button__enter'], gameEditorLayout, 'ENTER');
+    const buttonEnter = renderElement(
+      'button',
+      ['button', 'button__enter'],
+      gameEditorLayout,
+      'ENTER',
+    );
 
     this.createinput(gameEditorLayout);
 
-    button.addEventListener('click', this.trySelector);
+    buttonEnter.addEventListener('click', this.trySelector);
+    buttonHelp.addEventListener('click', this.enterCorrectSelector);
 
     this.eventEmitter.addEvent(EVENT_NAME, this.getCurrentLevel);
+  }
+
+  enterCorrectSelector() {
+    const { correctSelector } = this.levels[this.currentLevel];
+
+    for (let i = 0; i <= correctSelector.length; i += 1) {
+      setTimeout(() => {
+        this.input.setValue(correctSelector.slice(0, i));
+        this.input.refresh;
+      }, i * 150);
+    }
+
+    this.levels[this.currentLevel].completeWithHelp = true;
   }
 
   getCurrentLevel({ detail }) {
