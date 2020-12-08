@@ -48,6 +48,8 @@ export default class CSSEditor {
       return true;
     });
 
+    this.input.refresh();
+
     this.eventEmitter.addEvent(EVENT_NAME, this.clearInput);
   }
 
@@ -113,7 +115,10 @@ export default class CSSEditor {
       }
     });
 
-    if (selectedElementsArr.length === elementsCountForWin) {
+    if (
+      selectedElementsArr.length === selectedElements.length
+      && selectedElementsArr.length === elementsCountForWin
+    ) {
       this.levels[this.currentLevel].complete = true;
 
       const nextLevel = this.selectNextLevel();

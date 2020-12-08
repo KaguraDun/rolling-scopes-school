@@ -9,5 +9,11 @@ export default class Header {
     const header = renderElement('header', ['header'], this.rootElement);
 
     renderElement('h1', ['header__logo'], header, 'CSS Dinner');
+    renderElement(
+      'span',
+      ['header__message'],
+      header,
+      "(If the CSS editor won't load, press Ctrl + F5 until it loads.)",
+    );
   }
 }

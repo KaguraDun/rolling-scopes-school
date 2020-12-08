@@ -62,7 +62,6 @@ export default class GameTable {
   }
 
   formatElementHTML(element) {
-    // тут код дублируется с html viewer!
     const html = element.outerHTML.replace(element.innerHTML, '');
     return html.replace(' class="--selected"', '').replace(' --selected', '');
   }

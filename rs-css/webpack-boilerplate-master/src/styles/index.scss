@@ -78,13 +78,20 @@ a {
 }
 
 .header {
-  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-height: 100px;
+  padding: 0 15px;
   background: $color-primary--xxl;
 
   &__logo {
-    padding-left: 15px;
     color: $color-font;
     font-size: 40px;
+  }
+
+  &__message {
+    font-size: 20px;
   }
 }
 
