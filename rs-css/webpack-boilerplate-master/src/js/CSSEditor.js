@@ -37,7 +37,7 @@ export default class CSSEditor {
     this.keydownWatch = this.keydownWatch.bind(this);
   }
 
-  createinput(parentElement) {
+  createInput(parentElement) {
     const textArea = renderElement('textarea', ['game-editor__input'], parentElement);
     this.getCurrentLevel = this.getCurrentLevel.bind(this);
 
@@ -71,7 +71,7 @@ export default class CSSEditor {
 
     setTimeout(() => {
       this.input.refresh();
-    }, 1);
+    }, 10);
   }
 
   clearInput() {
@@ -101,7 +101,7 @@ export default class CSSEditor {
       'ENTER',
     );
 
-    this.createinput(gameEditorLayout);
+    this.createInput(gameEditorLayout);
 
     buttonEnter.addEventListener('click', this.trySelector);
     buttonHelp.addEventListener('click', this.enterCorrectSelector);
@@ -178,7 +178,7 @@ export default class CSSEditor {
   }
 
   selectNextLevel() {
-    let nextElementIndex = 0;
+    let nextElementIndex;
 
     for (let i = 0; i < this.levels.length; i += 1) {
       if (this.levels[i].complete === false && this.levels[i].completeWithHelp === false) {

@@ -1,6 +1,5 @@
 import hljs from 'highlight.js';
 import renderElement from './renderElement';
-import 'highlight.js/styles/atom-one-dark-reasonable.css';
 
 import { EVENT_NAME as ChangeLevel } from './events/ChangeLevelEvent';
 
@@ -32,7 +31,11 @@ export default class GameTable {
 
     this.eventEmitter.addEvent(ChangeLevel, this.render);
 
-    this.showHTMLCodeElement = renderElement('div', ['highlight-html-element'], gameTable);
+    this.showHTMLCodeElement = renderElement(
+      'pre',
+      ['highlight-html-element', 'language-html'],
+      gameTable,
+    );
     this.showHTMLCodeElement.style.display = 'none';
   }
 
