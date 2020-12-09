@@ -1,3 +1,5 @@
+// use data-selected for selected tags
+
 export default [
   {
     complete: false,
@@ -5,7 +7,7 @@ export default [
     correctSelector: 'plate',
     name: 'Type',
     description: 'Select plate by type',
-    markup: ['<plate class="--selected">'],
+    markup: ['<plate data-selected>'],
   },
   {
     complete: false,
@@ -13,7 +15,7 @@ export default [
     correctSelector: '#sweet',
     name: 'ID',
     description: 'Select sweet cookie on plate',
-    markup: ['<plate>', '<cookie id = "sweet" class="--selected">', '</cookie>', '</plate>'],
+    markup: ['<plate>', '<cookie id = "sweet" data-selected>', '</cookie>', '</plate>'],
   },
   {
     complete: false,
@@ -24,7 +26,7 @@ export default [
     markup: [
       '<plate>',
       '</plate>',
-      '<plate class = "fancy --selected">',
+      '<plate class = "fancy" data-selected>',
       '</plate>',
       '<plate>',
       '</plate>',
@@ -38,7 +40,7 @@ export default [
     description: 'Select red apple by data attribute',
     markup: [
       '<plate>',
-      '<apple data-color="red" class="--selected">',
+      '<apple data-color="red" data-selected>',
       '</apple>',
       '</plate>',
       '<plate>',
@@ -54,12 +56,12 @@ export default [
     name: 'Universal selector',
     description: 'Select everything by universal selector',
     markup: [
-      '<plate class="--selected">',
-      '<apple data-color="red" class="--selected">',
+      '<plate data-selected>',
+      '<apple data-color="red" data-selected>',
       '</apple>',
       '</plate>',
-      '<plate class="--selected">',
-      '<apple data-color="green" class="--selected">',
+      '<plate data-selected>',
+      '<apple data-color="green" data-selected>',
       '</apple>',
       '</plate>',
     ],
@@ -72,9 +74,9 @@ export default [
     description: 'Select cookie and apple by grouping selector',
     markup: [
       '<plate>',
-      '<cookie class="--selected">',
+      '<cookie data-selected>',
       '</cookie>',
-      '<apple class="--selected">',
+      '<apple data-selected>',
       '</apple>',
       '</plate>',
     ],
@@ -91,7 +93,7 @@ export default [
       '</cookie>',
       '</plate>',
       '<plate class = "fancy">',
-      '<cookie class="--selected">',
+      '<cookie data-selected>',
       '</cookie>',
       '</plate>',
       '<plate>',
@@ -110,7 +112,7 @@ export default [
       '<plate>',
       '<cookie>',
       '</cookie>',
-      '<apple class="--selected">',
+      '<apple data-selected>',
       '</apple>',
       '</plate>',
     ],
@@ -123,7 +125,7 @@ export default [
     description: 'Select first child of plate',
     markup: [
       '<plate class="fancy">',
-      '<cookie class="--selected">',
+      '<cookie data-selected>',
       '</cookie>',
       '<apple>',
       '</apple>',
@@ -148,7 +150,7 @@ export default [
       '</apple>',
       '<cookie>',
       '</cookie>',
-      '<apple class="--selected">',
+      '<apple data-selected>',
       '</apple>',
       '</plate>',
     ],

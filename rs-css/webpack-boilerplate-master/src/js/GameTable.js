@@ -5,11 +5,13 @@ import { EVENT_NAME as ChangeLevel } from './events/ChangeLevelEvent';
 
 function formatElementHTML(element) {
   const html = element.outerHTML.replace(element.innerHTML, '');
-  return html.replace(' class="--selected"', '').replace(' --selected', '');
+
+  return html.replace(' data-selected=""', '').replace(' class=""', '');
 }
 
 export default class GameTable {
   constructor(rootElement, currentLevel, levels, eventEmitter) {
+    this.HIGHLIGHT_CLASS = '--highlight-element';
     this.rootElement = rootElement;
     this.currentLevel = currentLevel;
     this.levels = levels;
@@ -25,6 +27,7 @@ export default class GameTable {
 
   initialize() {
     const gameTable = renderElement('div', ['game-table'], this.rootElement);
+
     this.levelDescription = renderElement('h3', ['game-table__description'], gameTable);
     this.gameTableLayout = renderElement('div', ['game-table__layout'], gameTable);
     this.gameTableLayout.addEventListener('mouseover', this.highlightElement);
@@ -51,22 +54,20 @@ export default class GameTable {
   highlightElement(event) {
     if (event.target.tagName === 'DIV') return;
 
-    const topOffset = 50;
     const elementHTML = formatElementHTML(event.target);
-    const elementPosition = event.target.getBoundingClientRect();
 
     this.showHTMLCodeElement.style.display = 'block';
     this.showHTMLCodeElement.textContent = elementHTML;
-    this.showHTMLCodeElement.style.top = `${elementPosition.top - topOffset}px`;
-    this.showHTMLCodeElement.style.left = `${elementPosition.left}px`;
+    this.showHTMLCodeElement.style.top = '10%';
 
     hljs.highlightBlock(this.showHTMLCodeElement);
-    event.target.classList.add('--highlight-element');
+
+    event.target.classList.add(this.HIGHLIGHT_CLASS);
     event.target.addEventListener('mouseout', this.removeHighlight);
   }
 
   removeHighlight(event) {
     this.showHTMLCodeElement.style.display = 'none';
-    event.target.classList.remove('--highlight-element');
+    event.target.classList.remove(this.HIGHLIGHT_CLASS);
   }
 }

@@ -3,6 +3,10 @@ import renderElement from './renderElement';
 import { EVENT_NAME as ChangeLevel, ChangeLevelEvent } from './events/ChangeLevelEvent';
 import { NewGameEvent } from './events/NewGameEvent';
 
+function highlightCurrentLevel(element) {
+  element.classList.add('--highlight-current-level');
+}
+
 export default class LevelList {
   constructor(rootElement, levels, currentLevel, eventEmitter) {
     this.rootElement = rootElement;
@@ -48,31 +52,22 @@ export default class LevelList {
       renderElement('span', ['level-list__item-name'], listItemLink, `${element.name}`);
 
       listItemLink.href = '#';
-      listItemLink.id = index;
+      listItemLink.dataset.levelNumber = index;
     });
 
-    this.highlightCurrentLevel(this.levelsList.querySelectorAll('A')[this.currentLevel]);
+    highlightCurrentLevel(this.levelsList.children[this.currentLevel]);
   }
 
   newGame() {
     this.eventEmitter.emit(new NewGameEvent());
   }
 
-  onLevelSelect(event) {
-    const target = event.target.tagName !== 'A' ? event.target.parentNode : event.target;
+  onLevelSelect({ target }) {
+    const levelNumber = target.dataset.levelNumber || target.parentNode.dataset.levelNumber;
 
-    this.currentLevel = target.id;
-    this.eventEmitter.emit(new ChangeLevelEvent(target.id));
-  }
+    if (!levelNumber) return;
 
-  highlightCurrentLevel(element) {
-    const CLASS__HIGLIGHT = '--highlight-current-level';
-    const levelItems = Array.from(this.levelsList.getElementsByTagName('A'));
-
-    levelItems.forEach((el) => {
-      el.classList.remove(CLASS__HIGLIGHT);
-    });
-
-    element.classList.add(CLASS__HIGLIGHT);
+    this.currentLevel = levelNumber;
+    this.eventEmitter.emit(new ChangeLevelEvent(levelNumber));
   }
 }

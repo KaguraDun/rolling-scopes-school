@@ -24,7 +24,10 @@ function format(html) {
     }
   });
 
-  return result.substring(1, result.length - 3);
+  result = result.substring(1, result.length - 3);
+  result = result.replace(' data-selected=""', '');
+
+  return result;
 }
 
 export default class HTMLViewer {
@@ -34,7 +37,6 @@ export default class HTMLViewer {
     this.levels = levels;
     this.levelElements = null;
     this.gameHTMLViewer = null;
-    this.gameTableHTML = null;
     this.renderHTMLCode = this.renderHTMLCode.bind(this);
   }
 
@@ -61,15 +63,12 @@ export default class HTMLViewer {
   }
 
   renderHTMLCode({ detail }) {
-    const selectedLevel = Number(detail.selectedLevel);
+    const { selectedLevel } = detail;
     const gameTable = renderElement('div', ['table'], this.gameHTMLViewer);
 
     this.levelElements = this.levels[selectedLevel].markup;
 
-    const levelHTML = this.levelElements
-      .join('')
-      .replace(' class="--selected"', '')
-      .replace(' --selected', '');
+    const levelHTML = this.levelElements.join('');
 
     gameTable.insertAdjacentHTML('afterbegin', levelHTML);
 

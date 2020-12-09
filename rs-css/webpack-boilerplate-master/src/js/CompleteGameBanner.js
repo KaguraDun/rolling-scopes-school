@@ -1,4 +1,5 @@
 import renderElement from './renderElement';
+
 import { EVENT_NAME as CompleteGame } from './events/CompleteGameEvent';
 import { NewGameEvent } from './events/NewGameEvent';
 
@@ -18,6 +19,7 @@ export default class CompleteGameBanner {
     const message = 'Congrats you have finished the game and become an expert in CSS selectors!';
 
     const banner = renderElement('div', ['complete-game-banner'], this.rootElement);
+
     renderElement('h3', ['complete-game-banner__message'], banner, message);
 
     const newGameButton = renderElement(

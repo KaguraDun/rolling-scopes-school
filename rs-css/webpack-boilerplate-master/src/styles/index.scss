@@ -348,7 +348,7 @@ apple {
   }
 }
 
-.--selected {
+[data-selected] {
   animation: pulse 0.5s ease-in-out infinite;
 }
 

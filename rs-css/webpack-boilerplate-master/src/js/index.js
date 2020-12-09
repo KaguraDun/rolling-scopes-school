@@ -1,14 +1,14 @@
 import '../styles/index.scss';
 
-import createElement from './renderElement';
+import renderElement from './renderElement';
+import renderFooter from './renderFooter';
 import gameLevels from './gameLevels';
 
-import Header from './Header';
+import renderHeader from './renderHeader';
 import GameTable from './GameTable';
 import CSSEditor from './CSSEditor';
 import HTMLViewer from './HTMLViewer';
 import LevelList from './LevelList';
-import Footer from './Footer';
 import EventEmitter from './EventEmitter';
 import CompleteGameBanner from './CompleteGameBanner';
 
@@ -26,24 +26,25 @@ class Game {
   initialize() {
     const eventEmitter = new EventEmitter();
 
-    const pageWrapper = createElement('div', ['page__wrapper'], document.body);
-    const pageLeftColumn = createElement('div', ['page__left-col'], pageWrapper);
-    const pageRightColumn = createElement('div', ['page__right-col'], pageWrapper);
+    const pageWrapper = renderElement('div', ['page__wrapper'], document.body);
+    const pageLeftColumn = renderElement('div', ['page__left-col'], pageWrapper);
+    const pageRightColumn = renderElement('div', ['page__right-col'], pageWrapper);
 
-    const header = new Header(pageLeftColumn);
     const gameTable = new GameTable(pageLeftColumn, this.currentLevel, this.levels, eventEmitter);
     const cssEditor = new CSSEditor(pageLeftColumn, eventEmitter, this.currentLevel, this.levels);
     const htmlViewer = new HTMLViewer(pageLeftColumn, this.levels, eventEmitter);
     const levelList = new LevelList(pageRightColumn, this.levels, this.currentLevel, eventEmitter);
-    const footer = new Footer(pageLeftColumn);
     const completeGameBanner = new CompleteGameBanner(pageWrapper, eventEmitter);
 
-    header.initialize();
+    renderHeader(pageLeftColumn);
+
     gameTable.initialize();
     cssEditor.initialize();
     htmlViewer.initialize();
     levelList.initialize();
-    footer.initialize();
+
+    renderFooter(pageLeftColumn);
+
     completeGameBanner.initialize();
 
     eventEmitter.emit(new ChangeLevelEvent(0));

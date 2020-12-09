@@ -6,7 +6,7 @@ import 'codemirror/mode/css/css';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/dracula.css';
 
-import { EVENT_NAME, ChangeLevelEvent } from './events/ChangeLevelEvent';
+import { EVENT_NAME as ChangeLevel, ChangeLevelEvent } from './events/ChangeLevelEvent';
 import { CompleteGameEvent } from './events/CompleteGameEvent';
 
 function rightSelectorHighlight(elements) {
@@ -34,12 +34,11 @@ export default class CSSEditor {
     this.trySelector = this.trySelector.bind(this);
     this.enterCorrectSelector = this.enterCorrectSelector.bind(this);
     this.clearInput = this.clearInput.bind(this);
-    this.keydownWatch = this.keydownWatch.bind(this);
+    this.getCurrentLevel = this.getCurrentLevel.bind(this);
   }
 
   createInput(parentElement) {
     const textArea = renderElement('textarea', ['game-editor__input'], parentElement);
-    this.getCurrentLevel = this.getCurrentLevel.bind(this);
 
     this.input = CodeMirror.fromTextArea(textArea, {
       lineNumbers: true,
@@ -67,7 +66,7 @@ export default class CSSEditor {
       return true;
     });
 
-    this.eventEmitter.addEvent(EVENT_NAME, this.clearInput);
+    this.eventEmitter.addEvent(ChangeLevel, this.clearInput);
 
     setTimeout(() => {
       this.input.refresh();
@@ -77,12 +76,6 @@ export default class CSSEditor {
   clearInput() {
     this.input.setValue('');
     this.input.refresh();
-  }
-
-  keydownWatch(name) {
-    if (name === 'Enter') {
-      this.trySelector();
-    }
   }
 
   initialize() {
@@ -106,7 +99,7 @@ export default class CSSEditor {
     buttonEnter.addEventListener('click', this.trySelector);
     buttonHelp.addEventListener('click', this.enterCorrectSelector);
 
-    this.eventEmitter.addEvent(EVENT_NAME, this.getCurrentLevel);
+    this.eventEmitter.addEvent(ChangeLevel, this.getCurrentLevel);
   }
 
   enterCorrectSelector() {
@@ -131,11 +124,12 @@ export default class CSSEditor {
 
     if (!inputValue) return;
 
-    const CLASS__SELECTED = '--selected';
+    const DATA__SELECTED = 'data-selected';
 
-    const gameTableLayout = document.querySelector('.game-table__layout');
-    const elementsCountForWin = gameTableLayout.querySelectorAll(`.${CLASS__SELECTED}`).length;
+    const gameTableLayout = this.rootElement.querySelector('.game-table__layout');
+    const elementsCountForWin = gameTableLayout.querySelectorAll(`[${DATA__SELECTED}]`).length;
     const selectedElementsArr = [];
+
     let selectedElements = null;
 
     try {
@@ -151,7 +145,7 @@ export default class CSSEditor {
     }
 
     selectedElements.forEach((element) => {
-      if (element.classList.contains(CLASS__SELECTED)) {
+      if (element.hasAttribute(DATA__SELECTED)) {
         selectedElementsArr.push(element);
       } else {
         wrongSelectorHighlight(element);
@@ -162,19 +156,24 @@ export default class CSSEditor {
       selectedElementsArr.length === selectedElements.length
       && selectedElementsArr.length === elementsCountForWin
     ) {
-      this.levels[this.currentLevel].complete = true;
-
-      const nextLevel = this.selectNextLevel();
-
-      rightSelectorHighlight(selectedElementsArr);
-
-      if (nextLevel === undefined) {
-        setTimeout(() => this.eventEmitter.emit(new CompleteGameEvent(), 1000));
-        return;
-      }
-
-      setTimeout(() => this.eventEmitter.emit(new ChangeLevelEvent(nextLevel)), 1000);
+      this.completeLevel(selectedElementsArr);
     }
+  }
+
+  completeLevel(selectedElementsArr) {
+    this.levels[this.currentLevel].complete = true;
+
+    const nextLevel = this.selectNextLevel();
+    const animationDuration = 1000;
+
+    rightSelectorHighlight(selectedElementsArr);
+
+    if (nextLevel === undefined) {
+      setTimeout(() => this.eventEmitter.emit(new CompleteGameEvent(), animationDuration));
+      return;
+    }
+
+    setTimeout(() => this.eventEmitter.emit(new ChangeLevelEvent(nextLevel)), animationDuration);
   }
 
   selectNextLevel() {
