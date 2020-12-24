@@ -1,20 +1,6 @@
 import { EVENTS } from '../Store';
 import getRSSNews from '../RSSNews';
 
-// const State = {
-//   DEATHS: 'deaths',
-//   RECOVERED: 'recovered',
-//   CASES: 'cases',
-//   TODAY_DEATHS: 'todayDeaths',
-//   TODAY_RECOVERED: 'todayRecovered',
-//   TODAY_CONFIRMED: 'todayCases',
-//   DEATHS_100: 'deathsPerOneMillion',
-//   RECOVERED_100: 'recoveredPerOneMillion',
-//   CASES_100: 'casesPerOneMillion',
-//   TODAY_DEATHS_100: 'todayDeathsPer100k',
-//   TODAY_RECOVERED_100: 'todayRecoveredPer100k',
-//   TODAY_CASES_100: 'todayCasesPer100k',
-// };
 const State = {
   CASES: 'cases',
     DEATHS: 'deaths',
@@ -30,20 +16,6 @@ const State = {
     TODAY_CASES_100: 'todayCasesPer100k',
   };
 
-// const stateTitles = {
-//   [State.DEATHS]: 'Total Deaths',
-//   [State.RECOVERED]: 'Total Recovered',
-//   [State.CASES]: 'Total Confirmed',
-//   [State.TODAY_DEATHS]: 'Today Deaths',
-//   [State.TODAY_RECOVERED]: 'Today Recovered',
-//   [State.TODAY_CONFIRMED]: 'Today Confirmed',
-//   [State.DEATHS_100]: 'Per 100k deaths',
-//   [State.RECOVERED_100]: 'Per 100k recovered',
-//   [State.CASES_100]: 'Per 100k cases',
-//   [State.TODAY_DEATHS_100]: 'Per 100k deaths today',
-//   [State.TODAY_RECOVERED_100]: 'Per 100k recovered today',
-//   [State.TODAY_CASES_100]: 'Per 100k cases today',
-// };
 const stateTitles = {
   [State.CASES]: 'Total Confirmed',
     [State.DEATHS]: 'Total Deaths',
