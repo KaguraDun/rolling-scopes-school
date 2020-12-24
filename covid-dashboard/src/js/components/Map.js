@@ -4,22 +4,6 @@ import './leaflet-providers';
 
 import { EVENTS } from '../Store';
 
-// original
-// const CASES = [
-//   'Total confirmed cases',
-//   'Total deaths',
-//   'Total recovered',
-//   'Total cases per 100k',
-//   'Total deaths per 100k',
-//   'Total recovered per 100k',
-//   'Today confirmed cases',
-//   'Today deaths',
-//   'Today recovered',
-//   'Today cases per 100k',
-//   'Today deaths per 100k',
-//   'Today recovered per 100k',
-// ];
-
 const CASES = [
   'Total confirmed cases',
   'Total deaths',
@@ -34,20 +18,6 @@ const CASES = [
   'Today recovered per 100k',
   'Today cases per 100k',
 ];
-// const CASES = [
-//   'Total deaths',
-//   'Total recovered',
-//   'Total confirmed cases',
-//   'Today deaths',
-//   'Today recovered',
-//   'Today confirmed cases',
-//   'Total deaths per 100k',
-//   'Total recovered per 100k',
-//   'Total cases per 100k',
-//   'Today deaths per 100k',
-//   'Today recovered per 100k',
-//   'Today cases per 100k',
-// ];
 
 const ICONS = [
   './assets/icons/blueIcon.svg',
