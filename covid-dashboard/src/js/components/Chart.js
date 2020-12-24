@@ -2,21 +2,6 @@ import ChartLib from 'chart.js';
 import { EVENTS } from '../Store';
 import renderElement from '../helpers/renderElement';
 
-// const CASES = {
-//   DEATHS: 'Total deaths',
-//   RECOVERED: 'Total recovered',
-//   CASES: 'Total cases',
-//   DEATHS_LAST_DAY: 'Deaths for each day',
-//   RECOVERED_LAST_DAY: 'Recovered for each day',
-//   CASES_LAST_DAY: 'Cases for each day',
-//   DEATHS_PER_100K: 'Total deaths per 100k',
-//   RECOVERED_PER_100K: 'Total recovered per 100k',
-//   CASES_PER_100K: 'Total cases per 100k',
-//   DEATHS_LAST_DAY_PER_100K: 'Deaths for each day per 100k',
-//   RECOVERED_LAST_DAY_PER_100K: 'Recovered for each day per 100k',
-//   CASES_LAST_DAY_PER_100K: 'Cases for each day per 100k',
-// };
-
 const CASES = {
   CASES: 'Total cases',
   DEATHS: 'Total deaths',
