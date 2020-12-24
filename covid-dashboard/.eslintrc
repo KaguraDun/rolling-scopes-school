@@ -1,0 +1,40 @@
+{
+  "parser": "babel-eslint",
+  "rules": {
+    "object-curly-newline": "off",
+    "linebreak-style": 0,
+    "max-len": [
+      "error",
+      {
+        "code": 100,
+        "ignoreComments": true
+      }
+    ],
+    "no-param-reassign": [
+      "error",
+      {
+        "props": false
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": [
+          "./src"
+        ],
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    }
+  },
+  "env": {
+    "es6": true,
+    "browser": true
+  },
+  "extends": "airbnb-base"
+}

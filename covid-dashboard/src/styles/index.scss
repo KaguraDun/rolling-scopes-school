@@ -1,0 +1,11 @@
+@import '~normalize-scss/sass/normalize';
+@include normalize();
+@import "header";
+@import "sidebar";
+@import "chart";
+@import "map";
+@import "table";
+@import "news";
+@import "footer";
+@import "page";
+

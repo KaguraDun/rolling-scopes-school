@@ -1,0 +1,179 @@
+.sidebar {
+    min-width: 360px;
+    background: #75352a;
+    position: relative;
+    font-style: Helvetica;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    display: border-box;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+tbody {
+    width: 100%;
+}
+
+.table-header {
+    font-size: 1.1rem;
+    height: 2rem;
+    width: 94%;
+    color: #1CB5E0;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    padding: 15px 0;
+    border-bottom: 1px solid #5c5c5c;
+}
+
+td {
+    border: none;
+    color: white;
+    text-align: center;
+    padding: 0px;
+    font-size: 15px;
+    width: 100%;
+    text-align: center;
+}
+
+.contry-flag {
+    width: 30px;
+    height: 20px;
+}
+
+tr:nth-child(even) {
+    background-color: #094074;
+
+}
+
+.table-scroll {
+    height: 70vh;
+    width: 100%;
+    overflow: auto;
+    border: 1px solid #5c5c5c;
+}
+
+.sidebar-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    top: 15px;
+    right: 5%;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 400;
+    right: 1%;
+}
+
+.button-left {
+    font-size: 2rem;
+    width: 20px;
+    height: 20px;
+    outline: none;
+    background: transparent;
+    border: none !important;
+    color: #1CB5E0;
+    cursor: pointer;
+}
+
+.button-right {
+    font-size: 2rem;
+    width: 20px;
+    height: 20px;
+    outline: none;
+    background: transparent;
+    border: none !important;
+    color: #1CB5E0;
+    cursor: pointer;
+}
+
+.sidebar-input {
+    resize: none;
+    outline: none;
+    -moz-appearance: none;
+    background-color: #333333;
+    border-radius: 7px;
+    width: 83%;
+    margin-left: 5px;
+    height: 25px;
+}
+
+.sidebar-resize {
+    position: absolute;
+    right: 5%;
+    font-size: 30px;
+    background: transparent;
+    border: none !important;
+    color: #1CB5E0;
+    outline: none;
+}
+
+.full-screen {
+    position: fixed;
+    width: 100%;
+    font-size: 2rem;
+    z-index: 1200;
+
+    td {
+        font-size: 1rem;
+        border-bottom: 1px solid #5c5c5c;
+    }
+
+    .table-header {
+        padding-top: 10px;
+        font-size: 2rem;
+    }
+
+    .sidebar-buttons {
+        margin-top: 0;
+    }
+
+    .keyboard-button {
+        top: 17px;
+        left: 85%;
+    }
+}
+
+.wrapper {
+    background-color: #333333;
+    height: 100%;
+}
+
+.left-cell {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 15rem;
+    height: 3rem;
+    font-size: 15px;
+}
+
+.simple-keyboard {
+    position: fixed;
+    top: 80rem;
+    z-index: 1001;
+    transition: 0.3s;
+}
+
+.keyboard-button {
+    font-size: 1rem;
+    width: 20px;
+    height: 20px;
+    outline: none;
+    background: transparent;
+    border: none !important;
+    color: rgb(182, 65, 65);
+    top: 2px;
+    left: 80%;
+    position: absolute;
+    transition: 1s;
+}
