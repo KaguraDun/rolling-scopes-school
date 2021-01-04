@@ -1,0 +1,271 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  <meta content="IE=edge" http-equiv="x-ua-compatible">
+
+  <title>Type Script : Introduction</title>
+
+
+  <!-- Printing and PDF exports -->
+  <!-- <script>
+     var link = document.createElement( 'link' );
+     link.rel = 'stylesheet';
+     link.type = 'text/css';
+     link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+     document.getElementsByTagName( 'head' )[0].appendChild( link );
+   </script>-->
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h3>Type Script : Introduction</h3>
+        <h5>by Vasilii Kovnev</h5>
+      </section>
+
+      <section>
+        <h3>What is it?</h3>
+        <h5>TypeScript is an open-source language which builds on JavaScript with adding static type definitions.</h5>
+      </section>
+      <section>
+        <h3>What is the benefit?</h3>
+        <ul>
+          <li>TypeScript supports static typing</li>
+          <li>TypeScript makes code easier to read and understand</li>
+          <li>TypeScript reduces the number of bugs</li>
+          <li>TypeScript encourages developers to follow OOP best practices</li>
+          <li>TypeScript saves developer time</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Primitive types</h3>
+        <pre>
+          <code class="hljs typescript">
+            let isDone: boolean = false;
+            
+            let decimal: number = 6;
+            let big: bigint = 100n;
+
+            let color: string = "blue";
+
+            let u: undefined = undefined;
+            let n: null = null;
+
+            let sym1 = Symbol();
+            let sym2 = Symbol("key"); // optional string key
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h3>Array and Typle</h3>
+        <pre>
+          <code class="hljs typescript">
+            let list: number[] = [1, 2, 3];
+            let list: Array &lt;number&gt = [1, 2, 3];
+
+            // Declare a tuple type
+            let x: [string, number];
+            // Initialize it
+            x = ["hello", 10]; // OK
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h3>Enum</h3>
+        <pre>
+          <code class="hljs typescript">
+            enum Color {
+              Red = 1,
+              Green,
+              Blue,
+            }
+
+            let colorName: string = Color[2];
+            
+            // Displays 'Green'
+            console.log(colorName);
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h3>Unknown</h3>
+        <pre>
+          <code class="hljs typescript">
+            let notSure: unknown = 4;
+            notSure = "maybe a string instead";
+            
+            // OK, definitely a boolean
+            notSure = false;
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h3>Any</h3>
+        <pre>
+          <code class="hljs typescript">
+            let looselyTyped: any = 4;
+            // OK, ifItExists might exist at runtime
+            looselyTyped.ifItExists();
+            // OK, toFixed exists (but the compiler doesn't check)
+            looselyTyped.toFixed();
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h3>Void</h3>
+        <pre>
+          <code class="hljs typescript">
+            function warnUser(): void {
+              console.log("This is my warning message");
+            }
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h3>Never</h3>
+        <pre>
+          <code class="hljs typescript">
+            function warnUser(): void {
+              console.log("This is my warning message");
+            }
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h3>Object</h3>
+        <pre>
+          <code class="hljs typescript">
+            // Example 1
+            const user: { name: string, id: number } = {
+              name: "Hayes",
+              id: 0,
+            };
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h3>Object</h3>
+        <pre>
+          <code class="hljs typescript">
+            // Example 2
+            interface User {
+              name: string;
+              id: number;
+            }
+      
+            const user: User = {
+              name: "Hayes",
+              id: 0,
+            };
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h3>Interfaces</h3>
+        <pre>
+          <code class="hljs typescript">
+            function printLabel(labeledObj: { label: string }) {
+              console.log(labeledObj.label);
+            }
+            
+            let myObj = { size: 10, label: "Size 10 Object" };
+            printLabel(myObj);
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h3>Interfaces</h3>
+        <pre>
+          <code class="hljs typescript">
+
+            interface LabeledValue {
+              label: string;
+            }
+            
+            function printLabel(labeledObj: LabeledValue) {
+              console.log(labeledObj.label);
+            }
+            
+            let myObj = { size: 10, label: "Size 10 Object" };
+            printLabel(myObj);
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h3>Interface Properties</h3>
+        <pre>
+          <code class="hljs typescript">
+            // Optional properties
+            interface SquareConfig {
+              color?: string;
+              width?: number;
+            }
+
+            // Readonly properties 
+              interface Point {
+              readonly x: number;
+              readonly y: number;
+            }
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h3>Function Types</h3>
+        <pre>
+          <code class="hljs typescript">
+            function add(x: number, y: number): number {
+              return x + y;
+            }
+            
+            let myAdd = function (x: number, y: number): number {
+              return x + y;
+            };
+            }
+          </code>
+        </pre>
+      </section>
+
+      
+      <section>
+        <h3>Writing the function type</h3>
+        <pre>
+          <code class="hljs typescript">
+            let myAdd: (x: number, y: number) => number = function (
+              x: number,
+              y: number
+            ): number {
+              return x + y;
+            };
+          </code>
+        </pre>
+      </section>
+
+      <section>
+        <h3>Thank you for your attention!</h3>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="presentation.bundle.js"></script>
+
+</body>
+
+</html>
